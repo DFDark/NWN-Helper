@@ -10,6 +10,12 @@
 #include "simpleini/SimpleIni.h"
 #include "first-time-configuration.hpp"
 
+#include "FileFormats/Bif.hpp"
+#include "FileFormats/Key.hpp"
+
+using namespace FileFormats::Bif;
+using namespace FileFormats::Key;
+
 class ConfigurationManager {
 public:
     ConfigurationManager();
@@ -21,6 +27,8 @@ private:
     CSimpleIniA* config;
 
     bool InitialConfiguration();
+    Friendly::Key LoadNWNBaseDataKEYFile(const char* filename);
+    Friendly::Bif LoadNWNBaseDataBIFFile(const char* filename);
 };
 
 #endif

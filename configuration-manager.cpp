@@ -1,8 +1,5 @@
 #include "configuration-manager.hpp"
 #include <fstream>
-#include "NWNFileFormats/FileFormats/Bif.hpp"
-
-using namespace FileFormats::Bif::Friendly;
 
 ConfigurationManager::ConfigurationManager()
 {
@@ -18,30 +15,24 @@ ConfigurationManager::~ConfigurationManager()
 
 bool ConfigurationManager::AttemptLoad()
 {
-    using namespace FileFormats::Bif;
-
     config->Reset();
     loaded = config->LoadFile("nwnhelper.ini") >= 0;
 
     if (!loaded)
         loaded = InitialConfiguration();
 
-        char * path = new char[255];
-        memset(path, '\0', sizeof(char) * 255);
-        sprintf(path, "%s/base_2da.bif", config->GetValue("General", "DATA_FOLDER"));
-
-        Raw::Bif rawBif;
-        bool ld = Raw::Bif::ReadFromFile(path, &rawBif);
-
-        // Alternatively, we could have loaded the file ourselves and use 'ReadFromByteVector' or 'ReadFromBytes'.
-
-        printf("BIF FileType: %.4s\n", rawBif.m_Header.m_FileType);
-        printf("BIF Version: %.4s\n", rawBif.m_Header.m_Version);
-        printf("BIF Variable resources: %u\n", rawBif.m_Header.m_VariableResourceCount);
-        printf("BIF Fixed resources: %u\n", rawBif.m_Header.m_FixedResourceCount);
-
-        delete [] path;
-        path = NULL;
+    if (loaded)
+    {
+        Friendly::Key base_key = LoadNWNBaseDataKEYFile("NWNBase.key");
+        Friendly::Bif bif_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
+        
+        //TODO: Load 
+        for (auto kvp : bif_2da.GetResources())
+        {
+            // kvp.first => BIF ID
+            // kvp.second => BifResource
+        }
+    }
 
     return loaded;
 }
@@ -85,5 +76,35 @@ bool ConfigurationManager::InitialConfiguration()
             "Error", wxOK | wxICON_ERROR );
     }
 
+    return result;
+}
+
+Friendly::Key ConfigurationManager::LoadNWNBaseDataKEYFile(const char* filename)
+{
+    char* path = new char[255];
+    memset(path, '\0', sizeof(char) * 255);
+    sprintf(path, "%s/%s", config->GetValue("General", "DATA_FOLDER"), filename);
+    
+    
+    
+    delete [] path;
+    path = NULL;
+}
+
+Friendly::Bif ConfigurationManager::LoadNWNBaseDataBIFFile(const char* filename)
+{
+    char* path = new char[255];
+    memset(path, '\0', sizeof(char) * 255);
+    sprintf(path, "%s/%s", config->GetValue("General", "DATA_FOLDER"), filename);
+    
+    Raw::Bif aux;
+    if (!Raw::Bif::ReadFromFile(path, &aux))
+        return NULL;
+    
+    Friendly::Bif result = Friendly::Bif(std::move(aux));
+    
+    delete [] path;
+    path = NULL;
+    
     return result;
 }
