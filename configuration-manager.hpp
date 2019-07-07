@@ -13,8 +13,7 @@
 #include "FileFormats/Bif.hpp"
 #include "FileFormats/Key.hpp"
 
-using namespace FileFormats::Bif;
-using namespace FileFormats::Key;
+using namespace FileFormats;
 
 class ConfigurationManager {
 public:
@@ -26,9 +25,12 @@ private:
     bool loaded;
     CSimpleIniA* config;
 
+    Key::Friendly::Key* base_key;
+    Bif::Friendly::Bif* base_2da;
+
     bool InitialConfiguration();
-    Friendly::Key LoadNWNBaseDataKEYFile(const char* filename);
-    Friendly::Bif LoadNWNBaseDataBIFFile(const char* filename);
+    Key::Friendly::Key* LoadNWNBaseDataKEYFile(const char* filename);
+    Bif::Friendly::Bif* LoadNWNBaseDataBIFFile(const char* filename);
 };
 
 #endif
