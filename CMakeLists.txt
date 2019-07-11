@@ -10,6 +10,8 @@ add_library(NWNHelper STATIC
     nwnhelper.cpp
     nwnhelper-main.hpp
     nwnhelper-main.cpp
+    spellform.hpp
+    spellform.cpp
 )
 
 
