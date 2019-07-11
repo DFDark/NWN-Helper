@@ -7,6 +7,7 @@
 #endif
 
 #include "configuration-manager.hpp"
+#include "nwnhelper-main.hpp"
 
 class NWNHelper : public wxApp
 {
@@ -19,6 +20,7 @@ public:
 private:
     int exit_code;
     ConfigurationManager* configuration_manager;
+    NWNHelperMain* nwnhelper_main;
 };
 
 wxIMPLEMENT_APP(NWNHelper);

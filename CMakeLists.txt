@@ -8,6 +8,8 @@ add_library(NWNHelper STATIC
     configuration-manager.cpp
     nwnhelper.hpp
     nwnhelper.cpp
+    nwnhelper-main.hpp
+    nwnhelper-main.cpp
 )
 
 
