@@ -13,7 +13,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
     SetMenuBar(menu_bar);
-    
+
     CreateStatusBar();
     SetStatusText("NWNHelperMain status bar");
 }
@@ -22,7 +22,7 @@ NWNHelperMain::~NWNHelperMain()
 {
     delete menu_file;
     delete menu_bar;
-    
+
     menu_file = NULL;
     menu_bar = NULL;
 }

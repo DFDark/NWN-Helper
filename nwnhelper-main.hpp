@@ -10,9 +10,9 @@ class NWNHelperMain : public wxFrame
 {
 public:
 	NWNHelperMain(const wxString& title, const wxPoint& position, const wxSize& size);
-	~NWNHelperMain() {}
+	~NWNHelperMain();
 
-    virtual void OnExit();
+    virtual void OnExit(wxCommandEvent& event);
 private:
     wxMenuBar* menu_bar;
     wxMenu* menu_file;

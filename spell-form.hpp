@@ -9,18 +9,18 @@
 class SpellForm : public wxDialog
 {
 public:
-    SpellForm(const wxString& title, const wxSize& size);
+    SpellForm(wxWindow* parent, const wxString& title, const wxSize& size);
     ~SpellForm();
 
 private:
     void OnOk(wxCommandEvent& event);
-    
+
     wxPanel* panel;
-    
+
     wxButton* ok_button;
     wxButton* cancel_button;
-    
-    vxDECLARE_EVENT_TABLE();
+
+    wxDECLARE_EVENT_TABLE();
 };
 
 #endif
