@@ -39,21 +39,23 @@ bool ConfigurationManager::AttemptLoad()
             loaded = false;
         }
 
+        std::map<std::uint32_t, std::vector<Key::Friendly::KeyBifReferencedResource>> resmap;
+        for (auto const& r : base_key->GetReferencedResources())
+            resmap[r.m_ReferencedBifIndex].emplace_back(r);
+
         //TODO: Load
-        /*for (auto const& kvp : base_2da->GetResources())
+        for (auto const& kvp : base_2da->GetResources())
         {
             // kvp.first => BIF ID
             // kvp.second => BifResource
             //std::printf("\n%s [%u | %u]: %zu bytes", StringFromResourceType(kvp.second.m_ResType), kvp.first, kvp.second.m_ResId, kvp.second.m_DataBlock->GetDataLength());
-            for (auto const& res : base_key->GetReferencedResources())
-            {
-                if (res.m_ReferencedBifResId == kvp.first)
-                {
-                    printf(" RESREF: %s\n", res.m_ResRef.c_str());
-                    break;
-                }
-            }
-        }*/
+            std::string filename = resmap[11][kvp.first].m_ResRef;
+            twoda_list[filename] = LoadTwoDAFile(filename,
+                kvp.second.m_DataBlock->GetData(),
+                kvp.second.m_DataBlock->GetDataLength()
+            );
+            printf("%s %s\n", filename.c_str(), twoda_list[filename] == NULL ? "NOT Loaded" : "Loaded");
+        }
     }
 
     return loaded;
@@ -139,5 +141,18 @@ Bif::Friendly::Bif* ConfigurationManager::LoadNWNBaseDataBIFFile(const char* fil
     delete [] path;
     path = NULL;
 
+    return result;
+}
+
+TwoDA::Friendly::TwoDA* ConfigurationManager::LoadTwoDAFile(std::string name, std::byte const* entry, std::size_t length)
+{
+    TwoDA::Raw::TwoDA raw;
+    if (!TwoDA::Raw::TwoDA::ReadFromBytes(entry, length, &raw))
+    {
+        std::string error = std::string("Couldn't load ") + name;
+        throw error;
+    }
+
+    TwoDA::Friendly::TwoDA* result = new TwoDA::Friendly::TwoDA(std::move(raw));
     return result;
 }
