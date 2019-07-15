@@ -27,7 +27,7 @@ bool NWNHelper::OnInit()
         exit_code = 1;
     else
     {
-        nwnhelper_main = new NWNHelperMain("NWNHelperMain", wxPoint(20, 20), wxSize(800, 600));
+        nwnhelper_main = new NWNHelperMain("NWNHelperMain", wxPoint(20, 20), wxSize(800, 600), configuration_manager);
         nwnhelper_main->Show(true);
         SetTopWindow(nwnhelper_main);
     }

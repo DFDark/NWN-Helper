@@ -16,6 +16,9 @@ ConfigurationManager::~ConfigurationManager()
     config = NULL;
     base_2da = NULL;
     base_key = NULL;
+    
+    for (auto const& data : twoda_list)
+        delete data.second;
 }
 
 bool ConfigurationManager::AttemptLoad()
