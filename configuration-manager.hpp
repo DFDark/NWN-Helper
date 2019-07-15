@@ -16,17 +16,14 @@
 
 using namespace FileFormats;
 
-enum class BifIndex : std::uint32_t {
-    // Probably could be done better
-    TwoDA = 11
-};
-
 class ConfigurationManager {
 public:
     ConfigurationManager();
     ~ConfigurationManager();
 
     bool AttemptLoad();
+    
+    TwoDA::Friendly::TwoDA* Get2da(std::string name);
 private:
     bool loaded;
     CSimpleIniA* config;

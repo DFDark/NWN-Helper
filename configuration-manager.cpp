@@ -39,17 +39,23 @@ bool ConfigurationManager::AttemptLoad()
             loaded = false;
         }
 
-        std::map<std::uint32_t, std::vector<Key::Friendly::KeyBifReferencedResource>> resmap;
+        std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
         for (auto const& r : base_key->GetReferencedResources())
-            resmap[r.m_ReferencedBifIndex].emplace_back(r);
+        {
+            if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
+                resourcelist.emplace_back(r);
+        }
 
-        //TODO: Load
         for (auto const& kvp : base_2da->GetResources())
         {
             // kvp.first => BIF ID
-            // kvp.second => BifResource
-            //std::printf("\n%s [%u | %u]: %zu bytes", StringFromResourceType(kvp.second.m_ResType), kvp.first, kvp.second.m_ResId, kvp.second.m_DataBlock->GetDataLength());
-            std::string filename = resmap[11][kvp.first].m_ResRef;
+            if (resourcelist.size() <= kvp.first)
+            {
+                printf("Attemt to load index: %u \n", kvp.first);
+                continue;
+            }
+            
+            std::string filename = resourcelist[kvp.first].m_ResRef;
             twoda_list[filename] = LoadTwoDAFile(filename,
                 kvp.second.m_DataBlock->GetData(),
                 kvp.second.m_DataBlock->GetDataLength()
@@ -155,4 +161,12 @@ TwoDA::Friendly::TwoDA* ConfigurationManager::LoadTwoDAFile(std::string name, st
 
     TwoDA::Friendly::TwoDA* result = new TwoDA::Friendly::TwoDA(std::move(raw));
     return result;
+}
+
+TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
+{
+    if (twoda_list.find(name) == twoda_list.end())
+        throw (std::string("Cannot find ") + name + std::string(".2da data!"));
+    
+    return twoda_list[name];
 }
