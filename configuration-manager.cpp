@@ -16,7 +16,7 @@ ConfigurationManager::~ConfigurationManager()
     config = NULL;
     base_2da = NULL;
     base_key = NULL;
-    
+
     for (auto const& data : twoda_list)
         delete data.second;
 }
@@ -35,7 +35,7 @@ bool ConfigurationManager::AttemptLoad()
         {
             base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
             base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
-            
+
             std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
             for (auto const& r : base_key->GetReferencedResources())
             {
@@ -47,13 +47,12 @@ bool ConfigurationManager::AttemptLoad()
             {
                 if (resourcelist.size() <= kvp.first)
                     continue;
-                
+
                 std::string filename = resourcelist[kvp.first].m_ResRef;
                 twoda_list[filename] = LoadTwoDAFile(filename,
                     kvp.second.m_DataBlock->GetData(),
                     kvp.second.m_DataBlock->GetDataLength()
                 );
-                printf("%s %s\n", filename.c_str(), twoda_list[filename] == NULL ? "NOT Loaded" : "Loaded");
             }
         }
         catch (std::string& message)
@@ -171,6 +170,6 @@ TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
 {
     if (twoda_list.find(name) == twoda_list.end())
         throw (std::string("Cannot find ") + name + std::string(".2da data!"));
-    
+
     return twoda_list[name];
 }

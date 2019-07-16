@@ -21,14 +21,14 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
 
     CreateStatusBar();
     SetStatusText("NWNHelperMain status bar");
-    
+
     main_panel = new wxPanel(this, wxID_ANY);
     
     tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(20, 20), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
-    
+
     spells = new wxDataViewListCtrl(tabs, wxID_ANY);
     tabs->AddPage(spells, wxString("Spells"));
-    
+
     // spells->AddColumn(
 }
 

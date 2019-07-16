@@ -5,6 +5,8 @@
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
 #endif
+#include <wx/notebook.h>
+#include <wx/dataview.h>
 
 #include "configuration-manager.hpp"
 
@@ -21,7 +23,7 @@ private:
     wxPanel* main_panel;
     wxDataViewListCtrl* spells;
     wxNotebook* tabs;
-    
+
     ConfigurationManager* configuration;
 
     wxDECLARE_EVENT_TABLE();
