@@ -18,6 +18,9 @@ public:
 private:
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
+    wxPanel* main_panel;
+    wxDataViewListCtrl* spells;
+    wxNotebook* tabs;
     
     ConfigurationManager* configuration;
 

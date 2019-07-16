@@ -35,35 +35,36 @@ bool ConfigurationManager::AttemptLoad()
         {
             base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
             base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
+            
+            std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
+            for (auto const& r : base_key->GetReferencedResources())
+            {
+                if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
+                    resourcelist.emplace_back(r);
+            }
+
+            for (auto const& kvp : base_2da->GetResources())
+            {
+                if (resourcelist.size() <= kvp.first)
+                    continue;
+                
+                std::string filename = resourcelist[kvp.first].m_ResRef;
+                twoda_list[filename] = LoadTwoDAFile(filename,
+                    kvp.second.m_DataBlock->GetData(),
+                    kvp.second.m_DataBlock->GetDataLength()
+                );
+                printf("%s %s\n", filename.c_str(), twoda_list[filename] == NULL ? "NOT Loaded" : "Loaded");
+            }
         }
         catch (std::string& message)
         {
             wxMessageBox(message, "Error", wxOK | wxICON_ERROR );
             loaded = false;
         }
-
-        std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
-        for (auto const& r : base_key->GetReferencedResources())
+        catch (std::exception& e)
         {
-            if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
-                resourcelist.emplace_back(r);
-        }
-
-        for (auto const& kvp : base_2da->GetResources())
-        {
-            // kvp.first => BIF ID
-            if (resourcelist.size() <= kvp.first)
-            {
-                printf("Attemt to load index: %u \n", kvp.first);
-                continue;
-            }
-            
-            std::string filename = resourcelist[kvp.first].m_ResRef;
-            twoda_list[filename] = LoadTwoDAFile(filename,
-                kvp.second.m_DataBlock->GetData(),
-                kvp.second.m_DataBlock->GetDataLength()
-            );
-            printf("%s %s\n", filename.c_str(), twoda_list[filename] == NULL ? "NOT Loaded" : "Loaded");
+            wxMessageBox(e.what(), "Error", wxOK | wxICON_ERROR );
+            loaded = false;
         }
     }
 

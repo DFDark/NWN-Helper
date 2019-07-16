@@ -21,15 +21,28 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
 
     CreateStatusBar();
     SetStatusText("NWNHelperMain status bar");
+    
+    main_panel = new wxPanel(this, wxID_ANY);
+    
+    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(20, 20), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
+    
+    spells = new wxDataViewListCtrl(tabs, wxID_ANY);
+    tabs->AddPage(spells, wxString("Spells"));
+    
+    // spells->AddColumn(
 }
 
 NWNHelperMain::~NWNHelperMain()
 {
     delete menu_file;
     delete menu_bar;
+    delete spells;
+    delete tabs;
 
     menu_file = NULL;
     menu_bar = NULL;
+    spells = NULL;
+    tabs = NULL;
 }
 
 void NWNHelperMain::OnExit(wxCommandEvent& event)
