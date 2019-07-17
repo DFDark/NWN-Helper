@@ -1,4 +1,5 @@
 #include "first-time-configuration.hpp"
+#include <fstream>
 
 wxBEGIN_EVENT_TABLE(FirstTimeConfiguration, wxDialog)
     EVT_MENU(MAIN_INI_BUTTON, FirstTimeConfiguration::OnMainIniClick)
@@ -56,7 +57,28 @@ FirstTimeConfiguration::~FirstTimeConfiguration()
 
 void FirstTimeConfiguration::OnOk(wxCommandEvent& event)
 {
-    // TODO: Some sort of validation
+    std::string datapath = data_folder->GetValue().toStdString() + std::string("/nwn_base.key");
+    std::string inipath = main_ini->GetValue().toStdString();
+    
+    // As for validation, we will check by trying to open "nwn.ini" and DATA_FOLDER/"nwn_base.key"
+    std::fstream nwnini(inipath, std::fstream::in);
+    if (!nwnini.is_open())
+    {
+        wxMessageBox(std::string("Unable to open file \"") + inipath + std::string("\"!"),
+            "Error", wxOK | wxICON_ERROR );
+        return;
+    }
+    nwnini.close();
+    
+    std::fstream nwnkey(datapath, std::fstream::in);
+    if (!nwnkey.is_open())
+    {
+        wxMessageBox(std::string("Unable to open file \"") + inipath + std::string("\"!"),
+            "Error", wxOK | wxICON_ERROR );
+        return;
+    }
+    nwnkey.close();
+    
     this->EndModal(wxID_OK);
 }
 
