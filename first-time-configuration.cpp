@@ -57,9 +57,9 @@ FirstTimeConfiguration::~FirstTimeConfiguration()
 
 void FirstTimeConfiguration::OnOk(wxCommandEvent& event)
 {
-    std::string datapath = data_folder->GetValue().toStdString() + std::string("/nwn_base.key");
-    std::string inipath = main_ini->GetValue().toStdString();
-    
+    std::string datapath = data_folder->GetValue().ToStdString() + std::string("/nwn_base.key");
+    std::string inipath = main_ini->GetValue().ToStdString();
+
     // As for validation, we will check by trying to open "nwn.ini" and DATA_FOLDER/"nwn_base.key"
     std::fstream nwnini(inipath, std::fstream::in);
     if (!nwnini.is_open())
@@ -69,7 +69,7 @@ void FirstTimeConfiguration::OnOk(wxCommandEvent& event)
         return;
     }
     nwnini.close();
-    
+
     std::fstream nwnkey(datapath, std::fstream::in);
     if (!nwnkey.is_open())
     {
@@ -78,7 +78,7 @@ void FirstTimeConfiguration::OnOk(wxCommandEvent& event)
         return;
     }
     nwnkey.close();
-    
+
     this->EndModal(wxID_OK);
 }
 

@@ -14,7 +14,7 @@ public:
 
 private:
     void OnOk(wxCommandEvent& event);
-    void OnCacel(wxCommandEvent& event);
+    void OnCancel(wxCommandEvent& event);
 
     wxPanel* panel;
 
