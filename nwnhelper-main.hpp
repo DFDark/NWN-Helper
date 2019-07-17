@@ -21,7 +21,10 @@ private:
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
     wxPanel* main_panel;
+
     wxDataViewListCtrl* spells;
+    wxDataViewListCtrl* feats;
+
     wxNotebook* tabs;
 
     ConfigurationManager* configuration;
