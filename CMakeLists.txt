@@ -12,8 +12,11 @@ add_library(NWNHelper STATIC
     nwnhelper-main.cpp
     spell-form.hpp
     spell-form.cpp
+    ListModels/spelllist-model.hpp
+    ListModels/spelllist-model.cpp
+    ListModels/featlist-model.hpp
+    ListModels/featlist-model.cpp
 )
-
 
 add_library(SimpleIni STATIC
     simpleini/SimpleIni.h

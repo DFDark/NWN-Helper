@@ -75,7 +75,7 @@ bool ConfigurationManager::InitialConfiguration()
     bool result = false;
 
     wxMessageBox("NWNHelper failed to locate nwnhelper.ini. Configuration manager will be required to run before you're able to run the application.",
-                  "Warning", wxOK | wxICON_WARNING );
+        "Warning", wxOK | wxICON_WARNING );
 
     FirstTimeConfiguration* first_time_configuration = new FirstTimeConfiguration(
         "Configuration manager", wxSize(400, 200));

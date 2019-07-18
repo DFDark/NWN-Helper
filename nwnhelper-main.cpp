@@ -1,6 +1,7 @@
 #include "nwnhelper-main.hpp"
 #include "spell-form.hpp"
 
+
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
     // EVT_MENU(wxID_ABOUT, NWNHelperMain::OnAbout)
@@ -13,7 +14,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
     configuration = _configuration;
 
     menu_file = new wxMenu;
-    menu_file->Append(2, "Spells", "sdfsdf");
+    // menu_file->Append(2, "Spells", "sdfsdf");
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
@@ -24,15 +25,25 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
 
     main_panel = new wxPanel(this, wxID_ANY);
     
-    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(20, 20), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
+    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(50, 10), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
 
-    spells = new wxDataViewListCtrl(tabs, wxID_ANY);
-    feats = new wxDataViewListCtrl(tabs, wxID_ANY);
+    spells = new wxDataViewCtrl(tabs, wxID_ANY);
+    feats = new wxDataViewCtrl(tabs, wxID_ANY);
     
     tabs->AddPage(spells, wxString("Spells"));
     tabs->AddPage(feats, wxString("Feats"));
-
-    // spells->AddColumn(
+    
+    sp_model = new SpellListModel(configuration->Get2da("spells"));
+    spells->AssociateModel(sp_model.get());
+    
+    spells->AppendTextColumn("ID", SpellListModel::ID);
+    spells->AppendTextColumn("Spell Label", SpellListModel::LABEL);
+    
+    ft_model = new FeatListModel(configuration->Get2da("feats"));
+    feats->AssociateModel(ft_model.get());
+    
+    feats->AppendTextColumn("ID", FeatListModel::ID);
+    feats->AppendTextColumn("Feat Label", FeatListModel::LABEL);
 }
 
 NWNHelperMain::~NWNHelperMain()

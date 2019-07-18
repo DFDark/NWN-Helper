@@ -9,6 +9,10 @@
 #include <wx/dataview.h>
 
 #include "configuration-manager.hpp"
+#include "ListModels/spelllist-model.hpp"
+#include "ListModels/featlist-model.hpp"
+
+using namespace FileFormats;
 
 class NWNHelperMain : public wxFrame
 {
@@ -28,6 +32,8 @@ private:
     wxNotebook* tabs;
 
     ConfigurationManager* configuration;
+    SpellListModel* sp_model;
+    FeatListModel* ft_model;
 
     wxDECLARE_EVENT_TABLE();
 };
