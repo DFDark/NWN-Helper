@@ -36,3 +36,8 @@ bool FeatListModel::GetAttrByRow(unsigned int row, unsigned int col, wxDataViewI
 {
     return true;
 }
+
+TwoDA::Friendly::TwoDARow* FeatListModel::Get2daRow(unsigned int row)
+{
+    return &((*file)[row]);
+}

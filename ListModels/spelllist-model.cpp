@@ -36,3 +36,8 @@ bool SpellListModel::GetAttrByRow(unsigned int row, unsigned int col, wxDataView
 {
     return true;
 }
+
+TwoDA::Friendly::TwoDARow* SpellListModel::Get2daRow(unsigned int row)
+{
+    return &((*file)[row]);
+}

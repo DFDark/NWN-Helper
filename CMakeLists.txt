@@ -2,16 +2,16 @@ cmake_minimum_required(VERSION 3.0.2)
 project(NWNHelper)
 
 add_library(NWNHelper STATIC
-    first-time-configuration.hpp
-    first-time-configuration.cpp
     configuration-manager.hpp
     configuration-manager.cpp
     nwnhelper.hpp
     nwnhelper.cpp
     nwnhelper-main.hpp
     nwnhelper-main.cpp
-    spell-form.hpp
-    spell-form.cpp
+    Components/spell-form.hpp
+    Components/spell-form.cpp
+    Components/first-time-configuration.hpp
+    Components/first-time-configuration.cpp
     ListModels/spelllist-model.hpp
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp

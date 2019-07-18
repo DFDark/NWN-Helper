@@ -1,5 +1,6 @@
 #include "nwnhelper-main.hpp"
-#include "spell-form.hpp"
+#include "Components/spell-form.hpp"
+#include "Components/feat-form.hpp"
 
 enum
 {
@@ -39,13 +40,13 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
     tabs->AddPage(feats, wxString("Feats"));
     
     sp_model = new SpellListModel(configuration->Get2da("spells"));
-    spells->AssociateModel(sp_model.get());
+    spells->AssociateModel(sp_model->get());
     
     spells->AppendTextColumn("ID", SpellListModel::ID);
     spells->AppendTextColumn("Spell Label", SpellListModel::LABEL);
     
     ft_model = new FeatListModel(configuration->Get2da("feats"));
-    feats->AssociateModel(ft_model.get());
+    feats->AssociateModel(ft_model->get());
     
     feats->AppendTextColumn("ID", FeatListModel::ID);
     feats->AppendTextColumn("Feat Label", FeatListModel::LABEL);
@@ -71,10 +72,18 @@ void NWNHelperMain::OnExit(wxCommandEvent& event)
 
 void NWNHelperMain::OnSpellActivated(wxDataViewEvent& event)
 {
-    // event.GetItem();
+    unsigned int row = sp_model->GetRow(event.GetItem());
+    TwoDA::Friendly::TwoDARow* spell = sp_model->Get2daRow(row);
+    
+    SpellForm form(panel, spell);
+    form.ShowModal(true);
 }
 
 void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
 {
-    // event.GetItem();
+    unsigned int row = ft_model->GetRow(event.GetItem());
+    TwoDA::Friendly::TwoDARow* feat = ft_model->Get2daRow(row);
+    
+    FeatForm form(panel, feat);
+    form.ShowModal(true);
 }

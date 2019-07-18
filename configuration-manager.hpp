@@ -8,7 +8,7 @@
 
 #define SI_SUPPORT_IOSTREAMS
 #include "simpleini/SimpleIni.h"
-#include "first-time-configuration.hpp"
+#include "Components/first-time-configuration.hpp"
 
 #include "FileFormats/Bif.hpp"
 #include "FileFormats/Key.hpp"

@@ -26,6 +26,8 @@ public:
     };
 
     SpellListModel(TwoDA::Friendly::TwoDA* _file);
+    
+    TwoDA::Friendly::TwoDARow* Get2daRow(unsigned int row);
 
     virtual unsigned int GetColumnCount() const wxOVERRIDE;
     virtual wxString GetColumnType(unsigned int col) const wxOVERRIDE;
