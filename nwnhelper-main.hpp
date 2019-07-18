@@ -22,6 +22,9 @@ public:
 
     virtual void OnExit(wxCommandEvent& event);
 private:
+    void OnSpellActivated(wxDataViewEvent& event);
+    void OnFeatActivated(wxDataViewEvent& event);
+    
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
     wxPanel* main_panel;

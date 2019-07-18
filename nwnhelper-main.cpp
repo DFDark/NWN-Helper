@@ -1,11 +1,16 @@
 #include "nwnhelper-main.hpp"
 #include "spell-form.hpp"
 
+enum
+{
+    SPELLS = wxID_HIGHEST + 1,
+    FEATS,
+};
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
-    // EVT_MENU(wxID_ABOUT, NWNHelperMain::OnAbout)
-    //EVT_MENU(2, NWNHelperMain::Test)
+    EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
+    EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
 wxEND_EVENT_TABLE()
 
 NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, const wxSize& size, ConfigurationManager* _configuration) :
@@ -27,8 +32,8 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
     
     tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(50, 10), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
 
-    spells = new wxDataViewCtrl(tabs, wxID_ANY);
-    feats = new wxDataViewCtrl(tabs, wxID_ANY);
+    spells = new wxDataViewCtrl(tabs, SPELLS);
+    feats = new wxDataViewCtrl(tabs, FEATS);
     
     tabs->AddPage(spells, wxString("Spells"));
     tabs->AddPage(feats, wxString("Feats"));
@@ -62,4 +67,14 @@ NWNHelperMain::~NWNHelperMain()
 void NWNHelperMain::OnExit(wxCommandEvent& event)
 {
     Close(true);
+}
+
+void NWNHelperMain::OnSpellActivated(wxDataViewEvent& event)
+{
+    // event.GetItem();
+}
+
+void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
+{
+    // event.GetItem();
 }
