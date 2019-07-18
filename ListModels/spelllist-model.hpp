@@ -9,6 +9,8 @@
 
 #include "FileFormats/2da.hpp"
 
+using namespace FileFormats;
+
 class SpellListModel : public wxDataViewVirtualListModel
 {
 public:
@@ -26,13 +28,13 @@ public:
     };
 
     SpellListModel(TwoDA::Friendly::TwoDA* _file);
-    
+
     TwoDA::Friendly::TwoDARow* Get2daRow(unsigned int row);
 
     virtual unsigned int GetColumnCount() const wxOVERRIDE;
     virtual wxString GetColumnType(unsigned int col) const wxOVERRIDE;
     virtual void GetValueByRow(wxVariant &variant, unsigned int row, unsigned int col) const wxOVERRIDE;
-    virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col) const wxOVERRIDE;
+    virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col) wxOVERRIDE;
     virtual bool GetAttrByRow(unsigned int row, unsigned int col, wxDataViewItemAttr& attr) const wxOVERRIDE;
 
 private:

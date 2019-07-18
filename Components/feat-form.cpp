@@ -2,7 +2,7 @@
 
 enum
 {
-    ID = 0;
+    ID = 0,
     Label,
     Feat,
     Description,
@@ -58,7 +58,7 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
 {
     panel = new wxPanel(this, wxID_ANY);
     feat = row;
-    
+
     if (!(*feat)[Label].m_IsEmpty)
         this->SetTitle(wxString((*feat)[Label].m_Data));
     /*
@@ -68,23 +68,23 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
        wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
     name_label = new wxStaticText(panel, wxID_ANY, wxString("Name:"),
        wxPoint(155, 5), wxDefaultSize, wxALIGN_LEFT);
-    
+
     /*
     * FORM TEXT CONTROLS
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(5, 20), wxSize(150, 20));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(155, 20), wxSize(150, 20));
-    
+
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(295, 135), wxSize(100, 30));
-    Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
-    
+    Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatForm::OnOk));
+
     cancel_button = new wxButton(panel, wxID_CANCEL, wxString("Cancel"), wxPoint(190, 135), wxSize(100, 30));
-    
+
     Centre();
-    
+
     label->SetValue(wxString((*feat)[Label].m_Data));
     // TODO: Link up with TLK and load actual value from strref
-    name->SetValue(wxString((*feat)[Name].m_Data));
+    name->SetValue(wxString((*feat)[Feat].m_Data));
 }
 
 FeatForm::~FeatForm()
@@ -96,7 +96,7 @@ FeatForm::~FeatForm()
     delete name_label;
     delete name;
     delete label;
-    
+
     ok_button = NULL;
     cancel_button = NULL;
     panel = NULL;

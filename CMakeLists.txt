@@ -10,6 +10,8 @@ add_library(NWNHelper STATIC
     nwnhelper-main.cpp
     Components/spell-form.hpp
     Components/spell-form.cpp
+    Components/feat-form.hpp
+    Components/feat-form.cpp
     Components/first-time-configuration.hpp
     Components/first-time-configuration.cpp
     ListModels/spelllist-model.hpp

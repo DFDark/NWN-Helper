@@ -1,7 +1,7 @@
 #include "spelllist-model.hpp"
 
 SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file) :
-    wxDataViewVirtualListModel(_file->size())
+    wxDataViewVirtualListModel(_file->Size())
 {
     file = _file;
 }
@@ -14,7 +14,7 @@ unsigned int SpellListModel::GetColumnCount() const
 wxString SpellListModel::GetColumnType(unsigned int col) const
 {
     // [Optional]: Find spell icon
-    // "wxDataViewIconText" 
+    // "wxDataViewIconText"
     return "string";
 }
 
@@ -26,7 +26,7 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
         variant = (*file)[row][col].m_Data;
 }
 
-bool SpellListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col) const
+bool SpellListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
     (*file)[row][col].m_Data = variant.GetString();
     return true;

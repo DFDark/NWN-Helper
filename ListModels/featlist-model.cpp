@@ -1,7 +1,7 @@
 #include "featlist-model.hpp"
 
 FeatListModel::FeatListModel(TwoDA::Friendly::TwoDA* _file) :
-    wxDataViewVirtualListModel(_file->size())
+    wxDataViewVirtualListModel(_file->Size())
 {
     file = _file;
 }
@@ -14,7 +14,7 @@ unsigned int FeatListModel::GetColumnCount() const
 wxString FeatListModel::GetColumnType(unsigned int col) const
 {
     // [Optional]: Find spell icon
-    // "wxDataViewIconText" 
+    // "wxDataViewIconText"
     return "string";
 }
 
@@ -26,7 +26,7 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
         variant = (*file)[row][col].m_Data;
 }
 
-bool FeatListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col) const
+bool FeatListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
     (*file)[row][col].m_Data = variant.GetString();
     return true;

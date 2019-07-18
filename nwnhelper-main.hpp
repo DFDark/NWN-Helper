@@ -11,7 +11,7 @@
 #include "configuration-manager.hpp"
 #include "ListModels/spelllist-model.hpp"
 #include "ListModels/featlist-model.hpp"
-#include "FileFormats/2da"
+#include "FileFormats/2da.hpp"
 
 using namespace FileFormats;
 
@@ -25,13 +25,13 @@ public:
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);
-    
+
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
     wxPanel* main_panel;
 
-    wxDataViewListCtrl* spells;
-    wxDataViewListCtrl* feats;
+    wxDataViewCtrl* spells;
+    wxDataViewCtrl* feats;
 
     wxNotebook* tabs;
 

@@ -8,6 +8,8 @@
 
 #include "FileFormats/2da.hpp"
 
+using namespace FileFormats;
+
 class SpellForm : public wxDialog
 {
 public:
