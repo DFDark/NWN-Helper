@@ -2,8 +2,7 @@
 
 enum
 {
-    ID = 0,
-    Label,
+    Label = 0,
     Feat,
     Description,
     Icon,
@@ -89,7 +88,7 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
 
 FeatForm::~FeatForm()
 {
-    delete ok_button;
+    /*delete ok_button;
     delete cancel_button;
     delete panel;
     delete label_label;
@@ -103,7 +102,7 @@ FeatForm::~FeatForm()
     label_label = NULL;
     name_label = NULL;
     label = NULL;
-    name = NULL;
+    name = NULL;*/
 }
 
 void FeatForm::OnOk(wxCommandEvent& event)

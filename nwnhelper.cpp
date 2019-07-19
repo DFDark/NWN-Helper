@@ -13,7 +13,7 @@ NWNHelper::~NWNHelper()
 {
     delete configuration_manager;
     configuration_manager = NULL;
-    
+
     if (nwnhelper_main != NULL)
     {
         delete nwnhelper_main;

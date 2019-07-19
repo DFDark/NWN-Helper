@@ -2,8 +2,7 @@
 
 enum
 {
-    ID = 0,
-    Label,
+    Label = 0,
     Name,
     IconResRef,
     School,
@@ -71,9 +70,9 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
 {
     panel = new wxPanel(this, wxID_ANY);
     spell = row;
-    
+
     if (!(*spell)[1].m_IsEmpty)
-        this->SetTitle(wxString((*spell)[1].m_Data));
+        this->SetTitle(wxString((*spell)[Label].m_Data));
     /*
     * FORM LABELS
     */
@@ -85,28 +84,28 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
        wxPoint(305, 5), wxDefaultSize, wxALIGN_LEFT);
     spellrange_label = new wxStaticText(panel, wxID_ANY, wxString("Spell Range:"),
        wxPoint(305, 5), wxDefaultSize, wxALIGN_LEFT);
-    
+
     /*
     * FORM TEXT CONTROLS
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(5, 20), wxSize(150, 20));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(155, 20), wxSize(150, 20));
-    
+
     /*
     * FORM SELECT
     */
     spell_school = new wxComboBox(panel, wxID_ANY, wxString(""), wxPoint(305, 20), wxSize(100, 20),
         0/*, const wxString choices[]=NULL*/);
     spell_range = new wxComboBox(panel, wxID_ANY, wxString(""));
-    
-    
+
+
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(295, 135), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
-    
+
     cancel_button = new wxButton(panel, wxID_CANCEL, wxString("Cancel"), wxPoint(190, 135), wxSize(100, 30));
-    
+
     Centre();
-    
+
     label->SetValue(wxString((*spell)[Label].m_Data));
     // TODO: Link up with TLK and load actual value from strref
     name->SetValue(wxString((*spell)[Name].m_Data));
@@ -114,7 +113,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
 
 SpellForm::~SpellForm()
 {
-    delete ok_button;
+    /*delete ok_button;
     delete cancel_button;
     delete panel;
     delete label_label;
@@ -125,7 +124,7 @@ SpellForm::~SpellForm()
     delete name;
     delete spell_school;
     delete spell_range;
-    
+
     ok_button = NULL;
     cancel_button = NULL;
     panel = NULL;
@@ -136,7 +135,7 @@ SpellForm::~SpellForm()
     label = NULL;
     name = NULL;
     spell_school = NULL;
-    spell_range = NULL;
+    spell_range = NULL;*/
 }
 
 void SpellForm::OnOk(wxCommandEvent& event)
