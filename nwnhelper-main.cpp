@@ -31,7 +31,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
 
     main_panel = new wxPanel(this, wxID_ANY);
 
-    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(50, 10), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
+    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(0, 0), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
 
     spells = new wxDataViewCtrl(tabs, SPELLS);
     feats = new wxDataViewCtrl(tabs, FEATS);
@@ -39,17 +39,23 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
     tabs->AddPage(spells, wxString("Spells"));
     tabs->AddPage(feats, wxString("Feats"));
 
-    sp_model = new SpellListModel(configuration->Get2da("spells"));
+    TwoDA::Friendly::TwoDA* _2da = configuration->Get2da("spells");
+    TwoDA::Friendly::TwoDA* _feats = configuration->Get2da("feat");
+    Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
+
+    sp_model = new SpellListModel(_2da, tlk);
     spells->AssociateModel(sp_model);
 
     spells->AppendTextColumn("ID", SpellListModel::ID);
-    spells->AppendTextColumn("Spell Label", SpellListModel::LABEL);
+    spells->AppendTextColumn("Label", SpellListModel::LABEL);
+    spells->AppendTextColumn("Spell", SpellListModel::NAME);
 
-    ft_model = new FeatListModel(configuration->Get2da("feat"));
+    ft_model = new FeatListModel(_feats, tlk);
     feats->AssociateModel(ft_model);
 
     feats->AppendTextColumn("ID", FeatListModel::ID);
-    feats->AppendTextColumn("Feat Label", FeatListModel::LABEL);
+    feats->AppendTextColumn("Label", FeatListModel::LABEL);
+    feats->AppendTextColumn("Feat", FeatListModel::FEAT);
 }
 
 NWNHelperMain::~NWNHelperMain()

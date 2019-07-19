@@ -8,6 +8,7 @@
 #include <wx/dataview.h>
 
 #include "FileFormats/2da.hpp"
+#include "FileFormats/Tlk.hpp"
 
 using namespace FileFormats;
 
@@ -27,7 +28,7 @@ public:
         TARGETTYPE
     };
 
-    SpellListModel(TwoDA::Friendly::TwoDA* _file);
+    SpellListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(unsigned int row);
 
@@ -39,6 +40,7 @@ public:
 
 private:
     TwoDA::Friendly::TwoDA* file;
+    Tlk::Friendly::Tlk* tlk;
 };
 
 #endif
