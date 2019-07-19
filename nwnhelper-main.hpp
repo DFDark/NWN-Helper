@@ -12,6 +12,7 @@
 #include "ListModels/spelllist-model.hpp"
 #include "ListModels/featlist-model.hpp"
 #include "FileFormats/2da.hpp"
+#include "FileFormats/Tlk.hpp"
 
 using namespace FileFormats;
 

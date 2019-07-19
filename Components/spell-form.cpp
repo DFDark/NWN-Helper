@@ -65,11 +65,12 @@ wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
     EVT_MENU(wxID_CANCEL, SpellForm::OnCancel)
 wxEND_EVENT_TABLE()
 
-SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
+SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk)
     : wxDialog(parent, wxID_ANY, wxString("Spell Form"))
 {
     panel = new wxPanel(this, wxID_ANY);
     spell = row;
+    tlk = _tlk;
 
     if (!(*spell)[1].m_IsEmpty)
         this->SetTitle(wxString((*spell)[Label].m_Data));
@@ -107,8 +108,9 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
     Centre();
 
     label->SetValue(wxString((*spell)[Label].m_Data));
-    // TODO: Link up with TLK and load actual value from strref
-    name->SetValue(wxString((*spell)[Name].m_Data));
+
+    std::uint32_t strref = std::stoul((*spell)[Name].m_Data);
+    name->SetValue(wxString((*tlk)[strref]));
 }
 
 SpellForm::~SpellForm()

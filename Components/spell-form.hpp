@@ -7,13 +7,14 @@
 #endif
 
 #include "FileFormats/2da.hpp"
+#include "FileFormats/Tlk.hpp"
 
 using namespace FileFormats;
 
 class SpellForm : public wxDialog
 {
 public:
-    SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row);
+    SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk);
     ~SpellForm();
 
 private:
@@ -21,6 +22,7 @@ private:
     void OnCancel(wxCommandEvent& event);
 
     TwoDA::Friendly::TwoDARow* spell;
+    Tlk::Friendly::Tlk* tlk;
 
     wxPanel* panel;
 

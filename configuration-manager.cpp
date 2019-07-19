@@ -35,6 +35,7 @@ bool ConfigurationManager::AttemptLoad()
         {
             base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
             base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
+            base_dialog = LoadNWNBaseDataTLKFile("dialog.tlk");
 
             std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
             for (auto const& r : base_key->GetReferencedResources())
@@ -153,6 +154,27 @@ Bif::Friendly::Bif* ConfigurationManager::LoadNWNBaseDataBIFFile(const char* fil
     return result;
 }
 
+Tlk::Friendly::Tlk* ConfigurationManager::LoadNWNBaseDataTLKFile(const char* filename)
+{
+    char* path = new char[255];
+    memset(path, '\0', sizeof(char) * 255);
+    sprintf(path, "%s/%s", config->GetValue("General", "DATA_FOLDER"), filename);
+
+    Tlk::Raw::Tlk raw;
+    if (!Tlk::Raw::Tlk::ReadFromFile(path, &raw))
+    {
+        std::string error = std::string("Couldn't load ") + std::string(path);
+        throw error;
+    }
+
+    Tlk::Friendly::Tlk* result = new Tlk::Friendly::Tlk(std::move(raw));
+
+    delete [] path;
+    path = NULL;
+
+    return result;
+}
+
 TwoDA::Friendly::TwoDA* ConfigurationManager::LoadTwoDAFile(std::string name, std::byte const* entry, std::size_t length)
 {
     TwoDA::Raw::TwoDA raw;
@@ -172,4 +194,9 @@ TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
         throw (std::string("Cannot find ") + name + std::string(".2da data!"));
 
     return twoda_list[name];
+}
+
+Tlk::Friendly::Tlk* ConfigurationManager::GetTlk()
+{
+    return base_dialog;
 }

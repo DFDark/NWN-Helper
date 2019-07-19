@@ -74,8 +74,9 @@ void NWNHelperMain::OnSpellActivated(wxDataViewEvent& event)
 {
     unsigned int row = sp_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* spell = sp_model->Get2daRow(row);
+    Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
-    SpellForm form(main_panel, spell);
+    SpellForm form(main_panel, spell, tlk);
     form.ShowModal();
 }
 
@@ -83,6 +84,7 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
 {
     unsigned int row = ft_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* feat = ft_model->Get2daRow(row);
+    // Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
     FeatForm form(main_panel, feat);
     form.ShowModal();
