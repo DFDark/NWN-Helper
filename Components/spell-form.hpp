@@ -20,6 +20,8 @@ public:
 private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
+    int GetSchoolSelection();
+    int GetRangeSelection();
 
     TwoDA::Friendly::TwoDARow* spell;
     Tlk::Friendly::Tlk* tlk;
