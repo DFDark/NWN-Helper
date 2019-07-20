@@ -26,6 +26,7 @@ public:
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();
+    wxSize GetWindowResolution();
 private:
     bool loaded;
     CSimpleIniA* config;

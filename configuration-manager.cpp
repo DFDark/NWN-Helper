@@ -92,8 +92,10 @@ bool ConfigurationManager::InitialConfiguration()
             config->SetValue("General", "HAK", nwnini->GetValue("Alias", "HAK"));
             config->SetValue("General", "OVERRIDE", nwnini->GetValue("Alias", "OVERRIDE"));
             config->SetValue("General", "TLK", nwnini->GetValue("Alias", "TLK"));
-
             config->SetValue("General", "DATA_FOLDER", data_folder.ToStdString().c_str());
+
+            config->SetValue("Display", "WIDTH", "1024");
+            config->SetValue("Display", "HEIGHT", "768");
 
             if (config->SaveFile("nwnhelper.ini") >= 0)
                 result = true;
@@ -199,4 +201,22 @@ TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
 Tlk::Friendly::Tlk* ConfigurationManager::GetTlk()
 {
     return base_dialog;
+}
+
+wxSize ConfigurationManager::GetWindowResolution()
+{
+    std::uint32_t width;
+    std::uint32_t height;
+    try
+    {
+        width = std::stoul(config->GetValue("Display", "WIDTH"));
+        height = std::stoul(config->GetValue("Display", "HEIGHT"));
+    }
+    catch (std::exception& e)
+    {
+        width = 1024;
+        height = 768;
+    }
+    
+    return wxSize(width, height);
 }

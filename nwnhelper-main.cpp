@@ -14,8 +14,8 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
 wxEND_EVENT_TABLE()
 
-NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, const wxSize& size, ConfigurationManager* _configuration) :
-    wxFrame(NULL, wxID_ANY, title, position, size)
+NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _configuration) :
+    wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, _configuration->GetWindowResolution())
 {
     configuration = _configuration;
 
@@ -31,7 +31,9 @@ NWNHelperMain::NWNHelperMain(const wxString& title, const wxPoint& position, con
 
     main_panel = new wxPanel(this, wxID_ANY);
 
-    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(0, 0), wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
+    wxSize size = configuration->GetWindowResolution();
+    tabs = new wxNotebook(main_panel, wxID_ANY, wxPoint(0, 0),
+        wxSize(size.GetWidth() - 100, size.GetHeight() - 100));
 
     spells = new wxDataViewCtrl(tabs, SPELLS);
     feats = new wxDataViewCtrl(tabs, FEATS);

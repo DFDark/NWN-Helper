@@ -19,7 +19,7 @@ using namespace FileFormats;
 class NWNHelperMain : public wxFrame
 {
 public:
-	NWNHelperMain(const wxString& title, const wxPoint& position, const wxSize& size, ConfigurationManager* _configuration);
+	NWNHelperMain(const wxString& title, ConfigurationManager* _configuration);
 	~NWNHelperMain();
 
     virtual void OnExit(wxCommandEvent& event);
