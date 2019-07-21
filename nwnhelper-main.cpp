@@ -20,7 +20,6 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     configuration = _configuration;
 
     menu_file = new wxMenu;
-    // menu_file->Append(2, "Spells", "sdfsdf");
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
@@ -28,6 +27,8 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     CreateStatusBar();
     SetStatusText("NWNHelperMain status bar");
+
+    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     main_panel = new wxPanel(this, wxID_ANY);
 
@@ -58,6 +59,13 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     feats->AppendTextColumn("ID", FeatListModel::ID);
     feats->AppendTextColumn("Label", FeatListModel::LABEL);
     feats->AppendTextColumn("Feat", FeatListModel::FEAT);
+
+    wxBoxSizer* tab_sizer = new wxBoxSizer(wxHORIZONTAL);
+    tab_sizer->Add(tabs, 2, wxEXPAND|wxALL);
+    main_panel->SetSizer(tab_sizer);
+
+    main_sizer->Add(main_panel, 1, wxEXPAND|wxALL);
+    this->SetSizer(main_sizer);
 }
 
 NWNHelperMain::~NWNHelperMain()
