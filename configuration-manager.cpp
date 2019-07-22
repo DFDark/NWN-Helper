@@ -96,7 +96,7 @@ bool ConfigurationManager::InitialConfiguration()
 
             config->SetValue("Display", "WIDTH", "1024");
             config->SetValue("Display", "HEIGHT", "768");
-            
+
             config->SetValue("SpellList", "COLUMN0", "label");
             config->SetValue("SpellList", "COLUMN1", "spell");
 
@@ -220,7 +220,7 @@ wxSize ConfigurationManager::GetWindowResolution()
         width = 1024;
         height = 768;
     }
-    
+
     return wxSize(width, height);
 }
 
@@ -231,16 +231,25 @@ std::vector<std::string> ConfigurationManager::GetSpellColumns()
     {
         for (unsigned int i = 0; i < 10; i++)
         {
-            std::string key = std::string("COLUMN") + std::string(i);
-            std::string aux = std::string(config->GetValue("SpellList", key, ""));
-            if (aux.size > 0)
+            std::string index = std::to_string(i);
+            std::string key = std::string("COLUMN") + index;
+            std::string aux = std::string(config->GetValue("SpellList", key.c_str(), ""));
+            if (aux.size() > 0)
                 result.emplace_back(aux);
         }
     }
     catch (std::exception& e)
     {
-        result = std::vector<std::string>("label", "name");
+        result.clear();
+        wxMessageBox("Unable to load SpellList columns from ini file! Columns will be set to default.",
+            "Warning", wxOK | wxICON_WARNING );
     }
-    
+
+    if (result.size() < 1)
+    {
+        result.emplace_back(std::string("label"));
+        result.emplace_back(std::string("spell"));
+    }
+
     return result;
 }

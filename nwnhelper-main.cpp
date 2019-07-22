@@ -112,7 +112,7 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
 void NWNHelperMain::SetSpellColumns()
 {
     spells->AppendTextColumn("ID", SpellListModel::ID);
-    for (auto const& col : config->GetSpellColumns())
+    for (auto const& col : configuration->GetSpellColumns())
     {
         if (col == "label")
             spells->AppendTextColumn("Label", SpellListModel::LABEL);

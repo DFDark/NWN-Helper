@@ -27,12 +27,12 @@ public:
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);
-    
+
     void SetSpellColumns();
 
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
-    wxMenu* menu_column;
+    wxMenu* menu_columns;
     wxPanel* main_panel;
 
     wxDataViewCtrl* spells;
