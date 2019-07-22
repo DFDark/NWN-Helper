@@ -6,10 +6,12 @@ enum
 {
     SPELLS = wxID_HIGHEST + 1,
     FEATS,
+    SPELL_COLUMNS_MENU,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
+    EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
 wxEND_EVENT_TABLE()
@@ -21,8 +23,11 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     menu_file = new wxMenu;
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
+    menu_columns = new wxMenu;
+    menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
+    menu_bar->Append(menu_columns, "&Columns");
     SetMenuBar(menu_bar);
 
     CreateStatusBar();
@@ -49,9 +54,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     sp_model = new SpellListModel(_2da, tlk);
     spells->AssociateModel(sp_model);
 
-    spells->AppendTextColumn("ID", SpellListModel::ID);
-    spells->AppendTextColumn("Label", SpellListModel::LABEL);
-    spells->AppendTextColumn("Spell", SpellListModel::NAME);
+    SetSpellColumns();
 
     ft_model = new FeatListModel(_feats, tlk);
     feats->AssociateModel(ft_model);
@@ -104,4 +107,24 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
 
     FeatForm form(main_panel, feat);
     form.ShowModal();
+}
+
+void NWNHelperMain::SetSpellColumns()
+{
+    spells->AppendTextColumn("ID", SpellListModel::ID);
+    for (auto const& col : config->GetSpellColumns())
+    {
+        if (col == "label")
+            spells->AppendTextColumn("Label", SpellListModel::LABEL);
+        else if (col == "spell")
+            spells->AppendTextColumn("Spell", SpellListModel::NAME);
+        else if (col == "school")
+            spells->AppendTextColumn("School", SpellListModel::SCHOOL);
+    }
+}
+
+void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
+{
+    // TODO: Add Column display form
+    printf("NWNHelperMain::OnSpellColumnMenu Click\n");
 }

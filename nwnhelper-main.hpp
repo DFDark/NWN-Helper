@@ -23,12 +23,16 @@ public:
 	~NWNHelperMain();
 
     virtual void OnExit(wxCommandEvent& event);
+    void OnSpellColumnMenu(wxCommandEvent& event);
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);
+    
+    void SetSpellColumns();
 
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
+    wxMenu* menu_column;
     wxPanel* main_panel;
 
     wxDataViewCtrl* spells;

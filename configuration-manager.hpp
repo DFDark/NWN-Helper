@@ -27,6 +27,7 @@ public:
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();
     wxSize GetWindowResolution();
+    std::vector<std::string> GetSpellColumns();
 private:
     bool loaded;
     CSimpleIniA* config;

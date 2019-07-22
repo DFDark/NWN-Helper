@@ -96,6 +96,9 @@ bool ConfigurationManager::InitialConfiguration()
 
             config->SetValue("Display", "WIDTH", "1024");
             config->SetValue("Display", "HEIGHT", "768");
+            
+            config->SetValue("SpellList", "COLUMN0", "label");
+            config->SetValue("SpellList", "COLUMN1", "spell");
 
             if (config->SaveFile("nwnhelper.ini") >= 0)
                 result = true;
@@ -219,4 +222,25 @@ wxSize ConfigurationManager::GetWindowResolution()
     }
     
     return wxSize(width, height);
+}
+
+std::vector<std::string> ConfigurationManager::GetSpellColumns()
+{
+    std::vector<std::string> result;
+    try
+    {
+        for (unsigned int i = 0; i < 10; i++)
+        {
+            std::string key = std::string("COLUMN") + std::string(i);
+            std::string aux = std::string(config->GetValue("SpellList", key, ""));
+            if (aux.size > 0)
+                result.emplace_back(aux);
+        }
+    }
+    catch (std::exception& e)
+    {
+        result = std::vector<std::string>("label", "name");
+    }
+    
+    return result;
 }
