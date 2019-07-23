@@ -30,6 +30,7 @@ private:
     void OnFeatActivated(wxDataViewEvent& event);
 
     void SetSpellColumns();
+    void SetFeatColumns();
 
     wxMenuBar* menu_bar;
     wxMenu* menu_file;

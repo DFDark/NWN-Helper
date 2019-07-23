@@ -13,7 +13,7 @@ enum
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
-    EVT_MENU(Feat_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
+    EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
 wxEND_EVENT_TABLE()
@@ -27,7 +27,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
     menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
-    menu_columns->Append(SPELL_COLUMNS_MENU, "Feats", "Sets up visible columns for feats!");
+    menu_columns->Append(FEAT_COLUMNS_MENU, "Feats", "Sets up visible columns for feats!");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
     menu_bar->Append(menu_columns, "&Columns");
@@ -59,7 +59,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     ft_model = new FeatListModel(_feats, tlk);
     feats->AssociateModel(ft_model);
-    
+
     SetSpellColumns();
     SetFeatColumns();
 
@@ -146,4 +146,3 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
     // TODO: Add Column display form
     printf("NWNHelperMain::OnFeatColumnMenu Click\n");
 }
-
