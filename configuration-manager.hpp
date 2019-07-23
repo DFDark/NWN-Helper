@@ -28,6 +28,7 @@ public:
     Tlk::Friendly::Tlk* GetTlk();
     wxSize GetWindowResolution();
     std::vector<std::string> GetSpellColumns();
+    std::vector<std::string> GetFeatColumns();
 private:
     bool loaded;
     CSimpleIniA* config;

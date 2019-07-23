@@ -24,6 +24,7 @@ public:
 
     virtual void OnExit(wxCommandEvent& event);
     void OnSpellColumnMenu(wxCommandEvent& event);
+    void OnFeatColumnMenu(wxCommandEvent& event);
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);

@@ -99,6 +99,9 @@ bool ConfigurationManager::InitialConfiguration()
 
             config->SetValue("SpellList", "COLUMN0", "label");
             config->SetValue("SpellList", "COLUMN1", "spell");
+            
+            config->SetValue("FeatList", "COLUMN0", "label");
+            config->SetValue("FeatList", "COLUMN1", "feat");
 
             if (config->SaveFile("nwnhelper.ini") >= 0)
                 result = true;
@@ -249,6 +252,36 @@ std::vector<std::string> ConfigurationManager::GetSpellColumns()
     {
         result.emplace_back(std::string("label"));
         result.emplace_back(std::string("spell"));
+    }
+
+    return result;
+}
+
+std::vector<std::string> ConfigurationManager::GetFeatColumns()
+{
+    std::vector<std::string> result;
+    try
+    {
+        for (unsigned int i = 0; i < 10; i++)
+        {
+            std::string index = std::to_string(i);
+            std::string key = std::string("COLUMN") + index;
+            std::string aux = std::string(config->GetValue("FeatList", key.c_str(), ""));
+            if (aux.size() > 0)
+                result.emplace_back(aux);
+        }
+    }
+    catch (std::exception& e)
+    {
+        result.clear();
+        wxMessageBox("Unable to load FeatList columns from ini file! Columns will be set to default.",
+            "Warning", wxOK | wxICON_WARNING );
+    }
+
+    if (result.size() < 1)
+    {
+        result.emplace_back(std::string("label"));
+        result.emplace_back(std::string("feat"));
     }
 
     return result;
