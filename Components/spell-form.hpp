@@ -20,6 +20,8 @@ public:
 private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
+    void SetSpellComponents();
+
     int GetSchoolSelection();
     int GetRangeSelection();
 
@@ -44,6 +46,9 @@ private:
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
+    
+    wxToggleButton* verbal;
+    wxToggleButton* somatic;
 
     wxDECLARE_EVENT_TABLE();
 };

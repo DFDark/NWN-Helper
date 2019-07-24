@@ -56,6 +56,9 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_range->Append(std::string("Long"));
     spell_range->SetSelection(GetRangeSelection());
 
+    verbal = new wxToggleButton(panel, wxID_ANY, wxString("V"), wxPoint(50, 50), wxSize(35, 35));
+    somatic = new wxToggleButton(panel, wxID_ANY, wxString("S"), wxPoint(100, 50), wxSize(35, 35));
+    SetSpellComponents();
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -142,4 +145,22 @@ int SpellForm::GetRangeSelection()
     }
 
     return 0;
+}
+
+void SpellForm::SetSpellComponents()
+{
+    verbal->SetValue(false); 
+    somatic->SetValue(false);
+    
+    if (!(*spell)[SPELL_2DA::VS].m_IsEmpty)
+    {
+        for (char const& cmp : (*spell)[SPELL_2DA::VS].m_Data)
+        {
+            switch (cmp)
+            {
+                case 'v': verbal->SetValue(true); break;
+                case 's': somatic->SetValue(true); break;
+            }
+        }
+    }
 }
