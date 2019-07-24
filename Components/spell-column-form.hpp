@@ -18,11 +18,17 @@ public:
     SpellColumnForm(wxWindow* parent, ConfigurationManager* _configuration);
 
 private:
+    void OnEnabledDoubleClick(wxCommandEvent& event);
+    void OnDisabledDoubleClick(wxCommandEvent& event);
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
+    void SetInitialColumns();
 
     ConfigurationManager* configuration;
-    
+
+    wxListBox* enabled;
+    wxListBox* disabled;
+
     wxButton* ok_button;
     wxButton* cancel_button;
 

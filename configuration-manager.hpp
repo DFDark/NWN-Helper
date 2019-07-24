@@ -23,6 +23,7 @@ public:
     ~ConfigurationManager();
 
     bool AttemptLoad();
+    void SetSpellColumns(const std::vector<std::string>& columns);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();

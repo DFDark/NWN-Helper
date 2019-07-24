@@ -99,7 +99,7 @@ bool ConfigurationManager::InitialConfiguration()
 
             config->SetValue("SpellList", "COLUMN0", "label");
             config->SetValue("SpellList", "COLUMN1", "spell");
-            
+
             config->SetValue("FeatList", "COLUMN0", "label");
             config->SetValue("FeatList", "COLUMN1", "feat");
 
@@ -285,4 +285,22 @@ std::vector<std::string> ConfigurationManager::GetFeatColumns()
     }
 
     return result;
+}
+
+void ConfigurationManager::SetSpellColumns(const std::vector<std::string>& columns)
+{
+    for (unsigned int i = 0; i < 10; i++)
+    {
+        std::string index = std::to_string(i);
+        std::string key = std::string("COLUMN") + index;
+        config->Delete("SpellList", key.c_str());
+    }
+
+    unsigned int counter = 0;
+    for (auto const& column : columns)
+    {
+        std::string index = std::to_string(counter++);
+        std::string key = std::string("COLUMN") + index;
+        config->SetValue("SpellList", key.c_str(), column.c_str());
+    }
 }

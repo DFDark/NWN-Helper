@@ -112,6 +112,7 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
 
 void NWNHelperMain::SetSpellColumns()
 {
+    spells->ClearColumns();
     spells->AppendTextColumn("ID", SpellListModel::ID);
     for (auto const& col : configuration->GetSpellColumns())
     {
@@ -141,7 +142,8 @@ void NWNHelperMain::SetFeatColumns()
 void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
 {
     SpellColumnForm form(main_panel, configuration);
-    form.ShowModal();
+    if (form.ShowModal() == wxID_OK)
+        SetSpellColumns();
 }
 
 void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
