@@ -1,4 +1,5 @@
 #include "spelllist-model.hpp"
+#include "../constants.hpp"
 
 SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk) :
     wxDataViewVirtualListModel(_file->Size())
@@ -21,33 +22,36 @@ wxString SpellListModel::GetColumnType(unsigned int col) const
 
 void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned int col) const
 {
+    if (col == SpellListModel::ID)
+    {
+        variant = std::to_string(row);
+        return;
+    }
+    
+    unsigned int aux = GetColumnID(col);
+    if ((*file)[row][aux].m_IsEmpty)
+    {
+        variant = "****";
+        return;
+    }
+    
     switch (col)
     {
-        case SpellListModel::ID: variant = std::to_string(row); break;
         case SpellListModel::NAME:
         {
-            if ((*file)[row][col - 1].m_IsEmpty)
-                variant = "****";
-            else
+            try
             {
-                try
-                {
-                    std::uint32_t strref = std::stoul((*file)[row][col - 1].m_Data);
-                    variant = (*tlk)[strref];
-                }
-                catch (std::exception)
-                {
-                    variant = (*file)[row][col - 1].m_Data;
-                }
+                std::uint32_t strref = std::stoul((*file)[row][aux].m_Data);
+                variant = (*tlk)[strref];
+            }
+            catch (std::exception)
+            {
+                variant = (*file)[row][aux].m_Data;
             }
         } break;
-        default:
-        {
-            if ((*file)[row][col - 1].m_IsEmpty)
-                variant = "****";
-            else
-                variant = (*file)[row][col - 1].m_Data;
-        } break;
+        case SpellListModel::SCHOOL: variant = GetSchool((*file)[row][aux].m_Data); break;
+        case SpellListModel::RANGE: variant = GetRange((*file)[row][aux].m_Data); break;
+        default: variant = (*file)[row][aux].m_Data; break;
     }
 }
 
@@ -68,4 +72,52 @@ bool SpellListModel::GetAttrByRow(unsigned int row, unsigned int col, wxDataView
 TwoDA::Friendly::TwoDARow* SpellListModel::Get2daRow(unsigned int row)
 {
     return &((*file)[row]);
+}
+
+unsigned int SpellListModel::GetColumnID(unsigned int col)
+{
+    switch (col)
+    {
+        case SpellListModel::ID: return col;
+        case SpellListModel::LABEL: return SPELL_2DA::Label;
+        case SpellListModel::NAME: return SPELL_2DA::Name;
+        case SpellListModel::SCHOOL: return SPELL_2DA::School;
+        case SpellListModel::RANGE: return SPELL_2DA::Range;
+    }
+    
+    //TODO: Some sort of error management
+    return 0;
+}
+
+std::string SpellListModel::GetSchool(std::string school)
+{
+    std::string result;
+    switch (school[0])
+    {
+        case 'C': result = "Abjuration"; break;
+        case 'D': result = "Conjuration"; break;
+        case 'E': result = "Divination"; break;
+        case 'V': result = "Enchantment"; break;
+        case 'I': result = "Evocation"; break;
+        case 'N': result = "Illusion"; break;
+        case 'T': result = "Necromancy"; break;
+        default: result = "Transmutation"; break;
+    }
+    
+    return result;
+}
+
+std::string SpellListModel::GetRange(std::string range)
+{
+    std::string result;
+    switch (range[0])
+    {
+        case 'T': result = "Touch"; break;
+        case 'S': result = "Short"; break;
+        case 'M': result = "Medium"; break;
+        case 'L': result = "Long"; break;
+        default:  result = "Personal"; break;
+    }
+    
+    return result;
 }

@@ -1,64 +1,5 @@
 #include "spell-form.hpp"
-
-enum
-{
-    Label = 0,
-    Name,
-    IconResRef,
-    School,
-    Range,
-    VS,
-    MetaMagic,
-    TargetType,
-    ImpactScript,
-    Bard,
-    Cleric,
-    Druid,
-    Paladin,
-    Ranger,
-    Wiz_Sorc,
-    Innate,
-    ConjTime,
-    ConjAnim,
-    ConjHeadVisual,
-    ConjHandVisual,
-    ConjGrndVisual,
-    ConjSoundVFX,
-    ConjSoundMale,
-    ConjSoundFemale,
-    CastAnim,
-    CastTime,
-    CastHeadVisual,
-    CastHandVisual,
-    CastGrndVisual,
-    CastSound,
-    Proj,
-    ProjModel,
-    ProjType,
-    ProjSpwnPoint,
-    ProjSound,
-    ProjOrientation,
-    ImmunityType,
-    ItemImmunity,
-    SubRadSpell1,
-    SubRadSpell2,
-    SubRadSpell3,
-    SubRadSpell4,
-    SubRadSpell5,
-    Category,
-    Master,
-    UserType,
-    Values,
-    SpellDesc,
-    UseConcentration,
-    SpontaneouslyCast,
-    AltMessage,
-    HostileSetting,
-    FeatID,
-    Counter1,
-    Counter2,
-    HasProjectile
-};
+#include "../constants.hpp"
 
 wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
     EVT_MENU(wxID_OK, SpellForm::OnOk)
@@ -72,8 +13,8 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell = row;
     tlk = _tlk;
 
-    if (!(*spell)[Label].m_IsEmpty)
-        this->SetTitle(wxString((*spell)[Label].m_Data));
+    if (!(*spell)[SPELL_2DA::Label].m_IsEmpty)
+        this->SetTitle(wxString((*spell)[SPELL_2DA::Label].m_Data));
     /*
     * FORM LABELS
     */
@@ -123,9 +64,9 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     Centre();
 
-    label->SetValue(wxString((*spell)[Label].m_Data));
+    label->SetValue(wxString((*spell)[SPELL_2DA::Label].m_Data));
 
-    std::uint32_t strref = std::stoul((*spell)[Name].m_Data);
+    std::uint32_t strref = std::stoul((*spell)[SPELL_2DA::Name].m_Data);
     name->SetValue(wxString((*tlk)[strref]));
 }
 
@@ -168,9 +109,9 @@ void SpellForm::OnCancel(wxCommandEvent& event)
 
 int SpellForm::GetSchoolSelection()
 {
-    if (!(*spell)[School].m_IsEmpty)
+    if (!(*spell)[SPELL_2DA::School].m_IsEmpty)
     {
-        switch ((*spell)[School].m_Data[0])
+        switch ((*spell)[SPELL_2DA::School].m_Data[0])
         {
             case 'C': return 1; break;
             case 'D': return 2; break;
@@ -188,9 +129,9 @@ int SpellForm::GetSchoolSelection()
 
 int SpellForm::GetRangeSelection()
 {
-    if (!(*spell)[Range].m_IsEmpty)
+    if (!(*spell)[SPELL_2DA::Range].m_IsEmpty)
     {
-        switch ((*spell)[Range].m_Data[0])
+        switch ((*spell)[SPELL_2DA::Range].m_Data[0])
         {
             case 'T': return 1; break;
             case 'S': return 2; break;

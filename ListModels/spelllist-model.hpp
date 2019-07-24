@@ -19,8 +19,7 @@ public:
     {
         ID,
         LABEL,
-        NAME,
-        ICONRESREF,
+        SPELL,
         SCHOOL,
         RANGE,
         VS,
@@ -41,6 +40,10 @@ public:
 private:
     TwoDA::Friendly::TwoDA* file;
     Tlk::Friendly::Tlk* tlk;
+    
+    unsigned int GetColumnID(unsigned int col);
+    std::string GetSchool(std::string school);
+    std::string GetRange(std::string range);
 };
 
 #endif

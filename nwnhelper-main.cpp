@@ -1,6 +1,7 @@
 #include "nwnhelper-main.hpp"
 #include "Components/spell-form.hpp"
 #include "Components/feat-form.hpp"
+#include "Components/spell-column-form.hpp"
 
 enum
 {
@@ -117,9 +118,11 @@ void NWNHelperMain::SetSpellColumns()
         if (col == "label")
             spells->AppendTextColumn("Label", SpellListModel::LABEL);
         else if (col == "spell")
-            spells->AppendTextColumn("Spell", SpellListModel::NAME);
+            spells->AppendTextColumn("Spell", SpellListModel::SPELL);
         else if (col == "school")
             spells->AppendTextColumn("School", SpellListModel::SCHOOL);
+        else if (col == "range")
+            spells->AppendTextColumn("Range", SpellListModel::RANGE);
     }
 }
 
@@ -137,8 +140,8 @@ void NWNHelperMain::SetFeatColumns()
 
 void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
 {
-    // TODO: Add Column display form
-    printf("NWNHelperMain::OnSpellColumnMenu Click\n");
+    SpellColumnForm form(main_panel, configuration);
+    form.ShowModal();
 }
 
 void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
