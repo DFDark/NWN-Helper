@@ -16,13 +16,16 @@ class SpellColumnForm : public wxDialog
 {
 public:
     SpellColumnForm(wxWindow* parent, ConfigurationManager* _configuration);
-    
+
 private:
+    void OnOk(wxCommandEvent& event);
+    void OnCancel(wxCommandEvent& event);
+
     ConfigurationManager* configuration;
     
     wxButton* ok_button;
     wxButton* cancel_button;
-    
+
     wxDECLARE_EVENT_TABLE();
 };
 

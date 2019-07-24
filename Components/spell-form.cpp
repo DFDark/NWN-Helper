@@ -13,8 +13,8 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell = row;
     tlk = _tlk;
 
-    if (!(*spell)[SPELL_2DA::Label].m_IsEmpty)
-        this->SetTitle(wxString((*spell)[SPELL_2DA::Label].m_Data));
+    if (!(*spell)[GETIDX(SPELL_2DA::Label)].m_IsEmpty)
+        this->SetTitle(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
     /*
     * FORM LABELS
     */
@@ -67,9 +67,9 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     Centre();
 
-    label->SetValue(wxString((*spell)[SPELL_2DA::Label].m_Data));
+    label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
-    std::uint32_t strref = std::stoul((*spell)[SPELL_2DA::Name].m_Data);
+    std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
     name->SetValue(wxString((*tlk)[strref]));
 }
 
@@ -112,9 +112,9 @@ void SpellForm::OnCancel(wxCommandEvent& event)
 
 int SpellForm::GetSchoolSelection()
 {
-    if (!(*spell)[SPELL_2DA::School].m_IsEmpty)
+    if (!(*spell)[GETIDX(SPELL_2DA::School)].m_IsEmpty)
     {
-        switch ((*spell)[SPELL_2DA::School].m_Data[0])
+        switch ((*spell)[GETIDX(SPELL_2DA::School)].m_Data[0])
         {
             case 'C': return 1; break;
             case 'D': return 2; break;
@@ -132,9 +132,9 @@ int SpellForm::GetSchoolSelection()
 
 int SpellForm::GetRangeSelection()
 {
-    if (!(*spell)[SPELL_2DA::Range].m_IsEmpty)
+    if (!(*spell)[GETIDX(SPELL_2DA::Range)].m_IsEmpty)
     {
-        switch ((*spell)[SPELL_2DA::Range].m_Data[0])
+        switch ((*spell)[GETIDX(SPELL_2DA::Range)].m_Data[0])
         {
             case 'T': return 1; break;
             case 'S': return 2; break;
@@ -149,12 +149,12 @@ int SpellForm::GetRangeSelection()
 
 void SpellForm::SetSpellComponents()
 {
-    verbal->SetValue(false); 
+    verbal->SetValue(false);
     somatic->SetValue(false);
-    
-    if (!(*spell)[SPELL_2DA::VS].m_IsEmpty)
+
+    if (!(*spell)[GETIDX(SPELL_2DA::VS)].m_IsEmpty)
     {
-        for (char const& cmp : (*spell)[SPELL_2DA::VS].m_Data)
+        for (char const& cmp : (*spell)[GETIDX(SPELL_2DA::VS)].m_Data)
         {
             switch (cmp)
             {

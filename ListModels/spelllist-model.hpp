@@ -40,10 +40,10 @@ public:
 private:
     TwoDA::Friendly::TwoDA* file;
     Tlk::Friendly::Tlk* tlk;
-    
-    unsigned int GetColumnID(unsigned int col);
-    std::string GetSchool(std::string school);
-    std::string GetRange(std::string range);
+
+    std::size_t GetColumnID(unsigned int col) const;
+    std::string GetSchool(std::string school) const;
+    std::string GetRange(std::string range) const;
 };
 
 #endif

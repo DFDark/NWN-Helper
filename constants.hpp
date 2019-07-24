@@ -61,4 +61,6 @@ enum class SPELL_2DA
     HasProjectile
 };
 
+#define GETIDX(x) (static_cast<std::size_t>(x))
+
 #endif

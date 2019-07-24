@@ -5,6 +5,7 @@
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
 #endif
+#include <wx/tglbtn.h>
 
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
@@ -46,7 +47,7 @@ private:
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
-    
+
     wxToggleButton* verbal;
     wxToggleButton* somatic;
 

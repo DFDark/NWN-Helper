@@ -27,17 +27,17 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
         variant = std::to_string(row);
         return;
     }
-    
+
     unsigned int aux = GetColumnID(col);
     if ((*file)[row][aux].m_IsEmpty)
     {
         variant = "****";
         return;
     }
-    
+
     switch (col)
     {
-        case SpellListModel::NAME:
+        case SpellListModel::SPELL:
         {
             try
             {
@@ -74,22 +74,22 @@ TwoDA::Friendly::TwoDARow* SpellListModel::Get2daRow(unsigned int row)
     return &((*file)[row]);
 }
 
-unsigned int SpellListModel::GetColumnID(unsigned int col)
+std::size_t SpellListModel::GetColumnID(unsigned int col) const
 {
     switch (col)
     {
-        case SpellListModel::ID: return col;
-        case SpellListModel::LABEL: return SPELL_2DA::Label;
-        case SpellListModel::NAME: return SPELL_2DA::Name;
-        case SpellListModel::SCHOOL: return SPELL_2DA::School;
-        case SpellListModel::RANGE: return SPELL_2DA::Range;
+        case SpellListModel::ID: return static_cast<std::size_t>(col);
+        case SpellListModel::LABEL: return GETIDX(SPELL_2DA::Label);
+        case SpellListModel::SPELL: return GETIDX(SPELL_2DA::Name);
+        case SpellListModel::SCHOOL: return GETIDX(SPELL_2DA::School);
+        case SpellListModel::RANGE: return GETIDX(SPELL_2DA::Range);
     }
-    
+
     //TODO: Some sort of error management
     return 0;
 }
 
-std::string SpellListModel::GetSchool(std::string school)
+std::string SpellListModel::GetSchool(std::string school) const
 {
     std::string result;
     switch (school[0])
@@ -103,11 +103,11 @@ std::string SpellListModel::GetSchool(std::string school)
         case 'T': result = "Necromancy"; break;
         default: result = "Transmutation"; break;
     }
-    
+
     return result;
 }
 
-std::string SpellListModel::GetRange(std::string range)
+std::string SpellListModel::GetRange(std::string range) const
 {
     std::string result;
     switch (range[0])
@@ -118,6 +118,6 @@ std::string SpellListModel::GetRange(std::string range)
         case 'L': result = "Long"; break;
         default:  result = "Personal"; break;
     }
-    
+
     return result;
 }

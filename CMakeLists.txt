@@ -14,6 +14,8 @@ add_library(NWNHelper STATIC
     Components/feat-form.cpp
     Components/first-time-configuration.hpp
     Components/first-time-configuration.cpp
+    Components/spell-column-form.hpp
+    Components/spell-column-form.cpp
     ListModels/spelllist-model.hpp
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp
