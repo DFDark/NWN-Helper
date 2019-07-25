@@ -304,3 +304,8 @@ void ConfigurationManager::SetSpellColumns(const std::vector<std::string>& colum
         config->SetValue("SpellList", key.c_str(), column.c_str());
     }
 }
+
+bool ConfigurationManager::SaveCurrentSettings()
+{
+    return config->SaveFile("nwnhelper.ini") >= 0;
+}

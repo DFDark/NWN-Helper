@@ -18,9 +18,12 @@ SpellColumnForm::SpellColumnForm(wxWindow* parent, ConfigurationManager* _config
 {
     configuration = _configuration;
 
-    enabled = new wxListBox(this, ENABLED_COLUMNS, wxPoint(5, 5), wxSize(150, 150));
-    disabled = new wxListBox(this, DISABLED_COLUMNS, wxPoint(160, 5), wxSize(150, 150));
+    enabled = new wxListBox(this, ENABLED_COLUMNS, wxPoint(10, 35), wxSize(150, 150));
+    disabled = new wxListBox(this, DISABLED_COLUMNS, wxPoint(160, 35), wxSize(150, 150));
     SetInitialColumns();
+    
+    enabled_label = new wxStaticText(this, wxID_ANY, wxString("Enabled:"), wxPoint(10, 10));
+    disabled_label = new wxStaticText(this,  wxID_ANY, wxString("Disabled:"), wxPoint(160, 10));
 
     ok_button = new wxButton(this, wxID_OK, wxString("Ok"), wxPoint(295, 235), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellColumnForm::OnOk));

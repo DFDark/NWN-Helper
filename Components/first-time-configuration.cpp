@@ -34,27 +34,6 @@ FirstTimeConfiguration::FirstTimeConfiguration(const wxString& title, const wxSi
     Centre();
 }
 
-FirstTimeConfiguration::~FirstTimeConfiguration()
-{
-    delete main_ini;
-    delete main_ini_button;
-    delete main_ini_label;
-    delete data_folder_label;
-    delete data_folder_button;
-    delete data_folder;
-    delete ok_button;
-    delete panel;
-
-    main_ini = NULL;
-    main_ini_button = NULL;
-    main_ini_label = NULL;
-    data_folder_button = NULL;
-    data_folder_label = NULL;
-    data_folder = NULL;
-    ok_button = NULL;
-    panel = NULL;
-}
-
 void FirstTimeConfiguration::OnOk(wxCommandEvent& event)
 {
     std::string datapath = data_folder->GetValue().ToStdString() + std::string("/nwn_base.key");

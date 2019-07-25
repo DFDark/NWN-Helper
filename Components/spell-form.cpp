@@ -56,8 +56,8 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_range->Append(std::string("Long"));
     spell_range->SetSelection(GetRangeSelection());
 
-    verbal = new wxToggleButton(panel, wxID_ANY, wxString("V"), wxPoint(50, 50), wxSize(35, 35));
-    somatic = new wxToggleButton(panel, wxID_ANY, wxString("S"), wxPoint(100, 50), wxSize(35, 35));
+    verbal = new wxToggleButton(panel, wxID_ANY, wxString("Verbal"), wxPoint(50, 45), wxSize(100, 20));
+    somatic = new wxToggleButton(panel, wxID_ANY, wxString("Somatic"), wxPoint(50, 70), wxSize(100, 20));
     SetSpellComponents();
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
@@ -71,33 +71,6 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
     name->SetValue(wxString((*tlk)[strref]));
-}
-
-SpellForm::~SpellForm()
-{
-    /*delete ok_button;
-    delete cancel_button;
-    delete panel;
-    delete label_label;
-    delete name_label;
-    delete spellschool_label;
-    delete spellrange_label;
-    delete label;
-    delete name;
-    delete spell_school;
-    delete spell_range;
-
-    ok_button = NULL;
-    cancel_button = NULL;
-    panel = NULL;
-    label_label = NULL;
-    name_label = NULL;
-    spellschool_label = NULL;
-    spellrange_label = NULL;
-    label = NULL;
-    name = NULL;
-    spell_school = NULL;
-    spell_range = NULL;*/
 }
 
 void SpellForm::OnOk(wxCommandEvent& event)

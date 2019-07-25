@@ -28,6 +28,9 @@ private:
 
     wxListBox* enabled;
     wxListBox* disabled;
+    
+    wxStaticText* enabled_label;
+    wxStaticText* disabled_label;
 
     wxButton* ok_button;
     wxButton* cancel_button;

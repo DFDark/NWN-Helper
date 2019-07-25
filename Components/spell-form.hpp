@@ -16,7 +16,6 @@ class SpellForm : public wxDialog
 {
 public:
     SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk);
-    ~SpellForm();
 
 private:
     void OnOk(wxCommandEvent& event);

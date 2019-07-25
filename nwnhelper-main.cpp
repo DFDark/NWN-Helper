@@ -143,7 +143,10 @@ void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
 {
     SpellColumnForm form(main_panel, configuration);
     if (form.ShowModal() == wxID_OK)
+    {
         SetSpellColumns();
+        configuration->SaveCurrentSettings();
+    }
 }
 
 void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)

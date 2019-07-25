@@ -16,7 +16,6 @@ class FirstTimeConfiguration : public wxDialog
 {
 public:
     FirstTimeConfiguration(const wxString& title, const wxSize& size);
-    ~FirstTimeConfiguration();
 
     wxString GetDataFolderPath();
     wxString GetNWNIniPath();
