@@ -60,6 +60,25 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     somatic = new wxToggleButton(panel, wxID_ANY, wxString("Somatic"), wxPoint(50, 70), wxSize(100, 20));
     SetSpellComponents();
 
+    metamagic_empower = new wxToggleButton(panel, wxID_ANY, wxString("Empower"), wxPoint(20, 100), wxSize(100, 20));
+    metamagic_extend = new wxToggleButton(panel, wxID_ANY, wxString("Extend"), wxPoint(20, 120), wxSize(100, 20));
+    metamagic_maximize = new wxToggleButton(panel, wxID_ANY, wxString("Maximize"), wxPoint(20, 140), wxSize(100, 20));
+    metamagic_quicken = new wxToggleButton(panel, wxID_ANY, wxString("Quicken"), wxPoint(20, 160), wxSize(100, 20));
+    metamagic_silent = new wxToggleButton(panel, wxID_ANY, wxString("Silent"), wxPoint(20, 180), wxSize(100, 20));
+    metamagic_still = new wxToggleButton(panel, wxID_ANY, wxString("Still"), wxPoint(20, 200), wxSize(100, 20));
+    SetSpellMetamagic();
+    
+    target_self = new wxToggleButton(panel, wxID_ANY, wxString("Self"), wxPoint(140, 100), wxSize(100, 20));
+    target_creature = new wxToggleButton(panel, wxID_ANY, wxString("Creature"), wxPoint(140, 120), wxSize(100, 20));
+    target_areaground = new wxToggleButton(panel, wxID_ANY, wxString("Area/Ground"), wxPoint(140, 140), wxSize(100, 20));
+    target_items = new wxToggleButton(panel, wxID_ANY, wxString("Items"), wxPoint(140, 160), wxSize(100, 20));
+    target_doors = new wxToggleButton(panel, wxID_ANY, wxString("Doors"), wxPoint(140, 180), wxSize(100, 20));
+    target_placeables = new wxToggleButton(panel, wxID_ANY, wxString("Placeables"), wxPoint(140, 200), wxSize(100, 20));
+    target_triggers = new wxToggleButton(panel, wxID_ANY, wxString("Triggers"), wxPoint(140, 220), wxSize(100, 20));
+    SetSpellTargetType();
+    
+    impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(155, 250), wxSize(150, 20));
+
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
 
@@ -69,8 +88,13 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
-    std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
-    name->SetValue(wxString((*tlk)[strref]));
+    if (!(*spell)[GETIDX(SPELL_2DA::Name)].m_IsEmpty)
+    {
+        std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
+        name->SetValue(wxString((*tlk)[strref]));
+    }
+    
+    impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
 }
 
 void SpellForm::OnOk(wxCommandEvent& event)
@@ -136,4 +160,48 @@ void SpellForm::SetSpellComponents()
             }
         }
     }
+}
+
+unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
+{
+    unsigned int result;
+    try
+    {
+        result = std::stoul(hex, nullptr, 16);
+    }
+    catch (std::exception& e)
+    {
+        result = 0;
+    }
+    
+    return result;
+}
+
+void SpellForm::SetSpellMetamagic()
+{
+    unsigned int value = 0;
+    if (!(*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_IsEmpty)
+        value = GetUIntFromHex((*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_Data);
+
+    metamagic_empower->SetValue((value & METAMAGIC_EMPOWER) > 0);
+    metamagic_extend->SetValue((value & METAMAGIC_EXTEND) > 0);
+    metamagic_maximize->SetValue((value & METAMAGIC_MAXIMIZE) > 0);
+    metamagic_quicken->SetValue((value & METAMAGIC_QUICKEN) > 0);
+    metamagic_silent->SetValue((value & METAMAGIC_SILENT) > 0);
+    metamagic_still->SetValue((value & METAMAGIC_STILL) > 0);
+}
+
+void SpellForm::SetSpellTargetType()
+{
+    unsigned int value = 0;
+    if (!(*spell)[GETIDX(SPELL_2DA::TargetType)].m_IsEmpty)
+        value = GetUIntFromHex((*spell)[GETIDX(SPELL_2DA::TargetType)].m_Data);
+
+    target_self->SetValue((value & TARGET_SELF) > 0);
+    target_creature->SetValue((value & TARGET_CREATURE) > 0);
+    target_areaground->SetValue((value & TARGET_AREAGROUND) > 0);
+    target_items->SetValue((value & TARGET_ITEMS) > 0);
+    target_->SetValue((value & TARGET_DOORS) > 0);
+    target_->SetValue((value & TARGET_PLACEABLES) > 0);
+    target_->SetValue((value & TARGET_TRIGGERS) > 0);
 }

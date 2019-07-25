@@ -21,9 +21,12 @@ private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     void SetSpellComponents();
+    void SetSpellMetamagic();
+    void SetSpellTargetType();
 
     int GetSchoolSelection();
     int GetRangeSelection();
+    unsigned int GetUIntFromHex(const std::string& hex) const;
 
     TwoDA::Friendly::TwoDARow* spell;
     Tlk::Friendly::Tlk* tlk;
@@ -43,6 +46,7 @@ private:
 
     wxTextCtrl* label;
     wxTextCtrl* name;
+    wxTextCtrl* impact_script;
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
@@ -50,6 +54,21 @@ private:
     wxToggleButton* verbal;
     wxToggleButton* somatic;
 
+    wxToggleButton* metamagic_empower;
+    wxToggleButton* metamagic_extend;
+    wxToggleButton* metamagic_maximize;
+    wxToggleButton* metamagic_quicken;
+    wxToggleButton* metamagic_silent;
+    wxToggleButton* metamagic_still;
+    
+    wxToggleButton* target_self;
+    wxToggleButton* target_creature;
+    wxToggleButton* target_areaground;
+    wxToggleButton* target_items;
+    wxToggleButton* target_doors;
+    wxToggleButton* target_placeables;
+    wxToggleButton* target_triggers;
+    
     wxDECLARE_EVENT_TABLE();
 };
 

@@ -63,4 +63,19 @@ enum class SPELL_2DA
 
 #define GETIDX(x) (static_cast<std::size_t>(x))
 
+#define METAMAGIC_EMPOWER 0x01
+#define METAMAGIC_EXTEND 0x02
+#define METAMAGIC_MAXIMIZE 0x04
+#define METAMAGIC_QUICKEN 0x08
+#define METAMAGIC_SILENT 0x10
+#define METAMAGIC_STILL 0x20
+
+#define TARGET_SELF 0x01
+#define TARGET_CREATURE 0x02
+#define TARGET_AREAGROUND 0x04
+#define TARGET_ITEMS 0x08
+#define TARGET_DOORS 0x10
+#define TARGET_PLACEABLES 0x20
+#define TARGET_TRIGGERS 0x40
+
 #endif
