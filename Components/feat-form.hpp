@@ -14,7 +14,6 @@ class FeatForm : public wxDialog
 {
 public:
     FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row);
-    ~FeatForm();
 
 private:
     void OnOk(wxCommandEvent& event);

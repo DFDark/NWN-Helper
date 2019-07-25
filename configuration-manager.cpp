@@ -305,6 +305,24 @@ void ConfigurationManager::SetSpellColumns(const std::vector<std::string>& colum
     }
 }
 
+void ConfigurationManager::SetFeatColumns(const std::vector<std::string>& columns)
+{
+    for (unsigned int i = 0; i < 10; i++)
+    {
+        std::string index = std::to_string(i);
+        std::string key = std::string("COLUMN") + index;
+        config->Delete("FeatList", key.c_str());
+    }
+
+    unsigned int counter = 0;
+    for (auto const& column : columns)
+    {
+        std::string index = std::to_string(counter++);
+        std::string key = std::string("COLUMN") + index;
+        config->SetValue("FeatList", key.c_str(), column.c_str());
+    }
+}
+
 bool ConfigurationManager::SaveCurrentSettings()
 {
     return config->SaveFile("nwnhelper.ini") >= 0;

@@ -19,8 +19,7 @@ using namespace FileFormats;
 class NWNHelperMain : public wxFrame
 {
 public:
-	NWNHelperMain(const wxString& title, ConfigurationManager* _configuration);
-	~NWNHelperMain();
+    NWNHelperMain(const wxString& title, ConfigurationManager* _configuration);
 
     virtual void OnExit(wxCommandEvent& event);
     void OnSpellColumnMenu(wxCommandEvent& event);

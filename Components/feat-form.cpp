@@ -1,51 +1,5 @@
 #include "feat-form.hpp"
-
-enum
-{
-    Label = 0,
-    Feat,
-    Description,
-    Icon,
-    MinAttackBonus,
-    MinStr,
-    MinDex,
-    MinInt,
-    MinWis,
-    MinCon,
-    MinCha,
-    MinSpellLvl,
-    PreReqFeat1,
-    PreReqFeat2,
-    GainMultiple,
-    EffectsStack,
-    AllClassesCanUse,
-    Category,
-    MaxCR,
-    SpellID,
-    Successor,
-    CRValue,
-    UsesPerDay,
-    MasterFeat,
-    TargetSelf,
-    OrReqFeat0,
-    OrReqFeat1,
-    OrReqFeat2,
-    OrReqFeat3,
-    OrReqFeat4,
-    ReqSkill,
-    ReqSkillMinRanks,
-    ReqSkill2,
-    ReqSkillMinRanks2,
-    Constant,
-    ToolsCategories,
-    HostileFeat,
-    MinLevel,
-    MinLevelClass,
-    MaxLevel,
-    MinFortSave,
-    PreReqEpic,
-    ReqAction
-};
+#include "../constants.hpp"
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_MENU(wxID_OK, FeatForm::OnOk)
@@ -58,8 +12,8 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
     panel = new wxPanel(this, wxID_ANY);
     feat = row;
 
-    if (!(*feat)[Label].m_IsEmpty)
-        this->SetTitle(wxString((*feat)[Label].m_Data));
+    if (!(*feat)[GETIDX(FEAT_2DA::Label)].m_IsEmpty)
+        this->SetTitle(wxString((*feat)[GETIDX(FEAT_2DA::Label)].m_Data));
     /*
     * FORM LABELS
     */
@@ -81,28 +35,9 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
 
     Centre();
 
-    label->SetValue(wxString((*feat)[Label].m_Data));
+    label->SetValue(wxString((*feat)[GETIDX(FEAT_2DA::Label)].m_Data));
     // TODO: Link up with TLK and load actual value from strref
-    name->SetValue(wxString((*feat)[Feat].m_Data));
-}
-
-FeatForm::~FeatForm()
-{
-    /*delete ok_button;
-    delete cancel_button;
-    delete panel;
-    delete label_label;
-    delete name_label;
-    delete name;
-    delete label;
-
-    ok_button = NULL;
-    cancel_button = NULL;
-    panel = NULL;
-    label_label = NULL;
-    name_label = NULL;
-    label = NULL;
-    name = NULL;*/
+    name->SetValue(wxString((*feat)[GETIDX(FEAT_2DA::Feat)].m_Data));
 }
 
 void FeatForm::OnOk(wxCommandEvent& event)

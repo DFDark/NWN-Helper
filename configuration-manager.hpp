@@ -25,6 +25,7 @@ public:
     bool AttemptLoad();
     bool SaveCurrentSettings();
     void SetSpellColumns(const std::vector<std::string>& columns);
+    void SetFeatColumns(const std::vector<std::string>& columns);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();

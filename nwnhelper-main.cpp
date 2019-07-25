@@ -2,6 +2,7 @@
 #include "Components/spell-form.hpp"
 #include "Components/feat-form.hpp"
 #include "Components/spell-column-form.hpp"
+#include "Components/feat-column-form.hpp"
 
 enum
 {
@@ -72,19 +73,6 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     this->SetSizer(main_sizer);
 }
 
-NWNHelperMain::~NWNHelperMain()
-{
-    delete menu_file;
-    delete menu_bar;
-    delete spells;
-    delete tabs;
-
-    menu_file = NULL;
-    menu_bar = NULL;
-    spells = NULL;
-    tabs = NULL;
-}
-
 void NWNHelperMain::OnExit(wxCommandEvent& event)
 {
     Close(true);
@@ -129,6 +117,7 @@ void NWNHelperMain::SetSpellColumns()
 
 void NWNHelperMain::SetFeatColumns()
 {
+    feats->ClearColumns();
     feats->AppendTextColumn("ID", FeatListModel::ID);
     for (auto const& col : configuration->GetFeatColumns())
     {
@@ -151,6 +140,10 @@ void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
 
 void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
 {
-    // TODO: Add Column display form
-    printf("NWNHelperMain::OnFeatColumnMenu Click\n");
+    FeatColumnForm form(main_panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        SetFeatColumns();
+        configuration->SaveCurrentSettings();
+    }
 }

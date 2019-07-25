@@ -61,6 +61,53 @@ enum class SPELL_2DA
     HasProjectile
 };
 
+enum class FEAT_2DA
+{
+    Label = 0,
+    Feat,
+    Description,
+    Icon,
+    MinAttackBonus,
+    MinStr,
+    MinDex,
+    MinInt,
+    MinWis,
+    MinCon,
+    MinCha,
+    MinSpellLvl,
+    PreReqFeat1,
+    PreReqFeat2,
+    GainMultiple,
+    EffectsStack,
+    AllClassesCanUse,
+    Category,
+    MaxCR,
+    SpellID,
+    Successor,
+    CRValue,
+    UsesPerDay,
+    MasterFeat,
+    TargetSelf,
+    OrReqFeat0,
+    OrReqFeat1,
+    OrReqFeat2,
+    OrReqFeat3,
+    OrReqFeat4,
+    ReqSkill,
+    ReqSkillMinRanks,
+    ReqSkill2,
+    ReqSkillMinRanks2,
+    Constant,
+    ToolsCategories,
+    HostileFeat,
+    MinLevel,
+    MinLevelClass,
+    MaxLevel,
+    MinFortSave,
+    PreReqEpic,
+    ReqAction
+};
+
 #define GETIDX(x) (static_cast<std::size_t>(x))
 
 #define METAMAGIC_EMPOWER 0x01
