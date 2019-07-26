@@ -57,10 +57,11 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
 
 bool SpellListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
-    if (col == 0)
-        (*file)[row][col].m_Data = std::to_string(row);
+    unsigned int aux = GetColumnID(col);
+    if (col == SpellListModel::ID)
+        (*file)[row][aux].m_Data = std::to_string(row);
     else
-        (*file)[row][col - 1].m_Data = variant.GetString();
+        (*file)[row][aux].m_Data = variant.GetString();
     return true;
 }
 
