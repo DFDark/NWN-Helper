@@ -18,19 +18,43 @@ FeatColumnForm::FeatColumnForm(wxWindow* parent, ConfigurationManager* _configur
 {
     configuration = _configuration;
 
-    enabled = new wxListBox(this, ENABLED_COLUMNS, wxPoint(10, 35), wxSize(150, 150));
-    disabled = new wxListBox(this, DISABLED_COLUMNS, wxPoint(160, 35), wxSize(150, 150));
+    enabled = new wxListBox(this, ENABLED_COLUMNS);
+    disabled = new wxListBox(this, DISABLED_COLUMNS);
     SetInitialColumns();
-    
-    enabled_label = new wxStaticText(this, wxID_ANY, wxString("Enabled:"), wxPoint(10, 10));
-    disabled_label = new wxStaticText(this,  wxID_ANY, wxString("Disabled:"), wxPoint(160, 10));
 
-    ok_button = new wxButton(this, wxID_OK, wxString("Ok"), wxPoint(295, 235), wxSize(100, 30));
+    enabled_label = new wxStaticText(this, wxID_ANY, wxString("Enabled:"));
+    disabled_label = new wxStaticText(this,  wxID_ANY, wxString("Disabled:"));
+
+    ok_button = new wxButton(this, wxID_OK, wxString("Ok"));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatColumnForm::OnOk));
 
-    cancel_button = new wxButton(this, wxID_CANCEL, wxString("Cancel"), wxPoint(190, 235), wxSize(100, 30));
+    cancel_button = new wxButton(this, wxID_CANCEL, wxString("Cancel"));
 
     Centre();
+
+    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
+
+    wxBoxSizer* enabled_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* disabled_sizer = new wxBoxSizer(wxVERTICAL);
+
+    wxBoxSizer* horizon = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* buttons = new wxBoxSizer(wxHORIZONTAL);
+
+    enabled_sizer->Add(enabled_label, 0, wxEXPAND|wxALL);
+    enabled_sizer->Add(enabled, 1, wxEXPAND|wxALL);
+    disabled_sizer->Add(disabled_label, 0, wxEXPAND|wxALL);
+    disabled_sizer->Add(disabled, 1, wxEXPAND|wxALL);
+
+    buttons->Add(cancel_button, 0, wxALL);
+    buttons->Add(ok_button, 0, wxALL);
+
+    horizon->Add(enabled_sizer, 1, wxEXPAND|wxALL);
+    horizon->Add(disabled_sizer, 1, wxEXPAND|wxALL);
+
+    main_sizer->Add(horizon, 1, wxEXPAND|wxALL);
+    main_sizer->Add(buttons, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
+
+    this->SetSizer(main_sizer);
 }
 
 void FeatColumnForm::OnOk(wxCommandEvent& event)
