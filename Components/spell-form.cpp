@@ -67,7 +67,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     metamagic_silent = new wxToggleButton(panel, wxID_ANY, wxString("Silent"), wxPoint(20, 180), wxSize(100, 20));
     metamagic_still = new wxToggleButton(panel, wxID_ANY, wxString("Still"), wxPoint(20, 200), wxSize(100, 20));
     SetSpellMetamagic();
-    
+
     target_self = new wxToggleButton(panel, wxID_ANY, wxString("Self"), wxPoint(140, 100), wxSize(100, 20));
     target_creature = new wxToggleButton(panel, wxID_ANY, wxString("Creature"), wxPoint(140, 120), wxSize(100, 20));
     target_areaground = new wxToggleButton(panel, wxID_ANY, wxString("Area/Ground"), wxPoint(140, 140), wxSize(100, 20));
@@ -76,7 +76,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_placeables = new wxToggleButton(panel, wxID_ANY, wxString("Placeables"), wxPoint(140, 200), wxSize(100, 20));
     target_triggers = new wxToggleButton(panel, wxID_ANY, wxString("Triggers"), wxPoint(140, 220), wxSize(100, 20));
     SetSpellTargetType();
-    
+
     impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(155, 250), wxSize(150, 20));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
@@ -93,7 +93,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
         std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
         name->SetValue(wxString((*tlk)[strref]));
     }
-    
+
     impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
 }
 
@@ -173,7 +173,7 @@ unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
     {
         result = 0;
     }
-    
+
     return result;
 }
 
@@ -201,7 +201,7 @@ void SpellForm::SetSpellTargetType()
     target_creature->SetValue((value & TARGET_CREATURE) > 0);
     target_areaground->SetValue((value & TARGET_AREAGROUND) > 0);
     target_items->SetValue((value & TARGET_ITEMS) > 0);
-    target_->SetValue((value & TARGET_DOORS) > 0);
-    target_->SetValue((value & TARGET_PLACEABLES) > 0);
-    target_->SetValue((value & TARGET_TRIGGERS) > 0);
+    target_doors->SetValue((value & TARGET_DOORS) > 0);
+    target_placeables->SetValue((value & TARGET_PLACEABLES) > 0);
+    target_triggers->SetValue((value & TARGET_TRIGGERS) > 0);
 }

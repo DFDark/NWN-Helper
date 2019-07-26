@@ -1,4 +1,5 @@
 #include "featlist-model.hpp"
+#include "../constants.hpp"
 
 FeatListModel::FeatListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk) :
     wxDataViewVirtualListModel(_file->Size())
@@ -26,7 +27,7 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
         variant = std::to_string(row);
         return;
     }
-    
+
     unsigned int aux = GetColumnID(col);
     if ((*file)[row][aux].m_IsEmpty)
     {
