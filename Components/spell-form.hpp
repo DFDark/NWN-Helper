@@ -24,6 +24,7 @@ private:
     void SetSpellMetamagic();
     void SetSpellTargetType();
 
+    void InitFormValues();
     int GetSchoolSelection();
     int GetRangeSelection();
     unsigned int GetUIntFromHex(const std::string& hex) const;
@@ -43,6 +44,9 @@ private:
     wxStaticText* name_label;
     wxStaticText* spellschool_label;
     wxStaticText* spellrange_label;
+    wxStaticText* impact_script_label;
+
+    wxStaticBox* spell_components;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -60,7 +64,7 @@ private:
     wxToggleButton* metamagic_quicken;
     wxToggleButton* metamagic_silent;
     wxToggleButton* metamagic_still;
-    
+
     wxToggleButton* target_self;
     wxToggleButton* target_creature;
     wxToggleButton* target_areaground;
@@ -68,7 +72,7 @@ private:
     wxToggleButton* target_doors;
     wxToggleButton* target_placeables;
     wxToggleButton* target_triggers;
-    
+
     wxDECLARE_EVENT_TABLE();
 };
 

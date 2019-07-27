@@ -13,52 +13,33 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell = row;
     tlk = _tlk;
 
-    if (!(*spell)[GETIDX(SPELL_2DA::Label)].m_IsEmpty)
-        this->SetTitle(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
     /*
     * FORM LABELS
     */
-    label_label = new wxStaticText(panel, wxID_ANY, wxString("Label:"),
-       wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
-    name_label = new wxStaticText(panel, wxID_ANY, wxString("Name:"),
-       wxPoint(155, 5), wxDefaultSize, wxALIGN_LEFT);
-    spellschool_label = new wxStaticText(panel, wxID_ANY, wxString("Spell School:"),
-       wxPoint(305, 5), wxDefaultSize, wxALIGN_LEFT);
-    spellrange_label = new wxStaticText(panel, wxID_ANY, wxString("Spell Range:"),
-       wxPoint(425, 5), wxDefaultSize, wxALIGN_LEFT);
+    label_label = new wxStaticText(panel, wxID_ANY, wxString("Label:"));
+    name_label = new wxStaticText(panel, wxID_ANY, wxString("Name:"));
+    spellschool_label = new wxStaticText(panel, wxID_ANY, wxString("Spell School:"));
+    spellrange_label = new wxStaticText(panel, wxID_ANY, wxString("Spell Range:"));
+    impact_script_label = new wxStaticText(panel, wxID_ANY, wxString("Impact Script:"));
 
     /*
     * FORM TEXT CONTROLS
     */
-    label = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(5, 30), wxSize(150, 20));
-    name = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(155, 30), wxSize(150, 20));
+    label = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     /*
     * FORM SELECT
     */
-    spell_school = new wxComboBox(panel, wxID_ANY, wxString(""), wxPoint(305, 27));
-    spell_range = new wxComboBox(panel, wxID_ANY, wxString(""), wxPoint(427, 27));
+    spell_school = new wxComboBox(panel, wxID_ANY, wxString(""));
+    spell_range = new wxComboBox(panel, wxID_ANY, wxString(""));
 
-    spell_school->Append(std::string("Abjuration"));
-    spell_school->Append(std::string("Conjuration"));
-    spell_school->Append(std::string("Divination"));
-    spell_school->Append(std::string("Enchantment"));
-    spell_school->Append(std::string("Evocation"));
-    spell_school->Append(std::string("Illusion"));
-    spell_school->Append(std::string("Necromancy"));
-    spell_school->Append(std::string("Transmutation"));
-    spell_school->SetSelection(GetSchoolSelection());
+    impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
-    spell_range->Append(std::string("Personal"));
-    spell_range->Append(std::string("Touch"));
-    spell_range->Append(std::string("Short"));
-    spell_range->Append(std::string("Medium"));
-    spell_range->Append(std::string("Long"));
-    spell_range->SetSelection(GetRangeSelection());
+    spell_components = new wxStaticBox(panel, wxID_ANY, wxString("Spell Components"), wxPoint(20, 50));
 
-    verbal = new wxToggleButton(panel, wxID_ANY, wxString("Verbal"), wxPoint(50, 45), wxSize(100, 20));
-    somatic = new wxToggleButton(panel, wxID_ANY, wxString("Somatic"), wxPoint(50, 70), wxSize(100, 20));
-    SetSpellComponents();
+    verbal = new wxToggleButton(/*spell_components*/panel, wxID_ANY, wxString("Verbal"));
+    somatic = new wxToggleButton(/*spell_components*/panel, wxID_ANY, wxString("Somatic"));
 
     metamagic_empower = new wxToggleButton(panel, wxID_ANY, wxString("Empower"), wxPoint(20, 100), wxSize(100, 20));
     metamagic_extend = new wxToggleButton(panel, wxID_ANY, wxString("Extend"), wxPoint(20, 120), wxSize(100, 20));
@@ -66,7 +47,6 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     metamagic_quicken = new wxToggleButton(panel, wxID_ANY, wxString("Quicken"), wxPoint(20, 160), wxSize(100, 20));
     metamagic_silent = new wxToggleButton(panel, wxID_ANY, wxString("Silent"), wxPoint(20, 180), wxSize(100, 20));
     metamagic_still = new wxToggleButton(panel, wxID_ANY, wxString("Still"), wxPoint(20, 200), wxSize(100, 20));
-    SetSpellMetamagic();
 
     target_self = new wxToggleButton(panel, wxID_ANY, wxString("Self"), wxPoint(140, 100), wxSize(100, 20));
     target_creature = new wxToggleButton(panel, wxID_ANY, wxString("Creature"), wxPoint(140, 120), wxSize(100, 20));
@@ -75,9 +55,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_doors = new wxToggleButton(panel, wxID_ANY, wxString("Doors"), wxPoint(140, 180), wxSize(100, 20));
     target_placeables = new wxToggleButton(panel, wxID_ANY, wxString("Placeables"), wxPoint(140, 200), wxSize(100, 20));
     target_triggers = new wxToggleButton(panel, wxID_ANY, wxString("Triggers"), wxPoint(140, 220), wxSize(100, 20));
-    SetSpellTargetType();
 
-    impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(155, 250), wxSize(150, 20));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -86,15 +64,46 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     Centre();
 
-    label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
+    // Sizers
+    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
-    if (!(*spell)[GETIDX(SPELL_2DA::Name)].m_IsEmpty)
-    {
-        std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
-        name->SetValue(wxString((*tlk)[strref]));
-    }
+    wxBoxSizer* first_row_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
+    wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* school_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* range_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* impact_script_sizer = new wxBoxSizer(wxVERTICAL);
+
+    label_sizer->Add(label_label);
+    label_sizer->Add(label, 1, wxEXPAND|wxALL);
+    name_sizer->Add(name_label);
+    name_sizer->Add(name, 1, wxEXPAND|wxALL);
+    school_sizer->Add(spellschool_label);
+    school_sizer->Add(spell_school, 1, wxEXPAND|wxALL);
+    range_sizer->Add(spellrange_label);
+    range_sizer->Add(spell_range, 1, wxEXPAND|wxALL);
+    impact_script_sizer->Add(impact_script_label);
+    impact_script_sizer->Add(impact_script, 1, wxEXPAND|wxALL);
+
+    first_row_sizer->Add(label_sizer, 1, wxEXPAND|wxALL);
+    first_row_sizer->Add(name_sizer, 1, wxEXPAND|wxALL);
+    first_row_sizer->Add(school_sizer, 1, wxEXPAND|wxALL);
+    first_row_sizer->Add(range_sizer, 1, wxEXPAND|wxALL);
+    first_row_sizer->Add(impact_script_sizer, 1, wxEXPAND|wxALL);
+
+    main_sizer->Add(first_row_sizer);
+
+    wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    control_button_sizer->Add(ok_button);
+    control_button_sizer->Add(cancel_button);
+
+    main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
+
+    panel->SetSizer(main_sizer);
+
+    InitFormValues();
 }
 
 void SpellForm::OnOk(wxCommandEvent& event)
@@ -204,4 +213,41 @@ void SpellForm::SetSpellTargetType()
     target_doors->SetValue((value & TARGET_DOORS) > 0);
     target_placeables->SetValue((value & TARGET_PLACEABLES) > 0);
     target_triggers->SetValue((value & TARGET_TRIGGERS) > 0);
+}
+
+void SpellForm::InitFormValues()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::Label)].m_IsEmpty)
+        this->SetTitle(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
+
+    spell_school->Append(std::string("Abjuration"));
+    spell_school->Append(std::string("Conjuration"));
+    spell_school->Append(std::string("Divination"));
+    spell_school->Append(std::string("Enchantment"));
+    spell_school->Append(std::string("Evocation"));
+    spell_school->Append(std::string("Illusion"));
+    spell_school->Append(std::string("Necromancy"));
+    spell_school->Append(std::string("Transmutation"));
+    spell_school->SetSelection(GetSchoolSelection());
+
+    spell_range->Append(std::string("Personal"));
+    spell_range->Append(std::string("Touch"));
+    spell_range->Append(std::string("Short"));
+    spell_range->Append(std::string("Medium"));
+    spell_range->Append(std::string("Long"));
+    spell_range->SetSelection(GetRangeSelection());
+
+    SetSpellComponents();
+    SetSpellMetamagic();
+    SetSpellTargetType();
+
+    label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
+
+    if (!(*spell)[GETIDX(SPELL_2DA::Name)].m_IsEmpty)
+    {
+        std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
+        name->SetValue(wxString((*tlk)[strref]));
+    }
+
+    impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
 }
