@@ -47,6 +47,8 @@ private:
     wxStaticText* impact_script_label;
 
     wxStaticBox* spell_components;
+    wxStaticBox* metamagic_staticbox;
+    wxStaticBox* target_staticbox;
 
     wxTextCtrl* label;
     wxTextCtrl* name;

@@ -36,25 +36,27 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
-    spell_components = new wxStaticBox(panel, wxID_ANY, wxString("Spell Components"), wxPoint(20, 50));
+    spell_components = new wxStaticBox(panel, wxID_ANY, wxString("Spell Components"));
+    metamagic_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Metamagic"));
+    target_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Target"));
 
-    verbal = new wxToggleButton(/*spell_components*/panel, wxID_ANY, wxString("Verbal"));
-    somatic = new wxToggleButton(/*spell_components*/panel, wxID_ANY, wxString("Somatic"));
+    verbal = new wxToggleButton(spell_components, wxID_ANY, wxString("Verbal"));
+    somatic = new wxToggleButton(spell_components, wxID_ANY, wxString("Somatic"));
 
-    metamagic_empower = new wxToggleButton(panel, wxID_ANY, wxString("Empower"), wxPoint(20, 100), wxSize(100, 20));
-    metamagic_extend = new wxToggleButton(panel, wxID_ANY, wxString("Extend"), wxPoint(20, 120), wxSize(100, 20));
-    metamagic_maximize = new wxToggleButton(panel, wxID_ANY, wxString("Maximize"), wxPoint(20, 140), wxSize(100, 20));
-    metamagic_quicken = new wxToggleButton(panel, wxID_ANY, wxString("Quicken"), wxPoint(20, 160), wxSize(100, 20));
-    metamagic_silent = new wxToggleButton(panel, wxID_ANY, wxString("Silent"), wxPoint(20, 180), wxSize(100, 20));
-    metamagic_still = new wxToggleButton(panel, wxID_ANY, wxString("Still"), wxPoint(20, 200), wxSize(100, 20));
+    metamagic_empower = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Empower"));
+    metamagic_extend = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Extend"));
+    metamagic_maximize = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Maximize"));
+    metamagic_quicken = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Quicken"));
+    metamagic_silent = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Silent"));
+    metamagic_still = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Still"));
 
-    target_self = new wxToggleButton(panel, wxID_ANY, wxString("Self"), wxPoint(140, 100), wxSize(100, 20));
-    target_creature = new wxToggleButton(panel, wxID_ANY, wxString("Creature"), wxPoint(140, 120), wxSize(100, 20));
-    target_areaground = new wxToggleButton(panel, wxID_ANY, wxString("Area/Ground"), wxPoint(140, 140), wxSize(100, 20));
-    target_items = new wxToggleButton(panel, wxID_ANY, wxString("Items"), wxPoint(140, 160), wxSize(100, 20));
-    target_doors = new wxToggleButton(panel, wxID_ANY, wxString("Doors"), wxPoint(140, 180), wxSize(100, 20));
-    target_placeables = new wxToggleButton(panel, wxID_ANY, wxString("Placeables"), wxPoint(140, 200), wxSize(100, 20));
-    target_triggers = new wxToggleButton(panel, wxID_ANY, wxString("Triggers"), wxPoint(140, 220), wxSize(100, 20));
+    target_self = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Self"));
+    target_creature = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Creature"));
+    target_areaground = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Area/Ground"));
+    target_items = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Items"));
+    target_doors = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Doors"));
+    target_placeables = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Placeables"));
+    target_triggers = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Triggers"));
 
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
@@ -68,12 +70,16 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* first_row_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* second_row_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    wxBoxSizer* second_row_sizer_p1 = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* school_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* range_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* impact_script_sizer = new wxBoxSizer(wxVERTICAL);
+    wxStaticBoxSizer* spell_components_sizer = new wxStaticBoxSizer(spell_components, wxHORIZONTAL);
 
     label_sizer->Add(label_label);
     label_sizer->Add(label, 1, wxEXPAND|wxALL);
@@ -85,14 +91,41 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     range_sizer->Add(spell_range, 1, wxEXPAND|wxALL);
     impact_script_sizer->Add(impact_script_label);
     impact_script_sizer->Add(impact_script, 1, wxEXPAND|wxALL);
+    spell_components_sizer->Add(verbal);
+    spell_components_sizer->Add(somatic);
 
     first_row_sizer->Add(label_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(name_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(school_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(range_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(impact_script_sizer, 1, wxEXPAND|wxALL);
+    first_row_sizer->Add(spell_components_sizer);
+
+    wxStaticBoxSizer* meta_sizer = new wxStaticBoxSizer(metamagic_staticbox, wxHORIZONTAL);
+
+    meta_sizer->Add(metamagic_empower);
+    meta_sizer->Add(metamagic_extend);
+    meta_sizer->Add(metamagic_maximize);
+    meta_sizer->Add(metamagic_quicken);
+    meta_sizer->Add(metamagic_silent);
+    meta_sizer->Add(metamagic_still);
+
+    wxStaticBoxSizer* target_sizer = new wxStaticBoxSizer(target_staticbox, wxHORIZONTAL);
+
+    target_sizer->Add(target_self);
+    target_sizer->Add(target_creature);
+    target_sizer->Add(target_areaground);
+    target_sizer->Add(target_items);
+    target_sizer->Add(target_doors);
+    target_sizer->Add(target_placeables);
+    target_sizer->Add(target_triggers);
+
+    second_row_sizer_p1->Add(meta_sizer);
+    second_row_sizer_p1->Add(target_sizer);
+    second_row_sizer->Add(second_row_sizer_p1);
 
     main_sizer->Add(first_row_sizer);
+    main_sizer->Add(second_row_sizer);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
