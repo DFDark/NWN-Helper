@@ -45,10 +45,18 @@ private:
     wxStaticText* spellschool_label;
     wxStaticText* spellrange_label;
     wxStaticText* impact_script_label;
+    wxStaticText* spell_level_label_bard;
+    wxStaticText* spell_level_label_cleric;
+    wxStaticText* spell_level_label_druid;
+    wxStaticText* spell_level_label_paladin;
+    wxStaticText* spell_level_label_ranger;
+    wxStaticText* spell_level_label_wiz_sorc;
+    wxStaticText* spell_level_label_innate;
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
     wxStaticBox* target_staticbox;
+    wxStaticBox* spell_levels;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -74,6 +82,14 @@ private:
     wxToggleButton* target_doors;
     wxToggleButton* target_placeables;
     wxToggleButton* target_triggers;
+
+    wxSlider* spell_level_bard;
+    wxSlider* spell_level_cleric;
+    wxSlider* spell_level_druid;
+    wxSlider* spell_level_paladin;
+    wxSlider* spell_level_ranger;
+    wxSlider* spell_level_wiz_sorc;
+    wxSlider* spell_level_innate;
 
     wxDECLARE_EVENT_TABLE();
 };

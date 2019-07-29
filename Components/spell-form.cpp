@@ -39,16 +39,17 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_components = new wxStaticBox(panel, wxID_ANY, wxString("Spell Components"));
     metamagic_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Metamagic"));
     target_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Target"));
+    spell_levels = new wxStaticBox(panel, wxID_ANY, wxString("Spell levels"));
 
     verbal = new wxToggleButton(spell_components, wxID_ANY, wxString("Verbal"));
     somatic = new wxToggleButton(spell_components, wxID_ANY, wxString("Somatic"));
 
-    metamagic_empower = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Empower"));
-    metamagic_extend = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Extend"));
-    metamagic_maximize = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Maximize"));
-    metamagic_quicken = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Quicken"));
-    metamagic_silent = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Silent"));
-    metamagic_still = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Still"));
+    metamagic_empower = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Empower"), wxDefaultPosition, wxDefaultSize);
+    metamagic_extend = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Extend"), wxDefaultPosition, wxDefaultSize);
+    metamagic_maximize = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Maximize"), wxDefaultPosition, wxDefaultSize);
+    metamagic_quicken = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Quicken"), wxDefaultPosition, wxDefaultSize);
+    metamagic_silent = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Silent"), wxDefaultPosition, wxDefaultSize);
+    metamagic_still = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Still"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX);
 
     target_self = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Self"));
     target_creature = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Creature"));
@@ -58,6 +59,23 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_placeables = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Placeables"));
     target_triggers = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Triggers"));
 
+    spell_level_label_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("Innate"));
+    spell_level_label_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("Bard:"));
+    spell_level_label_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString("Cleric:"));
+    spell_level_label_druid = new wxStaticText(spell_levels, wxID_ANY, wxString("Druid:"));
+    spell_level_label_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString("Paladin:"));
+    spell_level_label_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("Ranger:"));
+    spell_level_label_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("Wiz./Sorc."));
+
+    spell_level_bard = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_cleric = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_druid = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_paladin = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_ranger = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_wiz_sorc = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_innate = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    //wxSlider* bal = new wxSlider(panel, wxID_ANY, 0, 0, 9, wxPoint(200, 200),
+    //    wxSize(150, 40), wxSL_HORIZONTAL|wxSL_VALUE_LABEL);
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -73,6 +91,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* second_row_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* second_row_sizer_p1 = new wxBoxSizer(wxVERTICAL);
+    wxStaticBoxSizer* second_row_sizer_p2 = new wxStaticBoxSizer(spell_levels, wxVERTICAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
@@ -124,8 +143,41 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     second_row_sizer_p1->Add(target_sizer);
     second_row_sizer->Add(second_row_sizer_p1);
 
+    wxBoxSizer* sp_levels_innate_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sp_levels_bard_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sp_levels_cleric_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sp_levels_druid_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sp_levels_paladin_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sp_levels_ranger_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sp_levels_wiz_sorc_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    sp_levels_innate_sizer->Add(spell_level_label_innate);
+    sp_levels_innate_sizer->Add(spell_level_innate, 1, wxALL);
+    sp_levels_bard_sizer->Add(spell_level_label_bard);
+    sp_levels_bard_sizer->Add(spell_level_bard, 1, wxALL);
+    sp_levels_cleric_sizer->Add(spell_level_label_cleric);
+    sp_levels_cleric_sizer->Add(spell_level_cleric, 1, wxALL);
+    sp_levels_druid_sizer->Add(spell_level_label_druid);
+    sp_levels_druid_sizer->Add(spell_level_druid, 1, wxALL);
+    sp_levels_paladin_sizer->Add(spell_level_label_paladin);
+    sp_levels_paladin_sizer->Add(spell_level_paladin, 1, wxALL);
+    sp_levels_ranger_sizer->Add(spell_level_label_ranger);
+    sp_levels_ranger_sizer->Add(spell_level_ranger, 1, wxALL);
+    sp_levels_wiz_sorc_sizer->Add(spell_level_label_wiz_sorc);
+    sp_levels_wiz_sorc_sizer->Add(spell_level_wiz_sorc, 1, wxALL);
+
+    second_row_sizer_p2->Add(sp_levels_innate_sizer, 1, wxEXPAND|wxALL);
+    second_row_sizer_p2->Add(sp_levels_bard_sizer, 1,  wxEXPAND|wxALL);
+    second_row_sizer_p2->Add(sp_levels_cleric_sizer, 1, wxEXPAND|wxALL);
+    second_row_sizer_p2->Add(sp_levels_druid_sizer, 1, wxEXPAND|wxALL);
+    second_row_sizer_p2->Add(sp_levels_paladin_sizer, 1, wxEXPAND|wxALL);
+    second_row_sizer_p2->Add(sp_levels_ranger_sizer, 1, wxEXPAND|wxALL);
+    second_row_sizer_p2->Add(sp_levels_wiz_sorc_sizer, 1, wxEXPAND|wxALL);
+
+    second_row_sizer->Add(second_row_sizer_p2, 1, wxEXPAND|wxALL, 5);
+
     main_sizer->Add(first_row_sizer);
-    main_sizer->Add(second_row_sizer);
+    main_sizer->Add(second_row_sizer, 0, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
