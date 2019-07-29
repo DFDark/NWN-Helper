@@ -18,6 +18,8 @@ public:
 private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
+    
+    void InitFormValues();
 
     TwoDA::Friendly::TwoDARow* feat;
 
