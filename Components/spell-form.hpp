@@ -23,6 +23,7 @@ private:
     void SetSpellComponents();
     void SetSpellMetamagic();
     void SetSpellTargetType();
+    void SetSpellLevels();
 
     void InitFormValues();
     int GetSchoolSelection();
