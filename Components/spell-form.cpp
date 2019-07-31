@@ -67,15 +67,13 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_level_label_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("Ranger:"));
     spell_level_label_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("Wiz./Sorc."));
     
-    /*
-    spell_level_label_val_innate = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    spell_level_label_val_bard = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    spell_level_label_val_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    spell_level_label_val_druid = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    spell_level_label_val_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    spell_level_label_val_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    spell_level_label_val_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString(""));
-    */
+    spell_level_label_val_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
+    spell_level_label_val_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
+    spell_level_label_val_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
+    spell_level_label_val_druid = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
+    spell_level_label_val_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
+    spell_level_label_val_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
+    spell_level_label_val_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
 
     spell_level_bard = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
     spell_level_cleric = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
@@ -160,18 +158,25 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* sp_levels_wiz_sorc_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     sp_levels_innate_sizer->Add(spell_level_label_innate);
+    sp_levels_innate_sizer->Add(spell_level_label_val_innate);
     sp_levels_innate_sizer->Add(spell_level_innate, 1, wxALL);
     sp_levels_bard_sizer->Add(spell_level_label_bard);
+    sp_levels_bard_sizer->Add(spell_level_label_val_bard);
     sp_levels_bard_sizer->Add(spell_level_bard, 1, wxALL);
     sp_levels_cleric_sizer->Add(spell_level_label_cleric);
+    sp_levels_cleric_sizer->Add(spell_level_label_val_cleric);
     sp_levels_cleric_sizer->Add(spell_level_cleric, 1, wxALL);
     sp_levels_druid_sizer->Add(spell_level_label_druid);
+    sp_levels_druid_sizer->Add(spell_level_label_val_druid);
     sp_levels_druid_sizer->Add(spell_level_druid, 1, wxALL);
     sp_levels_paladin_sizer->Add(spell_level_label_paladin);
+    sp_levels_paladin_sizer->Add(spell_level_label_val_paladin);
     sp_levels_paladin_sizer->Add(spell_level_paladin, 1, wxALL);
     sp_levels_ranger_sizer->Add(spell_level_label_ranger);
+    sp_levels_ranger_sizer->Add(spell_level_label_val_ranger);
     sp_levels_ranger_sizer->Add(spell_level_ranger, 1, wxALL);
     sp_levels_wiz_sorc_sizer->Add(spell_level_label_wiz_sorc);
+    sp_levels_wiz_sorc_sizer->Add(spell_level_label_val_wiz_sorc);
     sp_levels_wiz_sorc_sizer->Add(spell_level_wiz_sorc, 1, wxALL);
 
     second_row_sizer_p2->Add(sp_levels_innate_sizer, 1, wxEXPAND|wxALL);
@@ -279,6 +284,21 @@ unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
     return result;
 }
 
+int GetIntFromString(const std::string& num) const
+{
+    unsigned int result;
+    try
+    {
+        result = std::stoi(num);
+    }
+    catch(std::exception& e)
+    {
+        result = -1;
+    }
+    
+    return result;
+}
+
 void SpellForm::SetSpellMetamagic()
 {
     unsigned int value = 0;
@@ -310,56 +330,56 @@ void SpellForm::SetSpellTargetType()
 
 void SpellForm::SetSpellLevels()
 {
-    spell_level_bard->Enable(false);
-    spell_level_cleric->Enable(false);
-    spell_level_druid->Enable(false);
-    spell_level_paladin->Enable(false);
-    spell_level_ranger->Enable(false);
-    spell_level_wiz_sorc->Enable(false);
-    spell_level_innate->Enable(false);
+    int bard = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Bard)].m_Data);
+    int cleric = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Cleric)].m_Data);
+    int druid = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Druid)].m_Data);
+    int paladin = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Paladin)].m_Data);
+    int ranger = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data);
+    int wiz_sorc = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data);
+    int innate = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Innate)].m_Data);
     
-    // TODO: Checkboxes here
+    spell_level_bard->Enable(bard >= 0);
+    spell_level_cleric->Enable(cleric >= 0);
+    spell_level_druid->Enable(druid >= 0);
+    spell_level_paladin->Enable(paladin >= 0);
+    spell_level_ranger->Enable(ranger >= 0);
+    spell_level_wiz_sorc->Enable(wiz_sorc >= 0);
+    spell_level_innate->Enable(innate >= 0);
     
-    if (!(*spell)[GETIDX(SPELL_2DA::Innate)].m_IsEmpty)
+    if (bard >= 0)
     {
-        spell_level_innate->Enable(true);
-        spell_level_innate->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Innate)].m_Data));
+        spell_level_bard->SetValue(bard);
+        spell_level_label_val_bard->SetLabel((*spell)[GETIDX(SPELL_2DA::Bard)].m_Data);
     }
-    
-    if (!(*spell)[GETIDX(SPELL_2DA::Bard)].m_IsEmpty)
+    if (cleric >= 0)
     {
-        spell_level_bard->Enable(true);
-        spell_level_bard->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Bard)].m_Data));
+        spell_level_cleric->SetValue(cleric);
+        spell_level_label_val_cleric->SetLabel((*spell)[GETIDX(SPELL_2DA::Cleric)].m_Data);
     }
-    
-    if (!(*spell)[GETIDX(SPELL_2DA::Cleric)].m_IsEmpty)
+    if (druid >= 0)
     {
-        spell_level_cleric->Enable(true);
-        spell_level_cleric->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Cleric)].m_Data));
+        spell_level_druid->SetValue(druid);
+        spell_level_label_val_druid->SetLabel((*spell)[GETIDX(SPELL_2DA::Druid)].m_Data);
     }
-    
-    if (!(*spell)[GETIDX(SPELL_2DA::Druid)].m_IsEmpty)
+    if (paladin >= 0)
     {
-        spell_level_druid->Enable(true);
-        spell_level_druid->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Druid)].m_Data));
+        spell_level_paladin->SetValue(paladin);
+        spell_level_label_val_paladin->SetLabel((*spell)[GETIDX(SPELL_2DA::Paladin)].m_Data);
     }
-    
-    if (!(*spell)[GETIDX(SPELL_2DA::Paladin)].m_IsEmpty)
+    if (ranger >= 0)
     {
-        spell_level_paladin->Enable(true);
-        spell_level_paladin->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Paladin)].m_Data));
+        spell_level_ranger->SetValue(ranger);
+        spell_level_label_val_ranger->SetLabel((*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data);
     }
-    
-    if (!(*spell)[GETIDX(SPELL_2DA::Ranger)].m_IsEmpty)
+    if (wiz_sorc >= 0)
     {
-        spell_level_ranger->Enable(true);
-        spell_level_ranger->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data));
+        spell_level_wiz_sorc->SetValue(wiz_sorc);
+        spell_level_label_val_wiz_sorc->SetLabel((*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data);
     }
-    
-    if (!(*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_IsEmpty)
+    if (innate >= 0)
     {
-        spell_level_wiz_sorc->Enable(true);
-        spell_level_wiz_sorc->SetValue(std::stoul((*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data));
+        spell_level_innate->SetValue(innate);
+        spell_level_label_val_innate->SetLabel((*spell)[GETIDX(SPELL_2DA::Innate)].m_Data);
     }
 }
 

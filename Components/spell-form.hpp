@@ -29,6 +29,7 @@ private:
     int GetSchoolSelection();
     int GetRangeSelection();
     unsigned int GetUIntFromHex(const std::string& hex) const;
+    int GetIntFromString(const std::string& num) const;
 
     TwoDA::Friendly::TwoDARow* spell;
     Tlk::Friendly::Tlk* tlk;
@@ -53,6 +54,14 @@ private:
     wxStaticText* spell_level_label_ranger;
     wxStaticText* spell_level_label_wiz_sorc;
     wxStaticText* spell_level_label_innate;
+    
+    wxStaticText* spell_level_label_val_innate;
+    wxStaticText* spell_level_label_val_bard;
+    wxStaticText* spell_level_label_val_cleric;
+    wxStaticText* spell_level_label_val_druid;
+    wxStaticText* spell_level_label_val_paladin;
+    wxStaticText* spell_level_label_val_ranger;
+    wxStaticText* spell_level_label_val_wiz_sorc;
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
