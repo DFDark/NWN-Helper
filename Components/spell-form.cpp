@@ -66,7 +66,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_level_label_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString("Paladin:"));
     spell_level_label_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("Ranger:"));
     spell_level_label_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("Wiz./Sorc."));
-    
+
     spell_level_label_val_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
     spell_level_label_val_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
     spell_level_label_val_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
@@ -284,7 +284,7 @@ unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
     return result;
 }
 
-int GetIntFromString(const std::string& num) const
+int SpellForm::GetIntFromString(const std::string& num) const
 {
     unsigned int result;
     try
@@ -295,7 +295,7 @@ int GetIntFromString(const std::string& num) const
     {
         result = -1;
     }
-    
+
     return result;
 }
 
@@ -337,7 +337,7 @@ void SpellForm::SetSpellLevels()
     int ranger = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data);
     int wiz_sorc = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data);
     int innate = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Innate)].m_Data);
-    
+
     spell_level_bard->Enable(bard >= 0);
     spell_level_cleric->Enable(cleric >= 0);
     spell_level_druid->Enable(druid >= 0);
@@ -345,7 +345,7 @@ void SpellForm::SetSpellLevels()
     spell_level_ranger->Enable(ranger >= 0);
     spell_level_wiz_sorc->Enable(wiz_sorc >= 0);
     spell_level_innate->Enable(innate >= 0);
-    
+
     if (bard >= 0)
     {
         spell_level_bard->SetValue(bard);

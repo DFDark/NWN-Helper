@@ -54,7 +54,7 @@ private:
     wxStaticText* spell_level_label_ranger;
     wxStaticText* spell_level_label_wiz_sorc;
     wxStaticText* spell_level_label_innate;
-    
+
     wxStaticText* spell_level_label_val_innate;
     wxStaticText* spell_level_label_val_bard;
     wxStaticText* spell_level_label_val_cleric;
