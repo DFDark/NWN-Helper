@@ -23,8 +23,9 @@ public:
         SCHOOL,
         RANGE,
         VS,
-        METAMAGIC,
-        TARGETTYPE
+        META_MAGIC,
+        TARGET_TYPE,
+        IMPACT_SCRIPT
     };
 
     SpellListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk);
@@ -41,9 +42,12 @@ private:
     TwoDA::Friendly::TwoDA* file;
     Tlk::Friendly::Tlk* tlk;
 
+    unsigned int GetUIntFromHex(const std::string& hex) const;
     std::size_t GetColumnID(unsigned int col) const;
     std::string GetSchool(std::string school) const;
     std::string GetRange(std::string range) const;
+    std::string GetMetaMagic(std::string metamagic) const;
+    std::string GetTargetType(std::string target_type) const;
 };
 
 #endif

@@ -51,6 +51,10 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
         } break;
         case SpellListModel::SCHOOL: variant = GetSchool((*file)[row][aux].m_Data); break;
         case SpellListModel::RANGE: variant = GetRange((*file)[row][aux].m_Data); break;
+        case SpellListModel::VS: variant = (*file)[row][aux].m_Data; break;
+        case SpellListModel::META_MAGIC: GetMetaMagic((*file)[row][aux].m_Data); break;
+        case SpellListModel::TARGET_TYPE: GetTargetType((*file)[row][aux].m_Data); break;
+        // case SpellListModel::IMPACT_SCRIPT: variant = (*file)[row][aux].m_Data; break;
         default: variant = (*file)[row][aux].m_Data; break;
     }
 }
@@ -75,6 +79,21 @@ TwoDA::Friendly::TwoDARow* SpellListModel::Get2daRow(unsigned int row)
     return &((*file)[row]);
 }
 
+unsigned int SpellListModel::GetUIntFromHex(const std::string& hex) const
+{
+    unsigned int result;
+    try
+    {
+        result = std::stoul(hex, nullptr, 16);
+    }
+    catch (std::exception& e)
+    {
+        result = 0;
+    }
+
+    return result;
+}
+
 std::size_t SpellListModel::GetColumnID(unsigned int col) const
 {
     switch (col)
@@ -84,6 +103,10 @@ std::size_t SpellListModel::GetColumnID(unsigned int col) const
         case SpellListModel::SPELL: return GETIDX(SPELL_2DA::Name);
         case SpellListModel::SCHOOL: return GETIDX(SPELL_2DA::School);
         case SpellListModel::RANGE: return GETIDX(SPELL_2DA::Range);
+        case SpellListModel::VS: return GETIDX(SPELL_2DA::VS);
+        case SpellListModel::META_MAGIC: return GETIDX(SPELL_2DA::META_MAGIC);
+        case SpellListModel::TARGET_TYPE: return GETIDX(SPELL_2DA::TARGET_TYPE);
+        case SpellListModel::IMPACT_SCRIPT: return GETIDX(SPELL_2DA::IMPACT_SCRIPT);
     }
 
     //TODO: Some sort of error management
@@ -120,5 +143,55 @@ std::string SpellListModel::GetRange(std::string range) const
         default:  result = "Personal"; break;
     }
 
+    return result;
+}
+
+std::string SpellListModel::GetMetaMagic(std::string metamagic) const
+{
+    std::vector<std::string> list;
+    unsigned int aux = GetUIntFromHex(metamagic);
+
+    if ((aux & METAMAGIC_EMPOWER) > 0)
+        list.emplace_back(std::string("Em"));
+    if ((aux & METAMAGIC_EXTEND) > 0)
+        list.emplace_back(std::string("Ex"));
+    if ((aux & METAMAGIC_MAXIMIZE) > 0)
+        list.emplace_back(std::string("M"));
+    if ((aux & METAMAGIC_QUICKEN) > 0)
+        list.emplace_back(std::string("Q"));
+    if ((aux & METAMAGIC_SILENT) > 0)
+        list.emplace_back(std::string("Si"));
+    if ((aux & METAMAGIC_STILL) > 0)
+        list.emplace_back(std::string("St"));
+    
+    std::string result = "";
+    for (unsigned int i = 0; i < list.size(); i++)
+        result += (i > 0 ? "," : "") + list[i];
+    return result;
+}
+
+std::string SpellListModel::GetTargetType(std::string target_type) const
+{
+    std::vector<std::string> list;
+    unsigned int aux = GetUIntFromHex(metamagic);
+
+    if ((aux & TARGET_SELF) > 0)
+        list.emplace_back(std::string("S"));
+    if ((aux & TARGET_CREATURE) > 0)
+        list.emplace_back(std::string("C"));
+    if ((aux & TARGET_AREAGROUND) > 0)
+        list.emplace_back(std::string("AoE"));
+    if ((aux & TARGET_ITEMS) > 0)
+        list.emplace_back(std::string("I"));
+    if ((aux & TARGET_DOORS) > 0)
+        list.emplace_back(std::string("D"));
+    if ((aux & TARGET_PLACEABLES) > 0)
+        list.emplace_back(std::string("Plc"));
+    if ((aux & TARGET_TRIGGERS) > 0)
+        list.emplace_back(std::string("Trg"));
+    
+    std::string result = "";
+    for (unsigned int i = 0; i < list.size(); i++)
+        result += (i > 0 ? "," : "") + list[i];
     return result;
 }

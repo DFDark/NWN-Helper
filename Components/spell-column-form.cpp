@@ -80,7 +80,11 @@ void SpellColumnForm::SetInitialColumns()
     columns["spell"] = false;
     columns["school"] = false;
     columns["range"] = false;
-
+    columns["vs"] = false;
+    columns["metamagic"] = false;
+    columns["targettype"] = false;
+    columns["impactscript"] = false;
+    
     for (auto const& column : configuration->GetSpellColumns())
     {
         columns[column] = true;

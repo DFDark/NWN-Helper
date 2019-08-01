@@ -112,6 +112,14 @@ void NWNHelperMain::SetSpellColumns()
             spells->AppendTextColumn("School", SpellListModel::SCHOOL);
         else if (col == "range")
             spells->AppendTextColumn("Range", SpellListModel::RANGE);
+        else if (col == "vs")
+            spells->AppendTextColumn("VS", SpellListModel::VS);
+        else if (col == "metamagic")
+            spells->AppendTextColumn("MetaMagic", SpellListModel::MetaMagic);
+        else if (col == "targettype")
+            spells->AppendTextColumn("TargetType", SpellListModel::TargetType);
+        else if (col == "impactscript")
+            spells->AppendTextColumn("ImpactScript", SpellListModel::ImpactScript);
     }
 }
 
