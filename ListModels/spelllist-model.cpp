@@ -104,9 +104,9 @@ std::size_t SpellListModel::GetColumnID(unsigned int col) const
         case SpellListModel::SCHOOL: return GETIDX(SPELL_2DA::School);
         case SpellListModel::RANGE: return GETIDX(SPELL_2DA::Range);
         case SpellListModel::VS: return GETIDX(SPELL_2DA::VS);
-        case SpellListModel::META_MAGIC: return GETIDX(SPELL_2DA::META_MAGIC);
-        case SpellListModel::TARGET_TYPE: return GETIDX(SPELL_2DA::TARGET_TYPE);
-        case SpellListModel::IMPACT_SCRIPT: return GETIDX(SPELL_2DA::IMPACT_SCRIPT);
+        case SpellListModel::META_MAGIC: return GETIDX(SPELL_2DA::MetaMagic);
+        case SpellListModel::TARGET_TYPE: return GETIDX(SPELL_2DA::TargetType);
+        case SpellListModel::IMPACT_SCRIPT: return GETIDX(SPELL_2DA::ImpactScript);
     }
 
     //TODO: Some sort of error management
@@ -163,7 +163,7 @@ std::string SpellListModel::GetMetaMagic(std::string metamagic) const
         list.emplace_back(std::string("Si"));
     if ((aux & METAMAGIC_STILL) > 0)
         list.emplace_back(std::string("St"));
-    
+
     std::string result = "";
     for (unsigned int i = 0; i < list.size(); i++)
         result += (i > 0 ? "," : "") + list[i];
@@ -173,7 +173,7 @@ std::string SpellListModel::GetMetaMagic(std::string metamagic) const
 std::string SpellListModel::GetTargetType(std::string target_type) const
 {
     std::vector<std::string> list;
-    unsigned int aux = GetUIntFromHex(metamagic);
+    unsigned int aux = GetUIntFromHex(target_type);
 
     if ((aux & TARGET_SELF) > 0)
         list.emplace_back(std::string("S"));
@@ -189,7 +189,7 @@ std::string SpellListModel::GetTargetType(std::string target_type) const
         list.emplace_back(std::string("Plc"));
     if ((aux & TARGET_TRIGGERS) > 0)
         list.emplace_back(std::string("Trg"));
-    
+
     std::string result = "";
     for (unsigned int i = 0; i < list.size(); i++)
         result += (i > 0 ? "," : "") + list[i];

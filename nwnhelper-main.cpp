@@ -115,11 +115,11 @@ void NWNHelperMain::SetSpellColumns()
         else if (col == "vs")
             spells->AppendTextColumn("VS", SpellListModel::VS);
         else if (col == "metamagic")
-            spells->AppendTextColumn("MetaMagic", SpellListModel::MetaMagic);
+            spells->AppendTextColumn("MetaMagic", SpellListModel::META_MAGIC);
         else if (col == "targettype")
-            spells->AppendTextColumn("TargetType", SpellListModel::TargetType);
+            spells->AppendTextColumn("TargetType", SpellListModel::TARGET_TYPE);
         else if (col == "impactscript")
-            spells->AppendTextColumn("ImpactScript", SpellListModel::ImpactScript);
+            spells->AppendTextColumn("ImpactScript", SpellListModel::IMPACT_SCRIPT);
     }
 }
 
