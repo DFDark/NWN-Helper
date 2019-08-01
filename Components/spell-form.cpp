@@ -9,7 +9,14 @@ enum
     SP_SLIDER_DRUID,
     SP_SLIDER_PALADIN,
     SP_SLIDER_RANGER,
-    SP_SLIDER_WIZ_SORC
+    SP_SLIDER_WIZ_SORC,
+    SP_CHECKBOX_INNATE,
+    SP_CHECKBOX_BARD,
+    SP_CHECKBOX_CLERIC,
+    SP_CHECKBOX_DRUID,
+    SP_CHECKBOX_PALADIN,
+    SP_CHECKBOX_RANGER,
+    SP_CHECKBOX_WIZ_SORC
 };
 
 wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
@@ -22,6 +29,13 @@ wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
     EVT_SLIDER(SP_SLIDER_PALADIN, SpellForm::OnPaladinChange)
     EVT_SLIDER(SP_SLIDER_RANGER, SpellForm::OnRangerChange)
     EVT_SLIDER(SP_SLIDER_WIZ_SORC, SpellForm::OnWizSorcChange)
+    EVT_CHECKBOX(SP_CHECKBOX_INNATE, SpellForm::OnInnateCheck)
+    EVT_CHECKBOX(SP_CHECKBOX_BARD, SpellForm::OnBardCheck)
+    EVT_CHECKBOX(SP_CHECKBOX_CLERIC, SpellForm::OnClericCheck)
+    EVT_CHECKBOX(SP_CHECKBOX_DRUID, SpellForm::OnDruidCheck)
+    EVT_CHECKBOX(SP_CHECKBOX_PALADIN, SpellForm::OnPaladinCheck)
+    EVT_CHECKBOX(SP_CHECKBOX_RANGER, SpellForm::OnRangerCheck)
+    EVT_CHECKBOX(SP_CHECKBOX_WIZ_SORC, SpellForm::OnWizSorcCheck)
 wxEND_EVENT_TABLE()
 
 SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk)
@@ -76,14 +90,14 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_doors = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Doors"));
     target_placeables = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Placeables"));
     target_triggers = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Triggers"));
-
-    spell_level_label_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("Innate:    "));
-    spell_level_label_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("Bard:      "));
-    spell_level_label_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString("Cleric:    "));
-    spell_level_label_druid = new wxStaticText(spell_levels, wxID_ANY, wxString("Druid:     "));
-    spell_level_label_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString("Paladin:   "));
-    spell_level_label_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("Ranger:    "));
-    spell_level_label_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("Wiz./Sorc.:"));
+    
+    spell_level_checkbox_bard = new wxCheckBox(spell_levels, SP_CHECKBOX_BARD, wxString("Bard:      "));
+    spell_level_checkbox_cleric = new wxCheckBox(spell_levels, SP_CHECKBOX_CLERIC, wxString("Cleric:    "));
+    spell_level_checkbox_druid = new wxCheckBox(spell_levels, SP_CHECKBOX_DRUID, wxString("Druid:     "));
+    spell_level_checkbox_paladin = new wxCheckBox(spell_levels, SP_CHECKBOX_PALADIN, wxString("Paladin:   "));
+    spell_level_checkbox_ranger = new wxCheckBox(spell_levels, SP_CHECKBOX_RANGER, wxString("Ranger:    "));
+    spell_level_checkbox_wiz_sorc = new wxCheckBox(spell_levels, SP_CHECKBOX_WIZ_SORC, wxString("Wiz./Sorc.:"));
+    spell_level_checkbox_innate = new wxCheckBox(spell_levels, SP_CHECKBOX_INNATE, wxString("Innate:    "));
 
     spell_level_label_val_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
     spell_level_label_val_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
@@ -98,7 +112,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_level_druid = new wxSlider(spell_levels, SP_SLIDER_CLERIC, 0, 0, 9);
     spell_level_paladin = new wxSlider(spell_levels, SP_SLIDER_DRUID, 0, 0, 9);
     spell_level_ranger = new wxSlider(spell_levels, SP_SLIDER_PALADIN, 0, 0, 9);
-    spell_level_wiz_sorc = new wxSlider(spell_levels, SP_SLIDER_RANGER, , 0, 0, 9);
+    spell_level_wiz_sorc = new wxSlider(spell_levels, SP_SLIDER_RANGER, 0, 0, 9);
     spell_level_innate = new wxSlider(spell_levels, SP_SLIDER_WIZ_SORC, 0, 0, 9);
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
@@ -175,25 +189,25 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* sp_levels_ranger_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* sp_levels_wiz_sorc_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    sp_levels_innate_sizer->Add(spell_level_label_innate);
+    sp_levels_innate_sizer->Add(spell_level_checkbox_innate);
     sp_levels_innate_sizer->Add(spell_level_label_val_innate);
     sp_levels_innate_sizer->Add(spell_level_innate, 1, wxALL);
-    sp_levels_bard_sizer->Add(spell_level_label_bard);
+    sp_levels_bard_sizer->Add(spell_level_checkbox_bard);
     sp_levels_bard_sizer->Add(spell_level_label_val_bard);
     sp_levels_bard_sizer->Add(spell_level_bard, 1, wxALL);
-    sp_levels_cleric_sizer->Add(spell_level_label_cleric);
+    sp_levels_cleric_sizer->Add(spell_level_checkbox_cleric);
     sp_levels_cleric_sizer->Add(spell_level_label_val_cleric);
     sp_levels_cleric_sizer->Add(spell_level_cleric, 1, wxALL);
-    sp_levels_druid_sizer->Add(spell_level_label_druid);
+    sp_levels_druid_sizer->Add(spell_level_checkbox_druid);
     sp_levels_druid_sizer->Add(spell_level_label_val_druid);
     sp_levels_druid_sizer->Add(spell_level_druid, 1, wxALL);
-    sp_levels_paladin_sizer->Add(spell_level_label_paladin);
+    sp_levels_paladin_sizer->Add(spell_level_checkbox_paladin);
     sp_levels_paladin_sizer->Add(spell_level_label_val_paladin);
     sp_levels_paladin_sizer->Add(spell_level_paladin, 1, wxALL);
-    sp_levels_ranger_sizer->Add(spell_level_label_ranger);
+    sp_levels_ranger_sizer->Add(spell_level_checkbox_ranger);
     sp_levels_ranger_sizer->Add(spell_level_label_val_ranger);
     sp_levels_ranger_sizer->Add(spell_level_ranger, 1, wxALL);
-    sp_levels_wiz_sorc_sizer->Add(spell_level_label_wiz_sorc);
+    sp_levels_wiz_sorc_sizer->Add(spell_level_checkbox_wiz_sorc);
     sp_levels_wiz_sorc_sizer->Add(spell_level_label_val_wiz_sorc);
     sp_levels_wiz_sorc_sizer->Add(spell_level_wiz_sorc, 1, wxALL);
 
@@ -364,6 +378,14 @@ void SpellForm::SetSpellLevels()
     spell_level_wiz_sorc->Enable(wiz_sorc >= 0);
     spell_level_innate->Enable(innate >= 0);
 
+    spell_level_checkbox_bard->SetValue(bard >= 0);
+    spell_level_checkbox_cleric->SetValue(cleric >= 0);
+    spell_level_checkbox_druid->SetValue(druid >= 0);
+    spell_level_checkbox_paladin->SetValue(paladin >= 0);
+    spell_level_checkbox_ranger->SetValue(ranger >= 0);
+    spell_level_checkbox_wiz_sorc->SetValue(wiz_sorc >= 0);
+    spell_level_checkbox_innate->SetValue(innate >= 0);
+
     if (bard >= 0)
     {
         spell_level_bard->SetValue(bard);
@@ -479,4 +501,39 @@ void SpellForm::OnWizSorcChange(wxCommandEvent& event)
 {
     int level = spell_level_wiz_sorc->GetValue();
     spell_level_label_val_wiz_sorc->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnInnateCheck(wxCommandEvent& event)
+{
+    spell_level_innate->Enable(spell_level_checkbox_innate->IsChecked());
+}
+
+void SpellForm::OnBardCheck(wxCommandEvent& event)
+{
+    spell_level_bard->Enable(spell_level_checkbox_bard->IsChecked());
+}
+
+void SpellForm::OnClericCheck(wxCommandEvent& event)
+{
+    spell_level_cleric->Enable(spell_level_checkbox_cleric->IsChecked());
+}
+
+void SpellForm::OnDruidCheck(wxCommandEvent& event)
+{
+    spell_level_druid->Enable(spell_level_checkbox_druid->IsChecked());
+}
+
+void SpellForm::OnPaladinCheck(wxCommandEvent& event)
+{
+    spell_level_paladin->Enable(spell_level_checkbox_paladin->IsChecked());
+}
+
+void SpellForm::OnRangerCheck(wxCommandEvent& event)
+{
+    spell_level_ranger->Enable(spell_level_checkbox_ranger->IsChecked());
+}
+
+void SpellForm::OnWizSorcCheck(wxCommandEvent& event)
+{
+    spell_level_wiz_sorc->Enable(spell_level_checkbox_wiz_sorc->IsChecked());
 }

@@ -38,6 +38,14 @@ private:
     void OnPaladinChange(wxCommandEvent& event);
     void OnRangerChange(wxCommandEvent& event);
     void OnWizSorcChange(wxCommandEvent& event);
+    
+    void OnInnateCheck(wxCommandEvent& event);
+    void OnBardCheck(wxCommandEvent& event);
+    void OnClericCheck(wxCommandEvent& event);
+    void OnDruidCheck(wxCommandEvent& event);
+    void OnPaladinCheck(wxCommandEvent& event);
+    void OnRangerCheck(wxCommandEvent& event);
+    void OnWizSorcCheck(wxCommandEvent& event);
 
     TwoDA::Friendly::TwoDARow* spell;
     Tlk::Friendly::Tlk* tlk;
@@ -55,13 +63,14 @@ private:
     wxStaticText* spellschool_label;
     wxStaticText* spellrange_label;
     wxStaticText* impact_script_label;
-    wxStaticText* spell_level_label_bard;
-    wxStaticText* spell_level_label_cleric;
-    wxStaticText* spell_level_label_druid;
-    wxStaticText* spell_level_label_paladin;
-    wxStaticText* spell_level_label_ranger;
-    wxStaticText* spell_level_label_wiz_sorc;
-    wxStaticText* spell_level_label_innate;
+
+    wxCheckBox* spell_level_checkbox_bard;
+    wxCheckBox* spell_level_checkbox_cleric;
+    wxCheckBox* spell_level_checkbox_druid;
+    wxCheckBox* spell_level_checkbox_paladin;
+    wxCheckBox* spell_level_checkbox_ranger;
+    wxCheckBox* spell_level_checkbox_wiz_sorc;
+    wxCheckBox* spell_level_checkbox_innate;
 
     wxStaticText* spell_level_label_val_innate;
     wxStaticText* spell_level_label_val_bard;
