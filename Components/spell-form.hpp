@@ -30,6 +30,14 @@ private:
     int GetRangeSelection();
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
+    
+    void OnInnateChange(wxCommandEvent& event);
+    void OnBardChange(wxCommandEvent& event);
+    void OnClericChange(wxCommandEvent& event);
+    void OnDruidChange(wxCommandEvent& event);
+    void OnPaladinChange(wxCommandEvent& event);
+    void OnRangerChange(wxCommandEvent& event);
+    void OnWizSorcChange(wxCommandEvent& event);
 
     TwoDA::Friendly::TwoDARow* spell;
     Tlk::Friendly::Tlk* tlk;

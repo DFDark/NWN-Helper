@@ -1,9 +1,27 @@
 #include "spell-form.hpp"
 #include "../constants.hpp"
 
+enum
+{
+    SP_SLIDER_INNATE = wxID_HIGHEST + 1,
+    SP_SLIDER_BARD,
+    SP_SLIDER_CLERIC,
+    SP_SLIDER_DRUID,
+    SP_SLIDER_PALADIN,
+    SP_SLIDER_RANGER,
+    SP_SLIDER_WIZ_SORC
+};
+
 wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
     EVT_MENU(wxID_OK, SpellForm::OnOk)
     EVT_MENU(wxID_CANCEL, SpellForm::OnCancel)
+    EVT_SLIDER(SP_SLIDER_INNATE, SpellForm::OnInnateChange)
+    EVT_SLIDER(SP_SLIDER_BARD, SpellForm::OnBardChange)
+    EVT_SLIDER(SP_SLIDER_CLERIC, SpellForm::OnClericChange)
+    EVT_SLIDER(SP_SLIDER_DRUID, SpellForm::OnDruidChange)
+    EVT_SLIDER(SP_SLIDER_PALADIN, SpellForm::OnPaladinChange)
+    EVT_SLIDER(SP_SLIDER_RANGER, SpellForm::OnRangerChange)
+    EVT_SLIDER(SP_SLIDER_WIZ_SORC, SpellForm::OnWizSorcChange)
 wxEND_EVENT_TABLE()
 
 SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk)
@@ -59,13 +77,13 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_placeables = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Placeables"));
     target_triggers = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Triggers"));
 
-    spell_level_label_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("Innate:"));
-    spell_level_label_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("Bard:"));
-    spell_level_label_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString("Cleric:"));
-    spell_level_label_druid = new wxStaticText(spell_levels, wxID_ANY, wxString("Druid:"));
-    spell_level_label_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString("Paladin:"));
-    spell_level_label_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("Ranger:"));
-    spell_level_label_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("Wiz./Sorc."));
+    spell_level_label_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("Innate:    "));
+    spell_level_label_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("Bard:      "));
+    spell_level_label_cleric = new wxStaticText(spell_levels, wxID_ANY, wxString("Cleric:    "));
+    spell_level_label_druid = new wxStaticText(spell_levels, wxID_ANY, wxString("Druid:     "));
+    spell_level_label_paladin = new wxStaticText(spell_levels, wxID_ANY, wxString("Paladin:   "));
+    spell_level_label_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("Ranger:    "));
+    spell_level_label_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("Wiz./Sorc.:"));
 
     spell_level_label_val_innate = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
     spell_level_label_val_bard = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
@@ -75,13 +93,13 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_level_label_val_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
     spell_level_label_val_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
 
-    spell_level_bard = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
-    spell_level_cleric = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
-    spell_level_druid = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
-    spell_level_paladin = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
-    spell_level_ranger = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
-    spell_level_wiz_sorc = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
-    spell_level_innate = new wxSlider(spell_levels, wxID_ANY, 0, 0, 9);
+    spell_level_bard = new wxSlider(spell_levels, SP_SLIDER_INNATE, 0, 0, 9);
+    spell_level_cleric = new wxSlider(spell_levels, SP_SLIDER_BARD, 0, 0, 9);
+    spell_level_druid = new wxSlider(spell_levels, SP_SLIDER_CLERIC, 0, 0, 9);
+    spell_level_paladin = new wxSlider(spell_levels, SP_SLIDER_DRUID, 0, 0, 9);
+    spell_level_ranger = new wxSlider(spell_levels, SP_SLIDER_PALADIN, 0, 0, 9);
+    spell_level_wiz_sorc = new wxSlider(spell_levels, SP_SLIDER_RANGER, , 0, 0, 9);
+    spell_level_innate = new wxSlider(spell_levels, SP_SLIDER_WIZ_SORC, 0, 0, 9);
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -419,4 +437,46 @@ void SpellForm::InitFormValues()
     }
 
     impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
+}
+
+void SpellForm::OnInnateChange(wxCommandEvent& event)
+{
+    int level = spell_level_innate->GetValue();
+    spell_level_label_val_innate->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnBardChange(wxCommandEvent& event)
+{
+    int level = spell_level_bard->GetValue();
+    spell_level_label_val_bard->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnClericChange(wxCommandEvent& event)
+{
+    int level = spell_level_cleric->GetValue();
+    spell_level_label_val_cleric->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnDruidChange(wxCommandEvent& event)
+{
+    int level = spell_level_druid->GetValue();
+    spell_level_label_val_druid->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnPaladinChange(wxCommandEvent& event)
+{
+    int level = spell_level_paladin->GetValue();
+    spell_level_label_val_paladin->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnRangerChange(wxCommandEvent& event)
+{
+    int level = spell_level_ranger->GetValue();
+    spell_level_label_val_ranger->SetLabel(std::to_string(level));
+}
+
+void SpellForm::OnWizSorcChange(wxCommandEvent& event)
+{
+    int level = spell_level_wiz_sorc->GetValue();
+    spell_level_label_val_wiz_sorc->SetLabel(std::to_string(level));
 }
