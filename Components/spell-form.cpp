@@ -90,7 +90,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_doors = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Doors"));
     target_placeables = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Placeables"));
     target_triggers = new wxToggleButton(target_staticbox, wxID_ANY, wxString("Triggers"));
-    
+
     spell_level_checkbox_bard = new wxCheckBox(spell_levels, SP_CHECKBOX_BARD, wxString("Bard:      "));
     spell_level_checkbox_cleric = new wxCheckBox(spell_levels, SP_CHECKBOX_CLERIC, wxString("Cleric:    "));
     spell_level_checkbox_druid = new wxCheckBox(spell_levels, SP_CHECKBOX_DRUID, wxString("Druid:     "));
@@ -107,13 +107,13 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_level_label_val_ranger = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
     spell_level_label_val_wiz_sorc = new wxStaticText(spell_levels, wxID_ANY, wxString("0"));
 
-    spell_level_bard = new wxSlider(spell_levels, SP_SLIDER_INNATE, 0, 0, 9);
-    spell_level_cleric = new wxSlider(spell_levels, SP_SLIDER_BARD, 0, 0, 9);
-    spell_level_druid = new wxSlider(spell_levels, SP_SLIDER_CLERIC, 0, 0, 9);
-    spell_level_paladin = new wxSlider(spell_levels, SP_SLIDER_DRUID, 0, 0, 9);
-    spell_level_ranger = new wxSlider(spell_levels, SP_SLIDER_PALADIN, 0, 0, 9);
-    spell_level_wiz_sorc = new wxSlider(spell_levels, SP_SLIDER_RANGER, 0, 0, 9);
-    spell_level_innate = new wxSlider(spell_levels, SP_SLIDER_WIZ_SORC, 0, 0, 9);
+    spell_level_bard = new wxSlider(spell_levels, SP_SLIDER_BARD, 0, 0, 9);
+    spell_level_cleric = new wxSlider(spell_levels, SP_SLIDER_CLERIC, 0, 0, 9);
+    spell_level_druid = new wxSlider(spell_levels, SP_SLIDER_DRUID, 0, 0, 9);
+    spell_level_paladin = new wxSlider(spell_levels, SP_SLIDER_PALADIN, 0, 0, 9);
+    spell_level_ranger = new wxSlider(spell_levels, SP_SLIDER_RANGER, 0, 0, 9);
+    spell_level_wiz_sorc = new wxSlider(spell_levels, SP_SLIDER_WIZ_SORC, 0, 0, 9);
+    spell_level_innate = new wxSlider(spell_levels, SP_SLIDER_INNATE, 0, 0, 9);
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -469,6 +469,7 @@ void SpellForm::OnInnateChange(wxCommandEvent& event)
 
 void SpellForm::OnBardChange(wxCommandEvent& event)
 {
+    printf("call 1\n" );
     int level = spell_level_bard->GetValue();
     spell_level_label_val_bard->SetLabel(std::to_string(level));
 }
