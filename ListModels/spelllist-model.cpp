@@ -52,8 +52,8 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
         case SpellListModel::SCHOOL: variant = GetSchool((*file)[row][aux].m_Data); break;
         case SpellListModel::RANGE: variant = GetRange((*file)[row][aux].m_Data); break;
         case SpellListModel::VS: variant = (*file)[row][aux].m_Data; break;
-        case SpellListModel::META_MAGIC: GetMetaMagic((*file)[row][aux].m_Data); break;
-        case SpellListModel::TARGET_TYPE: GetTargetType((*file)[row][aux].m_Data); break;
+        case SpellListModel::META_MAGIC: variant = GetMetaMagic((*file)[row][aux].m_Data); break;
+        case SpellListModel::TARGET_TYPE: variant = GetTargetType((*file)[row][aux].m_Data); break;
         // case SpellListModel::IMPACT_SCRIPT: variant = (*file)[row][aux].m_Data; break;
         default: variant = (*file)[row][aux].m_Data; break;
     }
