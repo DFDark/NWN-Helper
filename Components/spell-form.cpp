@@ -72,6 +72,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     metamagic_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Metamagic"));
     target_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Target"));
     spell_levels = new wxStaticBox(panel, wxID_ANY, wxString("Spell levels"));
+    conj_settings = new wxStaticBox(panel, wxID_ANY, wxString("Conjuration settings"));
 
     verbal = new wxToggleButton(spell_components, wxID_ANY, wxString("Verbal"));
     somatic = new wxToggleButton(spell_components, wxID_ANY, wxString("Somatic"));
@@ -115,6 +116,18 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_level_wiz_sorc = new wxSlider(spell_levels, SP_SLIDER_WIZ_SORC, 0, 0, 9);
     spell_level_innate = new wxSlider(spell_levels, SP_SLIDER_INNATE, 0, 0, 9);
 
+    conj_time_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Time"));
+    conj_anim_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Animation"));
+    conj_head_visual_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Head visual"));
+    conj_hand_visual_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Hand visual"));
+    conj_ground_visual_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Ground visual"));
+
+    conj_time = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+    conj_anim = new wxComboBox(conj_settings, wxID_ANY, wxString(""));
+    conj_head_visual = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+    conj_hand_visual = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+    conj_ground_visual = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
 
@@ -127,6 +140,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     wxBoxSizer* first_row_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* second_row_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* third_row_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* second_row_sizer_p1 = new wxBoxSizer(wxVERTICAL);
     wxStaticBoxSizer* second_row_sizer_p2 = new wxStaticBoxSizer(spell_levels, wxVERTICAL);
@@ -221,8 +235,40 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     second_row_sizer->Add(second_row_sizer_p2, 1, wxEXPAND|wxALL, 5);
 
+    wxBoxSizer* conj_time_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_anim_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_head_visual_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_hand_visual_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_ground_visual_sizer = new wxBoxSizer(wxVERTICAL);
+
+    wxBoxSizer* conj_settings_sizer_r1 = new wxBoxSizer(wxHORIZONTAL);
+
+    wxStaticBoxSizer* conj_settings_sizer = new wxStaticBoxSizer(conj_settings, wxVERTICAL);
+
+    conj_time_sizer->Add(conj_time_label);
+    conj_time_sizer->Add(conj_time, 0, wxALL);
+    conj_anim_sizer->Add(conj_anim_label);
+    conj_anim_sizer->Add(conj_anim, 1, wxEXPAND|wxALL);
+    conj_head_visual_sizer->Add(conj_head_visual_label);
+    conj_head_visual_sizer->Add(conj_head_visual, 1, wxEXPAND|wxALL);
+    conj_hand_visual_sizer->Add(conj_hand_visual_label);
+    conj_hand_visual_sizer->Add(conj_hand_visual, 1, wxEXPAND|wxALL);
+    conj_ground_visual_sizer->Add(conj_ground_visual_label);
+    conj_ground_visual_sizer->Add(conj_ground_visual, 1, wxEXPAND|wxALL);
+
+    conj_settings_sizer_r1->Add(conj_time_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_anim_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_head_visual_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_hand_visual_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_ground_visual_sizer, 1, wxEXPAND|wxALL);
+
+    conj_settings_sizer->Add(conj_settings_sizer_r1, 0);
+
+    //third_row_sizer->Add(conj_settings_sizer, 1, wxEXPAND);
+    second_row_sizer_p1->Add(conj_settings_sizer, 1, wxEXPAND);
     main_sizer->Add(first_row_sizer);
     main_sizer->Add(second_row_sizer, 0, wxEXPAND);
+    //main_sizer->Add(third_row_sizer);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 

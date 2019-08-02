@@ -30,7 +30,7 @@ private:
     int GetRangeSelection();
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
-    
+
     void OnInnateChange(wxCommandEvent& event);
     void OnBardChange(wxCommandEvent& event);
     void OnClericChange(wxCommandEvent& event);
@@ -38,7 +38,7 @@ private:
     void OnPaladinChange(wxCommandEvent& event);
     void OnRangerChange(wxCommandEvent& event);
     void OnWizSorcChange(wxCommandEvent& event);
-    
+
     void OnInnateCheck(wxCommandEvent& event);
     void OnBardCheck(wxCommandEvent& event);
     void OnClericCheck(wxCommandEvent& event);
@@ -80,17 +80,29 @@ private:
     wxStaticText* spell_level_label_val_ranger;
     wxStaticText* spell_level_label_val_wiz_sorc;
 
+    wxStaticText* conj_time_label;
+    wxStaticText* conj_anim_label;
+    wxStaticText* conj_head_visual_label;
+    wxStaticText* conj_hand_visual_label;
+    wxStaticText* conj_ground_visual_label;
+
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
     wxStaticBox* target_staticbox;
     wxStaticBox* spell_levels;
+    wxStaticBox* conj_settings;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
     wxTextCtrl* impact_script;
+    wxTextCtrl* conj_time;
+    wxTextCtrl* conj_head_visual;
+    wxTextCtrl* conj_hand_visual;
+    wxTextCtrl* conj_ground_visual;
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
+    wxComboBox* conj_anim;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
