@@ -24,10 +24,12 @@ private:
     void SetSpellMetamagic();
     void SetSpellTargetType();
     void SetSpellLevels();
+    void SetConjValues();
 
     void InitFormValues();
     int GetSchoolSelection();
     int GetRangeSelection();
+    int GetConjAnimSelection();
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
     unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) const;

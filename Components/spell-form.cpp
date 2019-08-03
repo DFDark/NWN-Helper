@@ -255,7 +255,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxStaticBoxSizer* conj_settings_sizer = new wxStaticBoxSizer(conj_settings, wxVERTICAL);
 
     conj_time_sizer->Add(conj_time_label);
-    conj_time_sizer->Add(conj_time, 0, wxALL);
+    conj_time_sizer->Add(conj_time, 1, wxEXPAND|wxALL);
     conj_anim_sizer->Add(conj_anim_label);
     conj_anim_sizer->Add(conj_anim, 1, wxEXPAND|wxALL);
     conj_head_visual_sizer->Add(conj_head_visual_label);
@@ -280,14 +280,9 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     conj_settings_sizer_r2->Add(conj_hand_visual_sizer, 1, wxEXPAND|wxALL);
     conj_settings_sizer_r2->Add(conj_ground_visual_sizer, 1, wxEXPAND|wxALL);
 
-
     conj_settings_sizer->Add(conj_settings_sizer_r1, 1, wxEXPAND);
     conj_settings_sizer->Add(conj_settings_sizer_r2, 1, wxEXPAND);
-/*
-conj_sound_vfx
-conj_sound_male
-conj_sound_female
-*/
+
     //third_row_sizer->Add(conj_settings_sizer, 1, wxEXPAND);
     second_row_sizer_p1->Add(conj_settings_sizer, 1, wxEXPAND);
     main_sizer->Add(first_row_sizer);
@@ -348,6 +343,19 @@ int SpellForm::GetRangeSelection()
             case 'L': return 4; break;
             default: return 0; break;
         }
+    }
+
+    return 0;
+}
+
+int SpellForm::GetConjAnimSelection()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::ConjAnim)].m_IsEmpty)
+    {
+        // head = 0, hand = 1
+        // if it's not hand, we can just fall back on default return
+        if ((*spell)[GETIDX(SPELL_2DA::ConjAnim)].m_Data == std::string("hand"))
+            return 1;
     }
 
     return 0;
@@ -529,10 +537,15 @@ void SpellForm::InitFormValues()
     spell_range->Append(std::string("Long"));
     spell_range->SetSelection(GetRangeSelection());
 
+    conj_anim->Append(std::string("Head"));
+    conj_anim->Append(std::string("Hand"));
+    conj_anim->SetSelection(GetConjAnimSelection());
+
     SetSpellComponents();
     SetSpellMetamagic();
     SetSpellTargetType();
     SetSpellLevels();
+    SetConjValues();
 
     label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
@@ -618,4 +631,18 @@ void SpellForm::OnRangerCheck(wxCommandEvent& event)
 void SpellForm::OnWizSorcCheck(wxCommandEvent& event)
 {
     spell_level_wiz_sorc->Enable(spell_level_checkbox_wiz_sorc->IsChecked());
+}
+
+void SpellForm::SetConjValues()
+{
+    // Since we're just adding only text values (for now)
+    // We can simply ignore empty checks
+    // TODO: remove asterisks
+    conj_time->SetValue((*spell)[GETIDX(SPELL_2DA::ConjTime)].m_Data);
+    conj_head_visual->SetValue((*spell)[GETIDX(SPELL_2DA::ConjHeadVisual)].m_Data);
+    conj_hand_visual->SetValue((*spell)[GETIDX(SPELL_2DA::ConjHandVisual)].m_Data);
+    conj_ground_visual->SetValue((*spell)[GETIDX(SPELL_2DA::ConjGrndVisual)].m_Data);
+    conj_sound_vfx->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundVFX)].m_Data);
+    conj_sound_male->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundMale)].m_Data);
+    conj_sound_female->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundFemale)].m_Data);
 }
