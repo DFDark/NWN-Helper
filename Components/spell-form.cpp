@@ -364,7 +364,7 @@ unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
 
 int SpellForm::GetIntFromString(const std::string& num) const
 {
-    unsigned int result;
+    int result;
     try
     {
         result = std::stoi(num);
@@ -374,6 +374,20 @@ int SpellForm::GetIntFromString(const std::string& num) const
         result = -1;
     }
 
+    return result;
+}
+
+unsigned int SpellForm::GetUintFromString(const std::string& num, unsigned int err) const
+{
+    unsigned int result;
+    try
+    {
+        result = std::stoul(num);
+    }
+    catch (std::exception& e)
+    {
+        result = err;
+    }
     return result;
 }
 
@@ -498,11 +512,9 @@ void SpellForm::InitFormValues()
 
     label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
-    if (!(*spell)[GETIDX(SPELL_2DA::Name)].m_IsEmpty)
-    {
-        std::uint32_t strref = std::stoul((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
-        name->SetValue(wxString((*tlk)[strref]));
-    }
+    // if strref > 0 we will output just empty name
+    std::uint32_t strref = GetUintFromString((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
+    name->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
 
     impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
 }

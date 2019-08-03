@@ -30,6 +30,7 @@ private:
     int GetRangeSelection();
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
+    unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) const;
 
     void OnInnateChange(wxCommandEvent& event);
     void OnBardChange(wxCommandEvent& event);
