@@ -86,6 +86,9 @@ private:
     wxStaticText* conj_head_visual_label;
     wxStaticText* conj_hand_visual_label;
     wxStaticText* conj_ground_visual_label;
+    wxStaticText* conj_sound_vfx_label;
+    wxStaticText* conj_sound_male_label;
+    wxStaticText* conj_sound_female_label;
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
@@ -100,6 +103,9 @@ private:
     wxTextCtrl* conj_head_visual;
     wxTextCtrl* conj_hand_visual;
     wxTextCtrl* conj_ground_visual;
+    wxTextCtrl* conj_sound_vfx;
+    wxTextCtrl* conj_sound_male;
+    wxTextCtrl* conj_sound_female;
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;

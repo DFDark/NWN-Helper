@@ -59,14 +59,13 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     /*
     * FORM SELECT
     */
     spell_school = new wxComboBox(panel, wxID_ANY, wxString(""));
     spell_range = new wxComboBox(panel, wxID_ANY, wxString(""));
-
-    impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     spell_components = new wxStaticBox(panel, wxID_ANY, wxString("Spell Components"));
     metamagic_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Metamagic"));
@@ -121,12 +120,18 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     conj_head_visual_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Head visual"));
     conj_hand_visual_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Hand visual"));
     conj_ground_visual_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Ground visual"));
+    conj_sound_vfx_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Sound VFX"));
+    conj_sound_male_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Sound Male"));
+    conj_sound_female_label = new wxStaticText(conj_settings, wxID_ANY, wxString("Sound Female"));
 
     conj_time = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
     conj_anim = new wxComboBox(conj_settings, wxID_ANY, wxString(""));
     conj_head_visual = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
     conj_hand_visual = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
     conj_ground_visual = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+    conj_sound_vfx = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+    conj_sound_male = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
+    conj_sound_female = new wxTextCtrl(conj_settings, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -240,8 +245,12 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* conj_head_visual_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* conj_hand_visual_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* conj_ground_visual_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_sound_vfx_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_sound_male_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* conj_sound_female_sizer = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* conj_settings_sizer_r1 = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* conj_settings_sizer_r2 = new wxBoxSizer(wxHORIZONTAL);
 
     wxStaticBoxSizer* conj_settings_sizer = new wxStaticBoxSizer(conj_settings, wxVERTICAL);
 
@@ -255,15 +264,30 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     conj_hand_visual_sizer->Add(conj_hand_visual, 1, wxEXPAND|wxALL);
     conj_ground_visual_sizer->Add(conj_ground_visual_label);
     conj_ground_visual_sizer->Add(conj_ground_visual, 1, wxEXPAND|wxALL);
+    conj_sound_vfx_sizer->Add(conj_sound_vfx_label);
+    conj_sound_vfx_sizer->Add(conj_sound_vfx, 1, wxEXPAND|wxALL);
+    conj_sound_male_sizer->Add(conj_sound_male_label);
+    conj_sound_male_sizer->Add(conj_sound_male, 1, wxEXPAND|wxALL);
+    conj_sound_female_sizer->Add(conj_sound_female_label);
+    conj_sound_female_sizer->Add(conj_sound_female, 1, wxEXPAND|wxALL);
 
     conj_settings_sizer_r1->Add(conj_time_sizer, 1, wxEXPAND|wxALL);
-    conj_settings_sizer_r1->Add(conj_anim_sizer, 1, wxEXPAND|wxALL);
-    conj_settings_sizer_r1->Add(conj_head_visual_sizer, 1, wxEXPAND|wxALL);
-    conj_settings_sizer_r1->Add(conj_hand_visual_sizer, 1, wxEXPAND|wxALL);
-    conj_settings_sizer_r1->Add(conj_ground_visual_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_sound_vfx_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_sound_male_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r1->Add(conj_sound_female_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r2->Add(conj_anim_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r2->Add(conj_head_visual_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r2->Add(conj_hand_visual_sizer, 1, wxEXPAND|wxALL);
+    conj_settings_sizer_r2->Add(conj_ground_visual_sizer, 1, wxEXPAND|wxALL);
 
-    conj_settings_sizer->Add(conj_settings_sizer_r1, 0);
 
+    conj_settings_sizer->Add(conj_settings_sizer_r1, 1, wxEXPAND);
+    conj_settings_sizer->Add(conj_settings_sizer_r2, 1, wxEXPAND);
+/*
+conj_sound_vfx
+conj_sound_male
+conj_sound_female
+*/
     //third_row_sizer->Add(conj_settings_sizer, 1, wxEXPAND);
     second_row_sizer_p1->Add(conj_settings_sizer, 1, wxEXPAND);
     main_sizer->Add(first_row_sizer);
@@ -527,7 +551,6 @@ void SpellForm::OnInnateChange(wxCommandEvent& event)
 
 void SpellForm::OnBardChange(wxCommandEvent& event)
 {
-    printf("call 1\n" );
     int level = spell_level_bard->GetValue();
     spell_level_label_val_bard->SetLabel(std::to_string(level));
 }
