@@ -91,12 +91,19 @@ private:
     wxStaticText* conj_sound_vfx_label;
     wxStaticText* conj_sound_male_label;
     wxStaticText* conj_sound_female_label;
+    wxStaticText* cast_time_label;
+    wxStaticText* cast_anim_label;
+    wxStaticText* cast_head_visual_label;
+    wxStaticText* cast_hand_visual_label;
+    wxStaticText* cast_ground_visual_label;
+    wxStaticText* cast_sound_label;
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
     wxStaticBox* target_staticbox;
     wxStaticBox* spell_levels;
     wxStaticBox* conj_settings;
+    wxStaticBox* cast_settings;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -108,10 +115,16 @@ private:
     wxTextCtrl* conj_sound_vfx;
     wxTextCtrl* conj_sound_male;
     wxTextCtrl* conj_sound_female;
+    wxTextCtrl* cast_time;
+    wxTextCtrl* cast_head_visual;
+    wxTextCtrl* cast_hand_visual;
+    wxTextCtrl* cast_ground_visual;
+    wxTextCtrl* cast_sound;
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
     wxComboBox* conj_anim;
+    wxComboBox* cast_anim;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
