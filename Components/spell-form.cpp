@@ -407,6 +407,27 @@ int SpellForm::GetConjAnimSelection()
     return 0;
 }
 
+int SpellForm::GetCastAnimSelection()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::CastAnim)].m_IsEmpty)
+    {
+        // area, attack, out, self, touch, and up.
+        std::string anim = (*spell)[GETIDX(SPELL_2DA::CastAnim)].m_Data;
+        if (anim == std::string("attack"))
+            return 1;
+        else if (anim == std::string("out"))
+            return 2;
+        else if (anim == std::string("self"))
+            return 3;
+        else if (anim == std::string("touch"))
+            return 4;
+        else if (anim == std::string("up"))
+            return 5;
+    }
+
+    return 0;
+}
+
 void SpellForm::SetSpellComponents()
 {
     verbal->SetValue(false);
@@ -587,11 +608,20 @@ void SpellForm::InitFormValues()
     conj_anim->Append(std::string("Hand"));
     conj_anim->SetSelection(GetConjAnimSelection());
 
+    cast_anim->Append(std::string("Area"));
+    cast_anim->Append(std::string("Attack"));
+    cast_anim->Append(std::string("Out"));
+    cast_anim->Append(std::string("Self"));
+    cast_anim->Append(std::string("Touch"));
+    cast_anim->Append(std::string("Up"));
+    cast_anim->SetSelection(GetCastAnimSelection());
+
     SetSpellComponents();
     SetSpellMetamagic();
     SetSpellTargetType();
     SetSpellLevels();
     SetConjValues();
+    SetCastValues();
 
     label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
@@ -691,4 +721,16 @@ void SpellForm::SetConjValues()
     conj_sound_vfx->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundVFX)].m_Data);
     conj_sound_male->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundMale)].m_Data);
     conj_sound_female->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundFemale)].m_Data);
+}
+
+void SpellForm::SetCastValues()
+{
+    // Since we're just adding only text values (for now)
+    // We can simply ignore empty checks
+    // TODO: remove asterisks
+    cast_time->SetValue((*spell)[GETIDX(SPELL_2DA::CastTime)].m_Data);
+    cast_head_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastHeadVisual)].m_Data);
+    cast_hand_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastHandVisual)].m_Data);
+    cast_ground_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastGrndVisual)].m_Data);
+    cast_sound->SetValue((*spell)[GETIDX(SPELL_2DA::CastSound)].m_Data);
 }
