@@ -77,6 +77,7 @@ private:
     wxCheckBox* spell_level_checkbox_ranger;
     wxCheckBox* spell_level_checkbox_wiz_sorc;
     wxCheckBox* spell_level_checkbox_innate;
+    wxCheckBox* projectile;
 
     wxStaticText* spell_level_label_val_innate;
     wxStaticText* spell_level_label_val_bard;
@@ -100,6 +101,12 @@ private:
     wxStaticText* cast_hand_visual_label;
     wxStaticText* cast_ground_visual_label;
     wxStaticText* cast_sound_label;
+    wxStaticText* projectile_label; // Needed as placeholder
+    wxStaticText* projectile_model_label;
+    wxStaticText* projectile_type_label;
+    wxStaticText* projectile_spawn_point_label;
+    wxStaticText* projectile_sound_label;
+    wxStaticText* projectile_orientation_label;
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
@@ -107,6 +114,7 @@ private:
     wxStaticBox* spell_levels;
     wxStaticBox* conj_settings;
     wxStaticBox* cast_settings;
+    wxStaticBox* proj_settings;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -123,11 +131,17 @@ private:
     wxTextCtrl* cast_hand_visual;
     wxTextCtrl* cast_ground_visual;
     wxTextCtrl* cast_sound;
+    wxTextCtrl* projectile_sound;
+    wxTextCtrl* projectile_model;
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
     wxComboBox* conj_anim;
     wxComboBox* cast_anim;
+    wxComboBox* projectile_type;
+    wxComboBox* projectile_spawn_point;
+    wxComboBox* projectile_orientation;
+
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;

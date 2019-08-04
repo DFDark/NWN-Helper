@@ -73,6 +73,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_levels = new wxStaticBox(panel, wxID_ANY, wxString("Spell levels"));
     conj_settings = new wxStaticBox(panel, wxID_ANY, wxString("Conjuration settings"));
     cast_settings = new wxStaticBox(panel, wxID_ANY, wxString("Cast settings"));
+    proj_settings = new wxStaticBox(panel, wxID_ANY, wxString("Projectile settings"));
 
     verbal = new wxToggleButton(spell_components, wxID_ANY, wxString("Verbal"));
     somatic = new wxToggleButton(spell_components, wxID_ANY, wxString("Somatic"));
@@ -147,6 +148,20 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     cast_hand_visual = new wxTextCtrl(cast_settings, wxID_ANY, wxString(""));
     cast_ground_visual = new wxTextCtrl(cast_settings, wxID_ANY, wxString(""));
     cast_sound = new wxTextCtrl(cast_settings, wxID_ANY, wxString(""));
+
+    projectile_label = new wxStaticText(proj_settings, wxID_ANY, wxString(""));
+    projectile_model_label = new wxStaticText(proj_settings, wxID_ANY, wxString("Model"));
+    projectile_type_label = new wxStaticText(proj_settings, wxID_ANY, wxString("Type"));
+    projectile_spawn_point_label = new wxStaticText(proj_settings, wxID_ANY, wxString("Spawn point"));
+    projectile_sound_label = new wxStaticText(proj_settings, wxID_ANY, wxString("Sound"));
+    projectile_orientation_label = new wxStaticText(proj_settings, wxID_ANY, wxString("Orientation"));
+
+    projectile = new wxCheckBox(proj_settings, wxID_ANY, wxString("Is Projectile"));
+    projectile_model = new wxTextCtrl(proj_settings, wxID_ANY, wxString(""));
+    projectile_type = new wxComboBox(proj_settings, wxID_ANY, wxString(""));
+    projectile_spawn_point = new wxComboBox(proj_settings, wxID_ANY, wxString(""));
+    projectile_sound = new wxTextCtrl(proj_settings, wxID_ANY, wxString(""));
+    projectile_orientation = new wxComboBox(proj_settings, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -331,9 +346,39 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     third_row_sizer->Add(cast_settings_sizer, 1, wxEXPAND);
 
+    wxBoxSizer* projectile_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* projectile_model_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* projectile_type_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* projectile_spawn_point_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* projectile_sound_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* projectile_orientation_sizer = new wxBoxSizer(wxVERTICAL);
+
+    wxStaticBoxSizer* proj_settings_sizer = new wxStaticBoxSizer(proj_settings, wxHORIZONTAL);
+
+    projectile_sizer->Add(projectile_label);
+    projectile_sizer->Add(projectile, 1, wxEXPAND|wxALL);
+    projectile_model_sizer->Add(projectile_model_label);
+    projectile_model_sizer->Add(projectile_model, 1, wxEXPAND|wxALL);
+    projectile_type_sizer->Add(projectile_type_label);
+    projectile_type_sizer->Add(projectile_type, 1, wxEXPAND|wxALL);
+    projectile_spawn_point_sizer->Add(projectile_spawn_point_label);
+    projectile_spawn_point_sizer->Add(projectile_spawn_point, 1, wxEXPAND|wxALL);
+    projectile_sound_sizer->Add(projectile_sound_label);
+    projectile_sound_sizer->Add(projectile_sound, 1, wxEXPAND|wxALL);
+    projectile_orientation_sizer->Add(projectile_orientation_label);
+    projectile_orientation_sizer->Add(projectile_orientation, 1, wxEXPAND|wxALL);
+
+    proj_settings_sizer->Add(projectile_sizer, 1, wxEXPAND|wxALL);
+    proj_settings_sizer->Add(projectile_model_sizer, 1, wxEXPAND|wxALL);
+    proj_settings_sizer->Add(projectile_type_sizer, 1, wxEXPAND|wxALL);
+    proj_settings_sizer->Add(projectile_spawn_point_sizer, 1, wxEXPAND|wxALL);
+    proj_settings_sizer->Add(projectile_sound_sizer, 1, wxEXPAND|wxALL);
+    proj_settings_sizer->Add(projectile_orientation_sizer, 1, wxEXPAND|wxALL);
+
     main_sizer->Add(first_row_sizer);
     main_sizer->Add(second_row_sizer, 0, wxEXPAND);
-    main_sizer->Add(third_row_sizer);
+    main_sizer->Add(third_row_sizer, 0, wxEXPAND);
+    main_sizer->Add(proj_settings_sizer, 0, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
