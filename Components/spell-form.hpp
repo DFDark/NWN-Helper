@@ -26,12 +26,16 @@ private:
     void SetSpellLevels();
     void SetConjValues();
     void SetCastValues();
+    void SetProjectionValues();
 
     void InitFormValues();
     int GetSchoolSelection();
     int GetRangeSelection();
     int GetConjAnimSelection();
     int GetCastAnimSelection();
+    int GetProjTypeSelection();
+    int GetProjSpawnPointSelection();
+    int GetProjOrientationSelection();
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;

@@ -473,6 +473,70 @@ int SpellForm::GetCastAnimSelection()
     return 0;
 }
 
+int SpellForm::GetProjTypeSelection()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::ProjType)].m_IsEmpty)
+    {
+        std::string type = (*spell)[GETIDX(SPELL_2DA::ProjType)].m_Data;
+        if (type == std::string("accelerating"))
+            return 1;
+        else if (type == std::string("ballistic"))
+            return 2;
+        else if (type == std::string("bounce"))
+            return 3;
+        else if (type == std::string("burst"))
+            return 4;
+        else if (type == std::string("highballistic"))
+            return 5;
+        else if (type == std::string("homing"))
+            return 6;
+        else if (type == std::string("linked"))
+            return 7;
+        else if (type == std::string("spiral"))
+            return 8;
+        else if (type == std::string("test"))
+            return 9;
+    }
+
+    return 0;
+}
+
+int SpellForm::GetProjSpawnPointSelection()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_IsEmpty)
+    {
+        std::string spawn = (*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_Data;
+        if (spawn == std::string("hand"))
+            return 1;
+        else if (spawn == std::string("monster0"))
+            return 2;
+        else if (spawn == std::string("monster1"))
+            return 3;
+        else if (spawn == std::string("monster2"))
+            return 4;
+        else if (spawn == std::string("monster3"))
+            return 5;
+        else if (spawn == std::string("monster4"))
+            return 6;
+    }
+
+    return 0;
+}
+
+int SpellForm::GetProjOrientationSelection()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_IsEmpty)
+    {
+        std::string orientation = (*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_Data;
+        if (orientation == std::string("path"))
+            return 1;
+        if (orientation == std::string("target"))
+            return 2;
+    }
+
+    return 0;
+}
+
 void SpellForm::SetSpellComponents()
 {
     verbal->SetValue(false);
@@ -661,12 +725,39 @@ void SpellForm::InitFormValues()
     cast_anim->Append(std::string("Up"));
     cast_anim->SetSelection(GetCastAnimSelection());
 
+    projectile_type->Append(std::string("None"));
+    projectile_type->Append(std::string("Accelerating"));
+    projectile_type->Append(std::string("Ballistic"));
+    projectile_type->Append(std::string("Bounce"));
+    projectile_type->Append(std::string("Burst"));
+    projectile_type->Append(std::string("Highballistic"));
+    projectile_type->Append(std::string("Homing"));
+    projectile_type->Append(std::string("Linked"));
+    projectile_type->Append(std::string("Spiral"));
+    projectile_type->Append(std::string("Test")); // is there srsly this value?
+    projectile_type->SetSelection(GetProjTypeSelection());
+
+    projectile_spawn_point->Append(std::string("None"));
+    projectile_spawn_point->Append(std::string("Hand"));
+    projectile_spawn_point->Append(std::string("Monster0"));
+    projectile_spawn_point->Append(std::string("Monster1"));
+    projectile_spawn_point->Append(std::string("Monster2"));
+    projectile_spawn_point->Append(std::string("Monster3"));
+    projectile_spawn_point->Append(std::string("Monster4"));
+    projectile_spawn_point->SetSelection(GetProjSpawnPointSelection());
+
+    projectile_orientation->Append(std::string("None"));
+    projectile_orientation->Append(std::string("Path"));
+    projectile_orientation->Append(std::string("Target"));
+    projectile_orientation->SetSelection(GetProjOrientationSelection());
+
     SetSpellComponents();
     SetSpellMetamagic();
     SetSpellTargetType();
     SetSpellLevels();
     SetConjValues();
     SetCastValues();
+    SetProjectionValues();
 
     label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
@@ -778,4 +869,13 @@ void SpellForm::SetCastValues()
     cast_hand_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastHandVisual)].m_Data);
     cast_ground_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastGrndVisual)].m_Data);
     cast_sound->SetValue((*spell)[GETIDX(SPELL_2DA::CastSound)].m_Data);
+}
+
+void SpellForm::SetProjectionValues()
+{
+    int is_projectile = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Proj)].m_Data);
+    projectile->SetValue(is_projectile > 0);
+
+    projectile_model->SetValue((*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data);
+    projectile_sound->SetValue((*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data);
 }
