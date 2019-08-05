@@ -49,7 +49,6 @@ enum class SPELL_2DA
     Category,
     Master,
     UserType,
-    Values,
     SpellDesc,
     UseConcentration,
     SpontaneouslyCast,
