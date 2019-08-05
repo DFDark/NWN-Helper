@@ -162,6 +162,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     projectile_spawn_point = new wxComboBox(proj_settings, wxID_ANY, wxString(""));
     projectile_sound = new wxTextCtrl(proj_settings, wxID_ANY, wxString(""));
     projectile_orientation = new wxComboBox(proj_settings, wxID_ANY, wxString(""));
+    has_projectile = new wxCheckBox(proj_settings, wxID_ANY, wxString("Has Projectile"));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -355,8 +356,8 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
 
     wxStaticBoxSizer* proj_settings_sizer = new wxStaticBoxSizer(proj_settings, wxHORIZONTAL);
 
-    projectile_sizer->Add(projectile_label);
     projectile_sizer->Add(projectile, 1, wxEXPAND|wxALL);
+    projectile_sizer->Add(has_projectile, 1, wxEXPAND|wxALL);
     projectile_model_sizer->Add(projectile_model_label);
     projectile_model_sizer->Add(projectile_model, 1, wxEXPAND|wxALL);
     projectile_type_sizer->Add(projectile_type_label);
@@ -875,6 +876,9 @@ void SpellForm::SetProjectionValues()
 {
     int is_projectile = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Proj)].m_Data);
     projectile->SetValue(is_projectile > 0);
+    
+    int has_projectile = GetIntFromString((*spell)[GETIDX(SPELL_2DA::HasProjectile)].m_Data);
+    has_projectile->SetValue(has_projectile > 0);
 
     projectile_model->SetValue((*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data);
     projectile_sound->SetValue((*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data);

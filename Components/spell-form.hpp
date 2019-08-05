@@ -82,6 +82,7 @@ private:
     wxCheckBox* spell_level_checkbox_wiz_sorc;
     wxCheckBox* spell_level_checkbox_innate;
     wxCheckBox* projectile;
+    wxCheckBox* has_projectile;
 
     wxStaticText* spell_level_label_val_innate;
     wxStaticText* spell_level_label_val_bard;
@@ -145,7 +146,6 @@ private:
     wxComboBox* projectile_type;
     wxComboBox* projectile_spawn_point;
     wxComboBox* projectile_orientation;
-
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
