@@ -163,6 +163,21 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     projectile_sound = new wxTextCtrl(proj_settings, wxID_ANY, wxString(""));
     projectile_orientation = new wxComboBox(proj_settings, wxID_ANY, wxString(""));
     has_projectile = new wxCheckBox(proj_settings, wxID_ANY, wxString("Has Projectile"));
+    
+    immunity_type_label = new wxStaticText(panel, wxID_ANY, wxString("Immunity type"));
+    sub_rad_spell_1_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 1"));
+    sub_rad_spell_2_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 2"));
+    sub_rad_spell_3_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 3"));
+    sub_rad_spell_4_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 4"));
+    sub_rad_spell_5_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 5"));
+
+    immunity_type = new wxComboBox(panel, wxID_ANY, wxString(""));
+    item_immunity = new wxCheckBox(panel, wxID_ANY, wxString("Item Immunity"));
+    sub_rad_spell_1 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    sub_rad_spell_2 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    sub_rad_spell_3 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    sub_rad_spell_4 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    sub_rad_spell_5 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -177,6 +192,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* first_row_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* second_row_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* third_row_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* fourth_row_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* second_row_sizer_p1 = new wxBoxSizer(wxVERTICAL);
     wxStaticBoxSizer* second_row_sizer_p2 = new wxStaticBoxSizer(spell_levels, wxVERTICAL);
@@ -375,11 +391,42 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     proj_settings_sizer->Add(projectile_spawn_point_sizer, 1, wxEXPAND|wxALL);
     proj_settings_sizer->Add(projectile_sound_sizer, 1, wxEXPAND|wxALL);
     proj_settings_sizer->Add(projectile_orientation_sizer, 1, wxEXPAND|wxALL);
+    
+    wxBoxSizer* immunity_type_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* item_immunity_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* sub_rad_spell_1_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* sub_rad_spell_2_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* sub_rad_spell_3_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* sub_rad_spell_4_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* sub_rad_spell_5_sizer = new wxBoxSizer(wxVERTICAL);
+    
+    item_immunity_sizer->Add(item_immunity);
+    immunity_type_sizer->Add(immunity_type_label);
+    immunity_type_sizer->Add(immunity_type, 1, wxEXPAND|wxALL);
+    sub_rad_spell_1_sizer->Add(sub_rad_spell_1_label);
+    sub_rad_spell_1_sizer->Add(sub_rad_spell_1, 1, wxEXPAND|wxALL);
+    sub_rad_spell_2_sizer->Add(sub_rad_spell_2_label);
+    sub_rad_spell_2_sizer->Add(sub_rad_spell_2, 1, wxEXPAND|wxALL);
+    sub_rad_spell_3_sizer->Add(sub_rad_spell_3_label);
+    sub_rad_spell_3_sizer->Add(sub_rad_spell_3, 1, wxEXPAND|wxALL);
+    sub_rad_spell_4_sizer->Add(sub_rad_spell_4_label);
+    sub_rad_spell_4_sizer->Add(sub_rad_spell_4, 1, wxEXPAND|wxALL);
+    sub_rad_spell_5_sizer->Add(sub_rad_spell_5_label);
+    sub_rad_spell_5_sizer->Add(sub_rad_spell_5, 1, wxEXPAND|wxALL);
+    
+    fourth_row_sizer->Add(item_immunity_sizer, 1, wxEXPAND|wxALL);
+    fourth_row_sizer->Add(immunity_type_sizer, 1, wxEXPAND|wxALL);
+    fourth_row_sizer->Add(sub_rad_spell_1_sizer, 1, wxEXPAND|wxALL);
+    fourth_row_sizer->Add(sub_rad_spell_2_sizer, 1, wxEXPAND|wxALL);
+    fourth_row_sizer->Add(sub_rad_spell_3_sizer, 1, wxEXPAND|wxALL);
+    fourth_row_sizer->Add(sub_rad_spell_4_sizer, 1, wxEXPAND|wxALL);
+    fourth_row_sizer->Add(sub_rad_spell_5_sizer, 1, wxEXPAND|wxALL);
 
     main_sizer->Add(first_row_sizer);
     main_sizer->Add(second_row_sizer, 0, wxEXPAND);
     main_sizer->Add(third_row_sizer, 0, wxEXPAND);
     main_sizer->Add(proj_settings_sizer, 0, wxEXPAND);
+    main_sizer->Add(fourth_row_sizer, 0, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -533,6 +580,42 @@ int SpellForm::GetProjOrientationSelection()
             return 1;
         if (orientation == std::string("target"))
             return 2;
+    }
+
+    return 0;
+}
+
+int SpellForm::GetImmunityTypeSelection()
+{
+    if (!(*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_IsEmpty)
+    {
+        std::string immunity = (*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_Data;
+        if (immunity == std::string("Acid"))
+            return 1;
+        else if (immunity == std::string("Cold"))
+            return 2;
+        else if (immunity == std::string("Death"))
+            return 3;
+        else if (immunity == std::string("Divine"))
+            return 4;
+        else if (immunity == std::string("Disease"))
+            return 5;
+        else if (immunity == std::string("Electricity"))
+            return 6;
+        else if (immunity == std::string("Fear"))
+            return 7;
+        else if (immunity == std::string("Fire"))
+            return 8;
+        else if (immunity == std::string("Mind Affecting"))
+            return 9;
+        else if (immunity == std::string("Negative"))
+            return 10;
+        else if (immunity == std::string("Poison"))
+            return 11;
+        else if (immunity == std::string("Positive"))
+            return 12;
+        else if (immunity == std::string("Sonic"))
+            return 13;
     }
 
     return 0;
@@ -752,6 +835,22 @@ void SpellForm::InitFormValues()
     projectile_orientation->Append(std::string("Target"));
     projectile_orientation->SetSelection(GetProjOrientationSelection());
 
+    immunity_type->Append(std::string("None"));
+    immunity_type->Append(std::string("Acid"));
+    immunity_type->Append(std::string("Cold"));
+    immunity_type->Append(std::string("Death"));
+    immunity_type->Append(std::string("Divine"));
+    immunity_type->Append(std::string("Disease"));
+    immunity_type->Append(std::string("Electricity"));
+    immunity_type->Append(std::string("Fear"));
+    immunity_type->Append(std::string("Fire"));
+    immunity_type->Append(std::string("Mind Affecting"));
+    immunity_type->Append(std::string("Negative"));
+    immunity_type->Append(std::string("Poison"));
+    immunity_type->Append(std::string("Positive"));
+    immunity_type->Append(std::string("Sonic"));
+    projectile_orientation->SetSelection(GetImmunityTypeSelection());
+
     SetSpellComponents();
     SetSpellMetamagic();
     SetSpellTargetType();
@@ -759,6 +858,7 @@ void SpellForm::InitFormValues()
     SetConjValues();
     SetCastValues();
     SetProjectionValues();
+    SetMiscellaneousValues();
 
     label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
 
@@ -882,4 +982,16 @@ void SpellForm::SetProjectionValues()
 
     projectile_model->SetValue((*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data);
     projectile_sound->SetValue((*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data);
+}
+
+void SpellForm::SetMiscellaneousValues()
+{
+    int itm_immunity = GetIntFromString((*spell)[GETIDX(SPELL_2DA::ItemImmunity)].m_Data);
+    item_immunity->SetValue(itm_immunity > 0);
+    
+    sub_rad_spell_1->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell1)].m_Data);
+    sub_rad_spell_2->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell2)].m_Data);
+    sub_rad_spell_3->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell3)].m_Data);
+    sub_rad_spell_4->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell4)].m_Data);
+    sub_rad_spell_5->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell5)].m_Data);
 }

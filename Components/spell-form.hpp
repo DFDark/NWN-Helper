@@ -27,6 +27,7 @@ private:
     void SetConjValues();
     void SetCastValues();
     void SetProjectionValues();
+    void SetMiscellaneousValues();
 
     void InitFormValues();
     int GetSchoolSelection();
@@ -36,6 +37,7 @@ private:
     int GetProjTypeSelection();
     int GetProjSpawnPointSelection();
     int GetProjOrientationSelection();
+    int GetImmunityTypeSelection();
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
@@ -83,6 +85,7 @@ private:
     wxCheckBox* spell_level_checkbox_innate;
     wxCheckBox* projectile;
     wxCheckBox* has_projectile;
+    wxCheckBox* item_immunity;
 
     wxStaticText* spell_level_label_val_innate;
     wxStaticText* spell_level_label_val_bard;
@@ -112,6 +115,12 @@ private:
     wxStaticText* projectile_spawn_point_label;
     wxStaticText* projectile_sound_label;
     wxStaticText* projectile_orientation_label;
+    wxStaticText* immunity_type_label;
+    wxStaticText* sub_rad_spell_1_label;
+    wxStaticText* sub_rad_spell_2_label;
+    wxStaticText* sub_rad_spell_3_label;
+    wxStaticText* sub_rad_spell_4_label;
+    wxStaticText* sub_rad_spell_5_label;
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
@@ -138,6 +147,11 @@ private:
     wxTextCtrl* cast_sound;
     wxTextCtrl* projectile_sound;
     wxTextCtrl* projectile_model;
+    wxTextCtrl* sub_rad_spell_1;
+    wxTextCtrl* sub_rad_spell_2;
+    wxTextCtrl* sub_rad_spell_3;
+    wxTextCtrl* sub_rad_spell_4;
+    wxTextCtrl* sub_rad_spell_5;
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
@@ -146,6 +160,7 @@ private:
     wxComboBox* projectile_type;
     wxComboBox* projectile_spawn_point;
     wxComboBox* projectile_orientation;
+    wxComboBox* immunity_type;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
