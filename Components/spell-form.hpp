@@ -86,6 +86,9 @@ private:
     wxCheckBox* projectile;
     wxCheckBox* has_projectile;
     wxCheckBox* item_immunity;
+    wxCheckBox* use_concentration;
+    wxCheckBox* spontaneous_cast;
+    wxCheckBox* hostile_setting;
 
     wxStaticText* spell_level_label_val_innate;
     wxStaticText* spell_level_label_val_bard;
@@ -121,6 +124,15 @@ private:
     wxStaticText* sub_rad_spell_3_label;
     wxStaticText* sub_rad_spell_4_label;
     wxStaticText* sub_rad_spell_5_label;
+    wxStaticText* category_label;
+    wxStaticText* master_label;
+    wxStaticText* user_type_label;
+    wxStaticText* description_label;
+    wxStaticText* alt_message_label;
+    wxStaticText* feat_label;
+    wxStaticText* counter_1_label;
+    wxStaticText* counter_2_label;
+
 
     wxStaticBox* spell_components;
     wxStaticBox* metamagic_staticbox;
@@ -129,6 +141,7 @@ private:
     wxStaticBox* conj_settings;
     wxStaticBox* cast_settings;
     wxStaticBox* proj_settings;
+    wxStaticBox* master_sub_spells;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -152,6 +165,13 @@ private:
     wxTextCtrl* sub_rad_spell_3;
     wxTextCtrl* sub_rad_spell_4;
     wxTextCtrl* sub_rad_spell_5;
+    wxTextCtrl* category; // TODO: Replace for combobox
+    wxTextCtrl* master; // TODO: Replace for combobox
+    wxTextCtrl* description;
+    wxTextCtrl* alt_message;
+    wxTextCtrl* feat; // TODO: Replace for combobox
+    wxTextCtrl* counter_1; // TODO: Replace for combobox
+    wxTextCtrl* counter_2; // TODO: Replace for combobox
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
@@ -161,6 +181,7 @@ private:
     wxComboBox* projectile_spawn_point;
     wxComboBox* projectile_orientation;
     wxComboBox* immunity_type;
+    wxComboBox* user_type;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
