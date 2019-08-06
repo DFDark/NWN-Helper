@@ -449,7 +449,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* spell_desc_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* cast_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* alt_message = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* alt_message_sizer = new wxBoxSizer(wxVERTICAL);
 
     item_immunity_sizer->Add(item_immunity);
     item_immunity_sizer->Add(hostile_setting);
@@ -461,30 +461,34 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     spell_desc_sizer->Add(description, 1, wxEXPAND|wxALL);
     cast_sizer->Add(use_concentration);
     cast_sizer->Add(spontaneous_cast);
-    alt_message->Add(alt_message_label);
-    alt_message->Add(alt_message, 1, wxEXPAND|wxALL);
-    
+    alt_message_sizer->Add(alt_message_label);
+    alt_message_sizer->Add(alt_message, 1, wxEXPAND|wxALL);
+
     fourth_row_sizer->Add(item_immunity_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(immunity_type_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(category_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(spell_desc_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(cast_sizer, 1, wxEXPAND|wxALL);
-    fourth_row_sizer->Add(alt_message, 1, wxEXPAND|wxALL);
-    
+    fourth_row_sizer->Add(alt_message_sizer, 1, wxEXPAND|wxALL);
+
     wxBoxSizer* feat_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* counter_1_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* counter_2_sizer = new wxBoxSizer(wxVERTICAL);
-    
+    wxBoxSizer* user_type_sizer = new wxBoxSizer(wxVERTICAL);
+
     feat_sizer->Add(feat_label);
     feat_sizer->Add(feat, 1, wxEXPAND|wxALL);
     counter_1_sizer->Add(counter_1_label);
     counter_1_sizer->Add(counter_1, 1, wxEXPAND|wxALL);
     counter_2_sizer->Add(counter_2_label);
     counter_2_sizer->Add(counter_2, 1, wxEXPAND|wxALL);
-    
+    user_type_sizer->Add(user_type_label);
+    user_type_sizer->Add(user_type, 1, wxEXPAND|wxALL);
+
     fifth_row_sizer->Add(feat_sizer);
-    fifth_row_sizer->Add(counter_1);
-    fifth_row_sizer->Add(counter_2);
+    fifth_row_sizer->Add(counter_1_sizer);
+    fifth_row_sizer->Add(counter_2_sizer);
+    fifth_row_sizer->Add(user_type_sizer);
 
     main_sizer->Add(first_row_sizer);
     main_sizer->Add(second_row_sizer, 0, wxEXPAND);
