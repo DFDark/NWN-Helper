@@ -38,6 +38,7 @@ private:
     int GetProjSpawnPointSelection();
     int GetProjOrientationSelection();
     int GetImmunityTypeSelection();
+    int GetUserTypeSelection;
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;

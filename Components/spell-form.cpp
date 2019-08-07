@@ -691,6 +691,11 @@ int SpellForm::GetImmunityTypeSelection()
     return 0;
 }
 
+int SpellForm::GetUserTypeSelection()
+{
+    return GetIntFromString((*spell)[GETIDX(SPELL_2DA::UserType)].m_Data);
+}
+
 void SpellForm::SetSpellComponents()
 {
     verbal->SetValue(false);
@@ -920,6 +925,13 @@ void SpellForm::InitFormValues()
     immunity_type->Append(std::string("Positive"));
     immunity_type->Append(std::string("Sonic"));
     immunity_type->SetSelection(GetImmunityTypeSelection());
+    
+    user_type->Append(std::string("None"));
+    user_type->Append(std::string("Spell"));
+    user_type->Append(std::string("Creature Ability"));
+    user_type->Append(std::string("Feat"));
+    user_type->Append(std::string("Item Power"));
+    user_type->SetSelection(GetUserTypeSelection());
 
     SetSpellComponents();
     SetSpellMetamagic();
@@ -1059,9 +1071,27 @@ void SpellForm::SetMiscellaneousValues()
     int itm_immunity = GetIntFromString((*spell)[GETIDX(SPELL_2DA::ItemImmunity)].m_Data);
     item_immunity->SetValue(itm_immunity > 0);
 
+    master->SetValue((*spell)[GETIDX(SPELL_2DA::Master)].m_Data);
     sub_rad_spell_1->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell1)].m_Data);
     sub_rad_spell_2->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell2)].m_Data);
     sub_rad_spell_3->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell3)].m_Data);
     sub_rad_spell_4->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell4)].m_Data);
     sub_rad_spell_5->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell5)].m_Data);
+
+    // To replace
+    category->SetValue((*spell)[GETIDX(SPELL_2DA::Category)].m_Data);
+
+    int _use_concentration = GetIntFromString((*spell)[GETIDX(SPELL_2DA::UseConcentration)].m_Data);
+    int _spontaneous_cast = GetIntFromString((*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data);
+    int _hostile_setting = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Hostile)].m_Data);
+
+    use_concentration->SetValue(_use_concentration > 0);
+    spontaneous_cast->SetValue(_spontaneous_cast > 0);
+    hostile_setting->SetValue(_hostile_setting > 0);
+
+    description->SetValue((*spell)[GETIDX(SPELL_2DA::Description)].m_Data);
+    alt_message->SetValue((*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data);
+    feat->SetValue((*spell)[GETIDX(SPELL_2DA::Feat)].m_Data);
+    counter_1->SetValue((*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data);
+    counter_2->SetValue((*spell)[GETIDX(SPELL_2DA::Counter2)].m_Data);
 }
