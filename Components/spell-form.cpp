@@ -925,7 +925,7 @@ void SpellForm::InitFormValues()
     immunity_type->Append(std::string("Positive"));
     immunity_type->Append(std::string("Sonic"));
     immunity_type->SetSelection(GetImmunityTypeSelection());
-    
+
     user_type->Append(std::string("None"));
     user_type->Append(std::string("Spell"));
     user_type->Append(std::string("Creature Ability"));
@@ -1083,15 +1083,15 @@ void SpellForm::SetMiscellaneousValues()
 
     int _use_concentration = GetIntFromString((*spell)[GETIDX(SPELL_2DA::UseConcentration)].m_Data);
     int _spontaneous_cast = GetIntFromString((*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data);
-    int _hostile_setting = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Hostile)].m_Data);
+    int _hostile_setting = GetIntFromString((*spell)[GETIDX(SPELL_2DA::HostileSetting)].m_Data);
 
     use_concentration->SetValue(_use_concentration > 0);
     spontaneous_cast->SetValue(_spontaneous_cast > 0);
     hostile_setting->SetValue(_hostile_setting > 0);
 
-    description->SetValue((*spell)[GETIDX(SPELL_2DA::Description)].m_Data);
+    description->SetValue((*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data);
     alt_message->SetValue((*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data);
-    feat->SetValue((*spell)[GETIDX(SPELL_2DA::Feat)].m_Data);
+    feat->SetValue((*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data);
     counter_1->SetValue((*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data);
     counter_2->SetValue((*spell)[GETIDX(SPELL_2DA::Counter2)].m_Data);
 }
