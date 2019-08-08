@@ -758,6 +758,19 @@ unsigned int SpellForm::GetUintFromString(const std::string& num, unsigned int e
     return result;
 }
 
+std::string SpellForm::Get2DAString(enum SPELL_2DA column)
+{
+    std::string result = "";
+    if (!(*spell)[GETIDX(column)].m_IsEmpty)
+    {
+        result = (*spell)[GETIDX(column)].m_Data;
+        if (result = std::string("****"))
+            result = "";
+    }
+
+    return result;
+}
+
 void SpellForm::SetSpellMetamagic()
 {
     unsigned int value = 0;
@@ -1071,12 +1084,12 @@ void SpellForm::SetMiscellaneousValues()
     int itm_immunity = GetIntFromString((*spell)[GETIDX(SPELL_2DA::ItemImmunity)].m_Data);
     item_immunity->SetValue(itm_immunity > 0);
 
-    master->SetValue((*spell)[GETIDX(SPELL_2DA::Master)].m_Data);
-    sub_rad_spell_1->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell1)].m_Data);
-    sub_rad_spell_2->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell2)].m_Data);
-    sub_rad_spell_3->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell3)].m_Data);
-    sub_rad_spell_4->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell4)].m_Data);
-    sub_rad_spell_5->SetValue((*spell)[GETIDX(SPELL_2DA::SubRadSpell5)].m_Data);
+    master->SetValue(Get2DAString(SPELL_2DA::Master));
+    sub_rad_spell_1->SetValue(Get2DAString(SPELL_2DA::SubRadSpell1));
+    sub_rad_spell_2->SetValue(Get2DAString(SPELL_2DA::SubRadSpell2));
+    sub_rad_spell_3->SetValue(Get2DAString(SPELL_2DA::SubRadSpell3));
+    sub_rad_spell_4->SetValue(Get2DAString(SPELL_2DA::SubRadSpell4));
+    sub_rad_spell_5->SetValue(Get2DAString(SPELL_2DA::SubRadSpell5));
 
     // To replace
     category->SetValue((*spell)[GETIDX(SPELL_2DA::Category)].m_Data);

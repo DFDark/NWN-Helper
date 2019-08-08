@@ -43,6 +43,7 @@ private:
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
     unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) const;
+    std::string Get2DAString(enum SPELL_2DA column);
 
     void OnInnateChange(wxCommandEvent& event);
     void OnBardChange(wxCommandEvent& event);
