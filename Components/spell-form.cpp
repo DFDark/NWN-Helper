@@ -758,13 +758,13 @@ unsigned int SpellForm::GetUintFromString(const std::string& num, unsigned int e
     return result;
 }
 
-std::string SpellForm::Get2DAString(enum SPELL_2DA column)
+std::string SpellForm::Get2DAString(const auto& column)
 {
     std::string result = "";
     if (!(*spell)[GETIDX(column)].m_IsEmpty)
     {
         result = (*spell)[GETIDX(column)].m_Data;
-        if (result = std::string("****"))
+        if (result == std::string("****"))
             result = "";
     }
 
