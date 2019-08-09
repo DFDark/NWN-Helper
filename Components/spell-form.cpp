@@ -524,7 +524,7 @@ int SpellForm::GetSchoolSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::School)].m_IsEmpty)
     {
-        switch ((*spell)[GETIDX(SPELL_2DA::School)].m_Data[0])
+        switch (Get2DAString(SPELL_2DA::School)[0])
         {
             case 'C': return 1; break;
             case 'D': return 2; break;
@@ -559,13 +559,10 @@ int SpellForm::GetRangeSelection()
 
 int SpellForm::GetConjAnimSelection()
 {
-    if (!(*spell)[GETIDX(SPELL_2DA::ConjAnim)].m_IsEmpty)
-    {
-        // head = 0, hand = 1
-        // if it's not hand, we can just fall back on default return
-        if ((*spell)[GETIDX(SPELL_2DA::ConjAnim)].m_Data == std::string("hand"))
-            return 1;
-    }
+    // head = 0, hand = 1
+    // if it's not hand, we can just fall back on default return
+    if (Get2DAString(SPELL_2DA::ConjAnim) == std::string("hand"))
+        return 1;
 
     return 0;
 }
@@ -575,7 +572,7 @@ int SpellForm::GetCastAnimSelection()
     if (!(*spell)[GETIDX(SPELL_2DA::CastAnim)].m_IsEmpty)
     {
         // area, attack, out, self, touch, and up.
-        std::string anim = (*spell)[GETIDX(SPELL_2DA::CastAnim)].m_Data;
+        std::string anim = Get2DAString(SPELL_2DA::CastAnim);
         if (anim == std::string("attack"))
             return 1;
         else if (anim == std::string("out"))
@@ -595,7 +592,7 @@ int SpellForm::GetProjTypeSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ProjType)].m_IsEmpty)
     {
-        std::string type = (*spell)[GETIDX(SPELL_2DA::ProjType)].m_Data;
+        std::string type = Get2DAString(SPELL_2DA::ProjType);
         if (type == std::string("accelerating"))
             return 1;
         else if (type == std::string("ballistic"))
@@ -623,7 +620,7 @@ int SpellForm::GetProjSpawnPointSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_IsEmpty)
     {
-        std::string spawn = (*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_Data;
+        std::string spawn = Get2DAString(SPELL_2DA::ProjSpwnPoint);
         if (spawn == std::string("hand"))
             return 1;
         else if (spawn == std::string("monster0"))
@@ -645,7 +642,7 @@ int SpellForm::GetProjOrientationSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_IsEmpty)
     {
-        std::string orientation = (*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_Data;
+        std::string orientation = Get2DAString(SPELL_2DA::ProjOrientation);
         if (orientation == std::string("path"))
             return 1;
         if (orientation == std::string("target"))
@@ -659,7 +656,7 @@ int SpellForm::GetImmunityTypeSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_IsEmpty)
     {
-        std::string immunity = (*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_Data;
+        std::string immunity = Get2DAString(SPELL_2DA::ImmunityType);
         if (immunity == std::string("Acid"))
             return 1;
         else if (immunity == std::string("Cold"))
@@ -773,9 +770,7 @@ std::string SpellForm::Get2DAString(const auto& column)
 
 void SpellForm::SetSpellMetamagic()
 {
-    unsigned int value = 0;
-    if (!(*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_IsEmpty)
-        value = GetUIntFromHex((*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_Data);
+    unsigned int value = GetUIntFromHex(Get2DAString(SPELL_2DA::MetaMagic));
 
     metamagic_empower->SetValue((value & METAMAGIC_EMPOWER) > 0);
     metamagic_extend->SetValue((value & METAMAGIC_EXTEND) > 0);
@@ -787,9 +782,7 @@ void SpellForm::SetSpellMetamagic()
 
 void SpellForm::SetSpellTargetType()
 {
-    unsigned int value = 0;
-    if (!(*spell)[GETIDX(SPELL_2DA::TargetType)].m_IsEmpty)
-        value = GetUIntFromHex((*spell)[GETIDX(SPELL_2DA::TargetType)].m_Data);
+    unsigned int value = GetUIntFromHex(Get2DAString(SPELL_2DA::TargetType));
 
     target_self->SetValue((value & TARGET_SELF) > 0);
     target_creature->SetValue((value & TARGET_CREATURE) > 0);
@@ -802,13 +795,13 @@ void SpellForm::SetSpellTargetType()
 
 void SpellForm::SetSpellLevels()
 {
-    int bard = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Bard)].m_Data);
-    int cleric = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Cleric)].m_Data);
-    int druid = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Druid)].m_Data);
-    int paladin = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Paladin)].m_Data);
-    int ranger = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data);
-    int wiz_sorc = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data);
-    int innate = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Innate)].m_Data);
+    int bard = GetIntFromString(Get2DAString(SPELL_2DA::Bard));
+    int cleric = GetIntFromString(Get2DAString(SPELL_2DA::Cleric));
+    int druid = GetIntFromString(Get2DAString(SPELL_2DA::Druid));
+    int paladin = GetIntFromString(Get2DAString(SPELL_2DA::Paladin));
+    int ranger = GetIntFromString(Get2DAString(SPELL_2DA::Ranger));
+    int wiz_sorc = GetIntFromString(Get2DAString(SPELL_2DA::Wiz_Sorc));
+    int innate = GetIntFromString(Get2DAString(SPELL_2DA::Innate));
 
     spell_level_bard->Enable(bard >= 0);
     spell_level_cleric->Enable(cleric >= 0);
@@ -829,44 +822,43 @@ void SpellForm::SetSpellLevels()
     if (bard >= 0)
     {
         spell_level_bard->SetValue(bard);
-        spell_level_label_val_bard->SetLabel((*spell)[GETIDX(SPELL_2DA::Bard)].m_Data);
+        spell_level_label_val_bard->SetLabel(Get2DAString(SPELL_2DA::Bard));
     }
     if (cleric >= 0)
     {
         spell_level_cleric->SetValue(cleric);
-        spell_level_label_val_cleric->SetLabel((*spell)[GETIDX(SPELL_2DA::Cleric)].m_Data);
+        spell_level_label_val_cleric->SetLabel(Get2DAString(SPELL_2DA::Cleric));
     }
     if (druid >= 0)
     {
         spell_level_druid->SetValue(druid);
-        spell_level_label_val_druid->SetLabel((*spell)[GETIDX(SPELL_2DA::Druid)].m_Data);
+        spell_level_label_val_druid->SetLabel(Get2DAString(SPELL_2DA::Druid));
     }
     if (paladin >= 0)
     {
         spell_level_paladin->SetValue(paladin);
-        spell_level_label_val_paladin->SetLabel((*spell)[GETIDX(SPELL_2DA::Paladin)].m_Data);
+        spell_level_label_val_paladin->SetLabel(Get2DAString(SPELL_2DA::Paladin));
     }
     if (ranger >= 0)
     {
         spell_level_ranger->SetValue(ranger);
-        spell_level_label_val_ranger->SetLabel((*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data);
+        spell_level_label_val_ranger->SetLabel(Get2DAString(SPELL_2DA::Ranger));
     }
     if (wiz_sorc >= 0)
     {
         spell_level_wiz_sorc->SetValue(wiz_sorc);
-        spell_level_label_val_wiz_sorc->SetLabel((*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data);
+        spell_level_label_val_wiz_sorc->SetLabel(Get2DAString(SPELL_2DA::Wiz_Sorc));
     }
     if (innate >= 0)
     {
         spell_level_innate->SetValue(innate);
-        spell_level_label_val_innate->SetLabel((*spell)[GETIDX(SPELL_2DA::Innate)].m_Data);
+        spell_level_label_val_innate->SetLabel(Get2DAString(SPELL_2DA::Innate));
     }
 }
 
 void SpellForm::InitFormValues()
 {
-    if (!(*spell)[GETIDX(SPELL_2DA::Label)].m_IsEmpty)
-        this->SetTitle(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
+    this->SetTitle(wxString(Get2DAString(SPELL_2DA::Label)));
 
     spell_school->Append(std::string("Abjuration"));
     spell_school->Append(std::string("Conjuration"));
@@ -955,13 +947,13 @@ void SpellForm::InitFormValues()
     SetProjectionValues();
     SetMiscellaneousValues();
 
-    label->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::Label)].m_Data));
+    label->SetValue(wxString(Get2DAString(SPELL_2DA::Label)));
 
     // if strref > 0 we will output just empty name
-    std::uint32_t strref = GetUintFromString((*spell)[GETIDX(SPELL_2DA::Name)].m_Data);
+    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
     name->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
 
-    impact_script->SetValue(wxString((*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data));
+    impact_script->SetValue(wxString(Get2DAString(SPELL_2DA::ImpactScript)));
 }
 
 void SpellForm::OnInnateChange(wxCommandEvent& event)
@@ -1046,13 +1038,13 @@ void SpellForm::SetConjValues()
     // Since we're just adding only text values (for now)
     // We can simply ignore empty checks
     // TODO: remove asterisks
-    conj_time->SetValue((*spell)[GETIDX(SPELL_2DA::ConjTime)].m_Data);
-    conj_head_visual->SetValue((*spell)[GETIDX(SPELL_2DA::ConjHeadVisual)].m_Data);
-    conj_hand_visual->SetValue((*spell)[GETIDX(SPELL_2DA::ConjHandVisual)].m_Data);
-    conj_ground_visual->SetValue((*spell)[GETIDX(SPELL_2DA::ConjGrndVisual)].m_Data);
-    conj_sound_vfx->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundVFX)].m_Data);
-    conj_sound_male->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundMale)].m_Data);
-    conj_sound_female->SetValue((*spell)[GETIDX(SPELL_2DA::ConjSoundFemale)].m_Data);
+    conj_time->SetValue(Get2DAString(SPELL_2DA::ConjTime));
+    conj_head_visual->SetValue(Get2DAString(SPELL_2DA::ConjHeadVisual));
+    conj_hand_visual->SetValue(Get2DAString(SPELL_2DA::ConjHandVisual));
+    conj_ground_visual->SetValue(Get2DAString(SPELL_2DA::ConjGrndVisual));
+    conj_sound_vfx->SetValue(Get2DAString(SPELL_2DA::ConjSoundVFX));
+    conj_sound_male->SetValue(Get2DAString(SPELL_2DA::ConjSoundMale));
+    conj_sound_female->SetValue(Get2DAString(SPELL_2DA::ConjSoundFemale));
 }
 
 void SpellForm::SetCastValues()
@@ -1060,28 +1052,28 @@ void SpellForm::SetCastValues()
     // Since we're just adding only text values (for now)
     // We can simply ignore empty checks
     // TODO: remove asterisks
-    cast_time->SetValue((*spell)[GETIDX(SPELL_2DA::CastTime)].m_Data);
-    cast_head_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastHeadVisual)].m_Data);
-    cast_hand_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastHandVisual)].m_Data);
-    cast_ground_visual->SetValue((*spell)[GETIDX(SPELL_2DA::CastGrndVisual)].m_Data);
-    cast_sound->SetValue((*spell)[GETIDX(SPELL_2DA::CastSound)].m_Data);
+    cast_time->SetValue(Get2DAString(SPELL_2DA::CastTime));
+    cast_head_visual->SetValue(Get2DAString(SPELL_2DA::CastHeadVisual));
+    cast_hand_visual->SetValue(Get2DAString(SPELL_2DA::CastHandVisual));
+    cast_ground_visual->SetValue(Get2DAString(SPELL_2DA::CastGrndVisual));
+    cast_sound->SetValue(Get2DAString(SPELL_2DA::CastSound));
 }
 
 void SpellForm::SetProjectionValues()
 {
-    int is_projectile = GetIntFromString((*spell)[GETIDX(SPELL_2DA::Proj)].m_Data);
+    int is_projectile = GetIntFromString(Get2DAString(SPELL_2DA::Proj));
     projectile->SetValue(is_projectile > 0);
 
-    int _has_projectile = GetIntFromString((*spell)[GETIDX(SPELL_2DA::HasProjectile)].m_Data);
+    int _has_projectile = GetIntFromString(Get2DAString(SPELL_2DA::HasProjectile));
     has_projectile->SetValue(_has_projectile > 0);
 
-    projectile_model->SetValue((*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data);
-    projectile_sound->SetValue((*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data);
+    projectile_model->SetValue(Get2DAString(SPELL_2DA::ProjModel));
+    projectile_sound->SetValue(Get2DAString(SPELL_2DA::ProjSound));
 }
 
 void SpellForm::SetMiscellaneousValues()
 {
-    int itm_immunity = GetIntFromString((*spell)[GETIDX(SPELL_2DA::ItemImmunity)].m_Data);
+    int itm_immunity = GetIntFromString(Get2DAString(SPELL_2DA::ItemImmunity));
     item_immunity->SetValue(itm_immunity > 0);
 
     master->SetValue(Get2DAString(SPELL_2DA::Master));
@@ -1092,19 +1084,19 @@ void SpellForm::SetMiscellaneousValues()
     sub_rad_spell_5->SetValue(Get2DAString(SPELL_2DA::SubRadSpell5));
 
     // To replace
-    category->SetValue((*spell)[GETIDX(SPELL_2DA::Category)].m_Data);
+    category->SetValue(Get2DAString(SPELL_2DA::Category));
 
-    int _use_concentration = GetIntFromString((*spell)[GETIDX(SPELL_2DA::UseConcentration)].m_Data);
-    int _spontaneous_cast = GetIntFromString((*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data);
-    int _hostile_setting = GetIntFromString((*spell)[GETIDX(SPELL_2DA::HostileSetting)].m_Data);
+    int _use_concentration = GetIntFromString(Get2DAString(SPELL_2DA::UseConcentration));
+    int _spontaneous_cast = GetIntFromString(Get2DAString(SPELL_2DA::SpontaneouslyCast));
+    int _hostile_setting = GetIntFromString(Get2DAString(SPELL_2DA::HostileSetting));
 
     use_concentration->SetValue(_use_concentration > 0);
     spontaneous_cast->SetValue(_spontaneous_cast > 0);
     hostile_setting->SetValue(_hostile_setting > 0);
 
-    description->SetValue((*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data);
-    alt_message->SetValue((*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data);
-    feat->SetValue((*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data);
-    counter_1->SetValue((*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data);
-    counter_2->SetValue((*spell)[GETIDX(SPELL_2DA::Counter2)].m_Data);
+    description->SetValue(Get2DAString(SPELL_2DA::SpellDesc));
+    alt_message->SetValue(Get2DAString(SPELL_2DA::AltMessage));
+    feat->SetValue(Get2DAString(SPELL_2DA::FeatID));
+    counter_1->SetValue(Get2DAString(SPELL_2DA::Counter1));
+    counter_2->SetValue(Get2DAString(SPELL_2DA::Counter2));
 }
