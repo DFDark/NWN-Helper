@@ -39,7 +39,7 @@ wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
 wxEND_EVENT_TABLE()
 
 SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk)
-    : wxDialog(parent, wxID_ANY, wxString("Spell Form"), wxDefaultPosition, wxSize(800, 600))
+    : wxDialog(parent, wxID_ANY, wxString("Spell Form"), wxDefaultPosition, wxSize(1024, 768))
 {
     panel = new wxPanel(this, wxID_ANY);
     spell = row;
@@ -192,7 +192,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     category = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     master = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     user_type = new wxComboBox(panel, wxID_ANY, wxString(""));
-    description = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     use_concentration = new wxCheckBox(panel, wxID_ANY, wxString("Use concentration"));
     spontaneous_cast = new wxCheckBox(panel, wxID_ANY, wxString("Spontaneous cast"));
     alt_message = new wxTextCtrl(panel, wxID_ANY, wxString(""));
@@ -217,7 +217,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* fourth_row_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* fifth_row_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    wxBoxSizer* second_row_sizer_p1 = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* second_row_sizer_p1 = new wxBoxSizer(wxHORIZONTAL);
     wxStaticBoxSizer* second_row_sizer_p2 = new wxStaticBoxSizer(spell_levels, wxVERTICAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
@@ -247,7 +247,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     first_row_sizer->Add(impact_script_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(spell_components_sizer);
 
-    wxStaticBoxSizer* meta_sizer = new wxStaticBoxSizer(metamagic_staticbox, wxHORIZONTAL);
+    wxStaticBoxSizer* meta_sizer = new wxStaticBoxSizer(metamagic_staticbox, wxVERTICAL);
 
     meta_sizer->Add(metamagic_empower);
     meta_sizer->Add(metamagic_extend);
@@ -256,7 +256,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     meta_sizer->Add(metamagic_silent);
     meta_sizer->Add(metamagic_still);
 
-    wxStaticBoxSizer* target_sizer = new wxStaticBoxSizer(target_staticbox, wxHORIZONTAL);
+    wxStaticBoxSizer* target_sizer = new wxStaticBoxSizer(target_staticbox, wxVERTICAL);
 
     target_sizer->Add(target_self);
     target_sizer->Add(target_creature);
@@ -266,9 +266,15 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     target_sizer->Add(target_placeables);
     target_sizer->Add(target_triggers);
 
+    wxBoxSizer* spell_desc_sizer = new wxBoxSizer(wxVERTICAL);
+
+    spell_desc_sizer->Add(description_label);
+    spell_desc_sizer->Add(description, 1, wxEXPAND|wxALL);
+
     second_row_sizer_p1->Add(meta_sizer);
     second_row_sizer_p1->Add(target_sizer);
-    second_row_sizer->Add(second_row_sizer_p1);
+    second_row_sizer_p1->Add(spell_desc_sizer, 1, wxEXPAND);
+    second_row_sizer->Add(second_row_sizer_p1, 1, wxEXPAND);
 
     wxBoxSizer* sp_levels_innate_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* sp_levels_bard_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -322,7 +328,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* conj_settings_sizer_r1 = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* conj_settings_sizer_r2 = new wxBoxSizer(wxHORIZONTAL);
 
-    wxStaticBoxSizer* conj_settings_sizer = new wxStaticBoxSizer(conj_settings, wxVERTICAL);
+    wxStaticBoxSizer* conj_settings_sizer = new wxStaticBoxSizer(conj_settings, wxHORIZONTAL);
 
     conj_time_sizer->Add(conj_time_label);
     conj_time_sizer->Add(conj_time, 1, wxEXPAND|wxALL);
@@ -353,7 +359,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     conj_settings_sizer->Add(conj_settings_sizer_r1, 1, wxEXPAND);
     conj_settings_sizer->Add(conj_settings_sizer_r2, 1, wxEXPAND);
 
-    second_row_sizer_p1->Add(conj_settings_sizer, 1, wxEXPAND);
+    // second_row_sizer_p1->Add(conj_settings_sizer, 1, wxEXPAND);
 
     wxBoxSizer* cast_anim_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* cast_time_sizer = new wxBoxSizer(wxVERTICAL);
@@ -447,7 +453,6 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     wxBoxSizer* immunity_type_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* item_immunity_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* spell_desc_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* cast_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* alt_message_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -457,8 +462,6 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     immunity_type_sizer->Add(immunity_type, 1, wxEXPAND|wxALL);
     category_sizer->Add(category_label);
     category_sizer->Add(category, 1, wxEXPAND|wxALL);
-    spell_desc_sizer->Add(description_label);
-    spell_desc_sizer->Add(description, 1, wxEXPAND|wxALL);
     cast_sizer->Add(use_concentration);
     cast_sizer->Add(spontaneous_cast);
     alt_message_sizer->Add(alt_message_label);
@@ -467,7 +470,6 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     fourth_row_sizer->Add(item_immunity_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(immunity_type_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(category_sizer, 1, wxEXPAND|wxALL);
-    fourth_row_sizer->Add(spell_desc_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(cast_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(alt_message_sizer, 1, wxEXPAND|wxALL);
 
@@ -491,11 +493,12 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     fifth_row_sizer->Add(user_type_sizer);
 
     main_sizer->Add(first_row_sizer);
+    main_sizer->Add(fourth_row_sizer, 0, wxEXPAND);
     main_sizer->Add(second_row_sizer, 0, wxEXPAND);
+    main_sizer->Add(conj_settings_sizer, 0, wxEXPAND);
     main_sizer->Add(third_row_sizer, 0, wxEXPAND);
     main_sizer->Add(proj_settings_sizer, 0, wxEXPAND);
     main_sizer->Add(master_sub_spells_sizer, 0, wxEXPAND);
-    main_sizer->Add(fourth_row_sizer, 0, wxEXPAND);
     main_sizer->Add(fifth_row_sizer, 0, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -1094,7 +1097,8 @@ void SpellForm::SetMiscellaneousValues()
     spontaneous_cast->SetValue(_spontaneous_cast > 0);
     hostile_setting->SetValue(_hostile_setting > 0);
 
-    description->SetValue(Get2DAString(SPELL_2DA::SpellDesc));
+    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
+    description->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
     alt_message->SetValue(Get2DAString(SPELL_2DA::AltMessage));
     feat->SetValue(Get2DAString(SPELL_2DA::FeatID));
     counter_1->SetValue(Get2DAString(SPELL_2DA::Counter1));
