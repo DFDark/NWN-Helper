@@ -87,7 +87,7 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     metamagic_maximize = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Maximize"), wxDefaultPosition, wxDefaultSize);
     metamagic_quicken = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Quicken"), wxDefaultPosition, wxDefaultSize);
     metamagic_silent = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Silent"), wxDefaultPosition, wxDefaultSize);
-    metamagic_still = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Still"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX);
+    metamagic_still = new wxToggleButton(metamagic_staticbox, wxID_ANY, wxString("Still"), wxDefaultPosition, wxDefaultSize);
 
     /*
     * Target components
@@ -502,7 +502,6 @@ SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Frie
     alt_message_sizer->Add(alt_message_label);
     alt_message_sizer->Add(alt_message, 1, wxEXPAND|wxALL);
 
-    fourth_row_sizer->Add(cast_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(alt_message_sizer, 1, wxEXPAND|wxALL);
 
     wxBoxSizer* feat_sizer = new wxBoxSizer(wxVERTICAL);
