@@ -1126,7 +1126,8 @@ void SpellForm::SetMiscellaneousValues()
 
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
     description->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
-    alt_message->SetValue(Get2DAString(SPELL_2DA::AltMessage));
+    strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
+    alt_message->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
     feat->SetValue(Get2DAString(SPELL_2DA::FeatID));
     counter_1->SetValue(Get2DAString(SPELL_2DA::Counter1));
     counter_2->SetValue(Get2DAString(SPELL_2DA::Counter2));

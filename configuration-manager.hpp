@@ -26,6 +26,7 @@ public:
     bool SaveCurrentSettings();
     void SetSpellColumns(const std::vector<std::string>& columns);
     void SetFeatColumns(const std::vector<std::string>& columns);
+    void AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();
@@ -41,6 +42,11 @@ private:
     Tlk::Friendly::Tlk* base_dialog;
 
     std::map<std::string, TwoDA::Friendly::TwoDA* > twoda_list;
+
+    /*
+    * Probably better to later replace this with it's own "Project" class
+    */
+    std::map<std::string, TwoDA::Friendly::TwoDA* > twoda_edit_list;
 
     bool InitialConfiguration();
     Key::Friendly::Key* LoadNWNBaseDataKEYFile(const char* filename);

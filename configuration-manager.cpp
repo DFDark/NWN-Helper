@@ -327,3 +327,35 @@ bool ConfigurationManager::SaveCurrentSettings()
 {
     return config->SaveFile("nwnhelper.ini") >= 0;
 }
+
+
+void ConfigurationManager::AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row)
+{
+    /*
+        if we have not edited 'twoda' yet, we will have to first create
+        it's copy from base2da (twoda_list)
+    */
+    if (twoda_edit_list[twoda] == NULL)
+    {
+        // Create empty 2da
+        TwoDA::Raw::TwoDA raw;
+        TwoDA::Friendly::TwoDA* aux = new TwoDA::Friendly::TwoDA(std::move(raw));
+
+        // Copy all 2da rows from base to the new 2da
+        for (std::size_t i = 0; i < twoda_list[twoda]->Size(); i++)
+        {
+            TwoDA::Friendly::TwoDARow current = (*aux)[i];
+            TwoDA::Friendly::TwoDARow base = (*(twoda_list[twoda]))[i];
+            for (std::size_t j = 1; j < base.Size(); j++)
+                current[j] = base[j];
+        }
+
+        twoda_edit_list[twoda] = aux;
+    }
+
+    // Replace current 2da row values with new values
+    std::size_t row_count = twoda_edit_list[twoda]->Size();
+    TwoDA::Friendly::TwoDARow current = (*(twoda_edit_list[twoda]))[row_count];
+    for (std::size_t i = 1; i < row.Size(); i++)
+        current[i] = row[i];
+}
