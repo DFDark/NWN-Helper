@@ -82,9 +82,9 @@ void NWNHelperMain::OnSpellActivated(wxDataViewEvent& event)
 {
     unsigned int row = sp_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* spell = sp_model->Get2daRow(row);
-    Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
+    // Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
-    SpellForm form(main_panel, spell, tlk);
+    SpellForm form(main_panel, configuration, spell->RowId());
     form.ShowModal();
 }
 

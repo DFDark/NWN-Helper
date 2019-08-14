@@ -7,6 +7,8 @@
 #endif
 #include <wx/tglbtn.h>
 
+#include "configuration-manager.hpp"
+
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
@@ -15,7 +17,7 @@ using namespace FileFormats;
 class SpellForm : public wxDialog
 {
 public:
-    SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk);
+    SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id);
 
 private:
     void OnOk(wxCommandEvent& event);
@@ -61,6 +63,7 @@ private:
     void OnRangerCheck(wxCommandEvent& event);
     void OnWizSorcCheck(wxCommandEvent& event);
 
+    ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* spell;
     Tlk::Friendly::Tlk* tlk;
 

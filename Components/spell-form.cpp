@@ -38,12 +38,13 @@ wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
     EVT_CHECKBOX(SP_CHECKBOX_WIZ_SORC, SpellForm::OnWizSorcCheck)
 wxEND_EVENT_TABLE()
 
-SpellForm::SpellForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row, Tlk::Friendly::Tlk* _tlk)
+SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
     : wxDialog(parent, wxID_ANY, wxString("Spell Form"), wxDefaultPosition, wxSize(1024, 768))
 {
     panel = new wxPanel(this, wxID_ANY);
-    spell = row;
-    tlk = _tlk;
+    configuration = _configuration;
+    spell = configuration->Get2daRow("spells", row_id);
+    tlk = configuration->GetTlk();
 
     /*
     * FORM LABELS

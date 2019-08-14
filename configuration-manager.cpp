@@ -359,3 +359,11 @@ void ConfigurationManager::AddOrEdit2DARow(const std::string& twoda, const TwoDA
     for (std::size_t i = 1; i < row.Size(); i++)
         current[i] = row[i];
 }
+
+TwoDA::Friendly::TwoDARow* ConfigurationManager::Get2daRow(const std::string& twoda, const std::uint32_t& row_id)
+{
+    if (twoda_edit_list[twoda] == NULL)
+        return &(*(twoda_list[twoda]))[row_id];
+
+    return &(*(twoda_edit_list[twoda]))[row_id];
+}

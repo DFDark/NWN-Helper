@@ -33,6 +33,8 @@ public:
     wxSize GetWindowResolution();
     std::vector<std::string> GetSpellColumns();
     std::vector<std::string> GetFeatColumns();
+
+    TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
 private:
     bool loaded;
     CSimpleIniA* config;
