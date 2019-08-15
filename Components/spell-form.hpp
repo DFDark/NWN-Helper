@@ -31,6 +31,7 @@ private:
     void SetProjectionValues();
     void SetMiscellaneousValues();
     void LoadCategoryValues();
+    void LoadMasterSubSpells();
 
     void InitFormValues();
     int GetSchoolSelection();
@@ -166,12 +167,6 @@ private:
     wxTextCtrl* cast_sound;
     wxTextCtrl* projectile_sound;
     wxTextCtrl* projectile_model;
-    wxTextCtrl* sub_rad_spell_1;
-    wxTextCtrl* sub_rad_spell_2;
-    wxTextCtrl* sub_rad_spell_3;
-    wxTextCtrl* sub_rad_spell_4;
-    wxTextCtrl* sub_rad_spell_5;
-    wxTextCtrl* master; // TODO: Replace for combobox
     wxTextCtrl* description;
     wxTextCtrl* alt_message;
     wxTextCtrl* feat; // TODO: Replace for combobox
@@ -188,6 +183,12 @@ private:
     wxComboBox* immunity_type;
     wxComboBox* user_type;
     wxComboBox* category;
+    wxComboBox* master;
+    wxComboBox* sub_rad_spell_1;
+    wxComboBox* sub_rad_spell_2;
+    wxComboBox* sub_rad_spell_3;
+    wxComboBox* sub_rad_spell_4;
+    wxComboBox* sub_rad_spell_5;// TODO: Replace for combobox
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
