@@ -30,6 +30,7 @@ private:
     void SetCastValues();
     void SetProjectionValues();
     void SetMiscellaneousValues();
+    void LoadCategoryValues();
 
     void InitFormValues();
     int GetSchoolSelection();
@@ -170,7 +171,6 @@ private:
     wxTextCtrl* sub_rad_spell_3;
     wxTextCtrl* sub_rad_spell_4;
     wxTextCtrl* sub_rad_spell_5;
-    wxTextCtrl* category; // TODO: Replace for combobox
     wxTextCtrl* master; // TODO: Replace for combobox
     wxTextCtrl* description;
     wxTextCtrl* alt_message;
@@ -187,6 +187,7 @@ private:
     wxComboBox* projectile_orientation;
     wxComboBox* immunity_type;
     wxComboBox* user_type;
+    wxComboBox* category;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;

@@ -198,6 +198,7 @@ TwoDA::Friendly::TwoDA* ConfigurationManager::LoadTwoDAFile(std::string name, st
 
 TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
 {
+    // TODO: Add twoda_edit_list to include edited 2das
     if (twoda_list.find(name) == twoda_list.end())
         throw (std::string("Cannot find ") + name + std::string(".2da data!"));
 

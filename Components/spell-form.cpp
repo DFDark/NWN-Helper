@@ -190,7 +190,7 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     category_label = new wxStaticText(panel, wxID_ANY, wxString("Category"));
     immunity_type_label = new wxStaticText(panel, wxID_ANY, wxString("Immunity type"));
 
-    category = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    category = new wxComboBox(panel, wxID_ANY, wxString(""));
     immunity_type = new wxComboBox(panel, wxID_ANY, wxString(""));
     item_immunity = new wxCheckBox(panel, wxID_ANY, wxString("Item Immunity"));
     use_concentration = new wxCheckBox(panel, wxID_ANY, wxString("Use concentration"));
@@ -248,7 +248,6 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* school_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* range_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* impact_script_sizer = new wxBoxSizer(wxVERTICAL);
     wxStaticBoxSizer* spell_components_sizer = new wxStaticBoxSizer(spell_components, wxHORIZONTAL);
 
     label_sizer->Add(label_label);
@@ -259,8 +258,6 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     school_sizer->Add(spell_school, 1, wxEXPAND|wxALL);
     range_sizer->Add(spellrange_label);
     range_sizer->Add(spell_range, 1, wxEXPAND|wxALL);
-    impact_script_sizer->Add(impact_script_label);
-    impact_script_sizer->Add(impact_script, 1, wxEXPAND|wxALL);
     spell_components_sizer->Add(verbal);
     spell_components_sizer->Add(somatic);
 
@@ -268,7 +265,6 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     first_row_sizer->Add(name_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(school_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(range_sizer, 1, wxEXPAND|wxALL);
-    first_row_sizer->Add(impact_script_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(spell_components_sizer);
 
     wxStaticBoxSizer* meta_sizer = new wxStaticBoxSizer(metamagic_staticbox, wxVERTICAL);
@@ -300,8 +296,8 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     wxBoxSizer* immunity_type_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* item_immunity_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* user_type_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* cast_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* impact_script_sizer = new wxBoxSizer(wxVERTICAL);
 
     item_immunity_sizer->Add(item_immunity);
     item_immunity_sizer->Add(hostile_setting);
@@ -311,11 +307,11 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     user_type_sizer->Add(user_type, 1, wxEXPAND|wxALL);
     immunity_type_sizer->Add(immunity_type_label);
     immunity_type_sizer->Add(immunity_type, 1, wxEXPAND|wxALL);
-    category_sizer->Add(category_label);
-    category_sizer->Add(category, 1, wxEXPAND|wxALL);
+    impact_script_sizer->Add(impact_script_label);
+    impact_script_sizer->Add(impact_script, 1, wxEXPAND|wxALL);
 
     spell_settings->Add(immunity_type_sizer, 0, wxEXPAND);
-    spell_settings->Add(category_sizer, 0, wxEXPAND);
+    spell_settings->Add(impact_script_sizer, 0, wxEXPAND);
     spell_settings->Add(user_type_sizer, 0, wxEXPAND);
     spell_settings->Add(item_immunity_sizer, 0, wxEXPAND);
     spell_settings->Add(cast_sizer, 0, wxEXPAND);
@@ -499,10 +495,14 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     master_sub_spells_sizer->Add(sub_rad_spell_5_sizer, 1, wxEXPAND|wxALL);
 
     wxBoxSizer* alt_message_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
 
+    category_sizer->Add(category_label);
+    category_sizer->Add(category, 1, wxEXPAND|wxALL);
     alt_message_sizer->Add(alt_message_label);
     alt_message_sizer->Add(alt_message, 1, wxEXPAND|wxALL);
 
+    fourth_row_sizer->Add(category_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(alt_message_sizer, 1, wxEXPAND|wxALL);
 
     wxBoxSizer* feat_sizer = new wxBoxSizer(wxVERTICAL);
@@ -977,6 +977,7 @@ void SpellForm::InitFormValues()
     SetCastValues();
     SetProjectionValues();
     SetMiscellaneousValues();
+    LoadCategoryValues();
 
     label->SetValue(wxString(Get2DAString(SPELL_2DA::Label)));
 
@@ -1114,8 +1115,6 @@ void SpellForm::SetMiscellaneousValues()
     sub_rad_spell_4->SetValue(Get2DAString(SPELL_2DA::SubRadSpell4));
     sub_rad_spell_5->SetValue(Get2DAString(SPELL_2DA::SubRadSpell5));
 
-    // To replace
-    category->SetValue(Get2DAString(SPELL_2DA::Category));
 
     int _use_concentration = GetIntFromString(Get2DAString(SPELL_2DA::UseConcentration));
     int _spontaneous_cast = GetIntFromString(Get2DAString(SPELL_2DA::SpontaneouslyCast));
@@ -1132,4 +1131,19 @@ void SpellForm::SetMiscellaneousValues()
     feat->SetValue(Get2DAString(SPELL_2DA::FeatID));
     counter_1->SetValue(Get2DAString(SPELL_2DA::Counter1));
     counter_2->SetValue(Get2DAString(SPELL_2DA::Counter2));
+}
+
+void SpellForm::LoadCategoryValues()
+{
+    TwoDA::Friendly::TwoDA* categories = configuration->Get2da("categories");
+
+    if (categories != NULL)
+    {
+        for (auto const& row : (*categories))
+            category->Append(row["Category"].m_Data);
+
+        unsigned int row_id = GetUintFromString(Get2DAString(SPELL_2DA::Category));
+        if (row_id > 0)
+            category->SetSelection(row_id - 1);
+    }
 }
