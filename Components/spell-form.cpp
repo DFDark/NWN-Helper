@@ -203,11 +203,11 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     sub_rad_spell_4_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 4"));
     sub_rad_spell_5_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 5"));
 
-    sub_rad_spell_1 = new wxComboBox(panel, wxID_ANY, wxString(""));
-    sub_rad_spell_2 = new wxComboBox(panel, wxID_ANY, wxString(""));
-    sub_rad_spell_3 = new wxComboBox(panel, wxID_ANY, wxString(""));
-    sub_rad_spell_4 = new wxComboBox(panel, wxID_ANY, wxString(""));
-    sub_rad_spell_5 = new wxComboBox(panel, wxID_ANY, wxString(""));
+    sub_rad_spell_1 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
+    sub_rad_spell_2 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
+    sub_rad_spell_3 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
+    sub_rad_spell_4 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
+    sub_rad_spell_5 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
 
     master_label = new wxStaticText(panel, wxID_ANY, wxString("Master"));
     user_type_label = new wxStaticText(panel, wxID_ANY, wxString("User Type"));
@@ -217,13 +217,13 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     counter_1_label = new wxStaticText(panel, wxID_ANY, wxString("Counter 1"));
     counter_2_label = new wxStaticText(panel, wxID_ANY, wxString("Counter 2"));
 
-    master = new wxComboBox(panel, wxID_ANY, wxString(""));
+    master = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
     user_type = new wxComboBox(panel, wxID_ANY, wxString(""));
     description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(450, -1), wxTE_MULTILINE);
     alt_message = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    feat = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    counter_1 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    counter_2 = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    feat = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetFeatList()));
+    counter_1 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
+    counter_2 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(695, 535), wxSize(100, 30));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellForm::OnOk));
@@ -522,9 +522,9 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     counter_2_sizer->Add(counter_2_label);
     counter_2_sizer->Add(counter_2, 1, wxEXPAND|wxALL);
 
-    fifth_row_sizer->Add(feat_sizer);
-    fifth_row_sizer->Add(counter_1_sizer);
-    fifth_row_sizer->Add(counter_2_sizer);
+    fifth_row_sizer->Add(feat_sizer, 1, wxEXPAND|wxALL);
+    fifth_row_sizer->Add(counter_1_sizer, 1, wxEXPAND|wxALL);
+    fifth_row_sizer->Add(counter_2_sizer, 1, wxEXPAND|wxALL);
 
     main_sizer->Add(first_row_sizer, 0, wxEXPAND);
     main_sizer->Add(fourth_row_sizer, 0, wxEXPAND);
@@ -1090,7 +1090,6 @@ void SpellForm::SetCastValues()
 {
     // Since we're just adding only text values (for now)
     // We can simply ignore empty checks
-    // TODO: remove asterisks
     cast_time->SetValue(Get2DAString(SPELL_2DA::CastTime));
     cast_head_visual->SetValue(Get2DAString(SPELL_2DA::CastHeadVisual));
     cast_hand_visual->SetValue(Get2DAString(SPELL_2DA::CastHandVisual));
@@ -1115,13 +1114,6 @@ void SpellForm::SetMiscellaneousValues()
     int itm_immunity = GetIntFromString(Get2DAString(SPELL_2DA::ItemImmunity));
     item_immunity->SetValue(itm_immunity > 0);
 
-    sub_rad_spell_1->SetValue(Get2DAString(SPELL_2DA::SubRadSpell1));
-    sub_rad_spell_2->SetValue(Get2DAString(SPELL_2DA::SubRadSpell2));
-    sub_rad_spell_3->SetValue(Get2DAString(SPELL_2DA::SubRadSpell3));
-    sub_rad_spell_4->SetValue(Get2DAString(SPELL_2DA::SubRadSpell4));
-    sub_rad_spell_5->SetValue(Get2DAString(SPELL_2DA::SubRadSpell5));
-
-
     int _use_concentration = GetIntFromString(Get2DAString(SPELL_2DA::UseConcentration));
     int _spontaneous_cast = GetIntFromString(Get2DAString(SPELL_2DA::SpontaneouslyCast));
     int _hostile_setting = GetIntFromString(Get2DAString(SPELL_2DA::HostileSetting));
@@ -1134,9 +1126,13 @@ void SpellForm::SetMiscellaneousValues()
     description->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
     strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
     alt_message->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
-    feat->SetValue(Get2DAString(SPELL_2DA::FeatID));
-    counter_1->SetValue(Get2DAString(SPELL_2DA::Counter1));
-    counter_2->SetValue(Get2DAString(SPELL_2DA::Counter2));
+
+    std::string aux = Get2DAString(SPELL_2DA::FeatID);
+    feat->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+    aux = Get2DAString(SPELL_2DA::Counter1);
+    counter_1->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+    aux = Get2DAString(SPELL_2DA::Counter2);
+    counter_2->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
 }
 
 void SpellForm::LoadCategoryValues()
@@ -1160,22 +1156,8 @@ void SpellForm::LoadMasterSubSpells()
 
     if (spells != NULL)
     {
-        master->Append(std::string("None"));
-        sub_rad_spell_1->Append(std::string("None"));
-        sub_rad_spell_2->Append(std::string("None"));
-        sub_rad_spell_3->Append(std::string("None"));
-        sub_rad_spell_4->Append(std::string("None"));
-        sub_rad_spell_5->Append(std::string("None"));
-
-        for (auto const& row : (*spells))
-        {
-            master->Append(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            sub_rad_spell_1->Append(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            sub_rad_spell_2->Append(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            sub_rad_spell_3->Append(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            sub_rad_spell_4->Append(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            sub_rad_spell_5->Append(row[GETIDX(SPELL_2DA::Label)].m_Data);
-        }
+        // TODO: Loading optimization
+        // Probably lists should be somewhat limited to only possible spells
 
         std::string aux = Get2DAString(SPELL_2DA::Master);
         master->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));

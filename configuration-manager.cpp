@@ -5,6 +5,8 @@ ConfigurationManager::ConfigurationManager()
 {
     config = new CSimpleIniA(true, true, true);
     loaded = false;
+    spell_list = new wxArrayString();
+    feat_list = new wxArrayString();
 }
 
 ConfigurationManager::~ConfigurationManager()
@@ -19,6 +21,9 @@ ConfigurationManager::~ConfigurationManager()
 
     for (auto const& data : twoda_list)
         delete data.second;
+
+    delete spell_list;
+    delete feat_list;
 }
 
 bool ConfigurationManager::AttemptLoad()
@@ -55,6 +60,15 @@ bool ConfigurationManager::AttemptLoad()
                     kvp.second.m_DataBlock->GetDataLength()
                 );
             }
+
+            // Preloading lists (for large arrays like spells/feats)
+            // to save time from loading them on SpellForm init
+            spell_list->Add("None");
+            feat_list->Add("None");
+            for (auto const& row : (*twoda_list["spells"]))
+                spell_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
+            for (auto const& row : (*twoda_list["feat"]))
+                feat_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
         }
         catch (std::string& message)
         {
@@ -369,4 +383,14 @@ TwoDA::Friendly::TwoDARow* ConfigurationManager::Get2daRow(const std::string& tw
         return &(*(twoda_list[twoda]))[row_id];
 
     return &(*(twoda_edit_list[twoda]))[row_id];
+}
+
+wxArrayString* ConfigurationManager::GetSpellList()
+{
+    return spell_list;
+}
+
+wxArrayString* ConfigurationManager::GetFeatList()
+{
+    return feat_list;
 }

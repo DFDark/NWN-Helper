@@ -6,6 +6,8 @@
     #include <wx/wx.h>
 #endif
 
+#include "constants.hpp"
+
 #define SI_SUPPORT_IOSTREAMS
 #include "simpleini/SimpleIni.h"
 #include "Components/first-time-configuration.hpp"
@@ -33,11 +35,15 @@ public:
     wxSize GetWindowResolution();
     std::vector<std::string> GetSpellColumns();
     std::vector<std::string> GetFeatColumns();
+    wxArrayString* GetSpellList();
+    wxArrayString* GetFeatList();
 
     TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
 private:
     bool loaded;
     CSimpleIniA* config;
+    wxArrayString* spell_list;
+    wxArrayString* feat_list;
 
     Key::Friendly::Key* base_key;
     Bif::Friendly::Bif* base_2da;

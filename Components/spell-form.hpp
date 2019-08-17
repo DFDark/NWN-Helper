@@ -169,9 +169,6 @@ private:
     wxTextCtrl* projectile_model;
     wxTextCtrl* description;
     wxTextCtrl* alt_message;
-    wxTextCtrl* feat; // TODO: Replace for combobox
-    wxTextCtrl* counter_1; // TODO: Replace for combobox
-    wxTextCtrl* counter_2; // TODO: Replace for combobox
 
     wxComboBox* spell_school;
     wxComboBox* spell_range;
@@ -188,7 +185,10 @@ private:
     wxComboBox* sub_rad_spell_2;
     wxComboBox* sub_rad_spell_3;
     wxComboBox* sub_rad_spell_4;
-    wxComboBox* sub_rad_spell_5;// TODO: Replace for combobox
+    wxComboBox* sub_rad_spell_5;
+    wxComboBox* feat;
+    wxComboBox* counter_1;
+    wxComboBox* counter_2;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
