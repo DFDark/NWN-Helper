@@ -549,6 +549,11 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
 
 void SpellForm::OnOk(wxCommandEvent& event)
 {
+    // Here we will need to create new method to create/alter spell
+    // TODO: remove twoda_edit_list, instead we will deal only with base
+    // OR: make a copy in configuration to be able to use twoda_edit_list
+    // and keep twoda_list as loaded base (for comparison or other fncs)
+    (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = std::string("Test");
     this->EndModal(wxID_OK);
 }
 
