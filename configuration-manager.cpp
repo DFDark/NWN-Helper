@@ -215,9 +215,6 @@ TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
     if (twoda_list.find(name) == twoda_list.end())
         throw (std::string("Cannot find ") + name + std::string(".2da data!"));
 
-    if (twoda_edit_list[name] != NULL)
-        return twoda_edit_list[name];
-
     return twoda_list[name];
 }
 
@@ -379,10 +376,8 @@ void ConfigurationManager::AddOrEdit2DARow(const std::string& twoda, const TwoDA
 
 TwoDA::Friendly::TwoDARow* ConfigurationManager::Get2daRow(const std::string& twoda, const std::uint32_t& row_id)
 {
-    if (twoda_edit_list[twoda] == NULL)
-        return &(*(twoda_list[twoda]))[row_id];
+    return &(*(twoda_list[twoda]))[row_id];
 
-    return &(*(twoda_edit_list[twoda]))[row_id];
 }
 
 wxArrayString* ConfigurationManager::GetSpellList()

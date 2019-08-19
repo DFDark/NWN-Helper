@@ -43,6 +43,13 @@ private:
     int GetProjOrientationSelection();
     int GetImmunityTypeSelection();
     int GetUserTypeSelection();
+    
+    // From wx components to 2da format
+    std::string GetSchoolSelectionString();
+    std::string GetRangeSelectionString();
+    std::string GetSpellComponentsString();
+    std::string GetMetaMagicString();
+    std::string GetTargetTypeString();
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;

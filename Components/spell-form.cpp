@@ -553,7 +553,21 @@ void SpellForm::OnOk(wxCommandEvent& event)
     // TODO: remove twoda_edit_list, instead we will deal only with base
     // OR: make a copy in configuration to be able to use twoda_edit_list
     // and keep twoda_list as loaded base (for comparison or other fncs)
-    (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = std::string("Test");
+    
+    // TODO: Add validation
+    // TODO: Edit TLK values and update strrefs
+    
+    
+    (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = label->GetValue().ToStdString();
+    // Change (text -> strref)
+    //(*spell)[GETIDX(SPELL_2DA::Name)].m_Data = name->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::School)].m_Data = GetSchoolSelectionString();
+    (*spell)[GETIDX(SPELL_2DA::Range)].m_Data = GetRangeSelectionString();
+    (*spell)[GETIDX(SPELL_2DA::VS)].m_Data = GetSpellComponentsString();
+    
+    (*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_Data = GetMetaMagicString();
+    (*spell)[GETIDX(SPELL_2DA::TargetType)].m_Data = GetTargetTypeString();
+    
     this->EndModal(wxID_OK);
 }
 
@@ -582,6 +596,21 @@ int SpellForm::GetSchoolSelection()
     return 0;
 }
 
+std::string SpellForm::GetSchoolSelectionString()
+{
+    switch (spell_school->GetSelection())
+    {
+        case 1: return std::string("C");
+        case 2: return std::string("D");
+        case 3: return std::string("E");
+        case 4: return std::string("V");
+        case 5: return std::string("I");
+        case 6: return std::string("N");
+        case 7: return std::string("T");
+        default: return std::string("A");
+    }
+}
+
 int SpellForm::GetRangeSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::Range)].m_IsEmpty)
@@ -597,6 +626,18 @@ int SpellForm::GetRangeSelection()
     }
 
     return 0;
+}
+
+std::string SpellForm::GetRangeSelectionString()
+{
+    switch (spell_range->GetSelection())
+    {
+        case 1: return std::string("T");
+        case 2: return std::string("S");
+        case 3: return std::string("M");
+        case 4: return std::string("L");
+        default: return std::string("P");
+    }
 }
 
 int SpellForm::GetConjAnimSelection()
@@ -753,6 +794,20 @@ void SpellForm::SetSpellComponents()
     }
 }
 
+std::string SpellForm::GetSpellComponentsString()
+{
+    std::string result = "";
+    if (verbal->GetValue())
+        result += 'v';
+    if (somatic->GetValue())
+        result += 's';
+    
+    if (result.size() == 0)
+        result = "****";
+    
+    return result;
+}
+
 unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
 {
     unsigned int result;
@@ -833,6 +888,60 @@ void SpellForm::SetSpellTargetType()
     target_doors->SetValue((value & TARGET_DOORS) > 0);
     target_placeables->SetValue((value & TARGET_PLACEABLES) > 0);
     target_triggers->SetValue((value & TARGET_TRIGGERS) > 0);
+}
+
+std::string GetMetaMagicString()
+{
+    std::uint32_t value = 0;
+    if (metamagic_empower->GetValue())
+        value |= METAMAGIC_EMPOWER;
+    if (metamagic_extend->GetValue())
+        value |= METAMAGIC_EXTEND;
+    if (metamagic_maximize->GetValue())
+        value |= METAMAGIC_MAXIMIZE;
+    if (metamagic_quicken->GetValue())
+        value |= METAMAGIC_QUICKEN;
+    if (metamagic_silent->GetValue())
+        value |= METAMAGIC_SILENT;
+    if (metamagic_still->GetValue())
+        value |= METAMAGIC_STILL;
+    
+    std::string result = "0000";
+    str::string aux = "0123456789ABCDEF";
+    
+    for (unsigned int i = 0; i < 4; i+)
+        result[i] = aux[value >> ((3 - i) * 4) & 0xF];
+    
+    result = "0x" + result;
+    return result;
+}
+
+std::string GetTargetTypeString()
+{
+    std::uint32_t value = 0;
+    if (target_self->GetValue())
+        value |= TARGET_SELF;
+    if (target_creature->GetValue())
+        value |= TARGET_CREATURE;
+    if (target_areaground->GetValue())
+        value |= TARGET_AREAGROUND;
+    if (target_items->GetValue())
+        value |= TARGET_ITEMS;
+    if (target_doors->GetValue())
+        value |= TARGET_DOORS;
+    if (target_placeables->GetValue())
+        value |= TARGET_PLACEABLES;
+    if (target_triggers->GetValue())
+        value |= TARGET_TRIGGERS;
+    
+    std::string result = "0000";
+    str::string aux = "0123456789ABCDEF";
+    
+    for (unsigned int i = 0; i < 4; i+)
+        result[i] = aux[value >> ((3 - i) * 4) & 0xF];
+    
+    result = "0x" + result;
+    return result;
 }
 
 void SpellForm::SetSpellLevels()
