@@ -43,7 +43,7 @@ private:
     int GetProjOrientationSelection();
     int GetImmunityTypeSelection();
     int GetUserTypeSelection();
-    
+
     // From wx components to 2da format
     std::string GetSchoolSelectionString();
     std::string GetRangeSelectionString();
@@ -51,6 +51,7 @@ private:
     std::string GetMetaMagicString();
     std::string GetTargetTypeString();
     std::string GetSpellLevelString(wxCheckBox* chkbox, wxSlider* slider);
+    std::string GetConjAnimString();
     std::string GetCastAnimString();
     std::string GetProjectileTypeString();
     std::string GetProjectileSpawnString();
