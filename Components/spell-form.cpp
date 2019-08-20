@@ -567,7 +567,64 @@ void SpellForm::OnOk(wxCommandEvent& event)
 
     (*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_Data = GetMetaMagicString();
     (*spell)[GETIDX(SPELL_2DA::TargetType)].m_Data = GetTargetTypeString();
-
+    (*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data = impact_script->GetValue().ToStdString();
+    
+    // sliders
+    (*spell)[GETIDX(SPELL_2DA::Bard)].m_Data = GetSpellLevelString(spell_level_checkbox_bard, spell_level_bard);
+    (*spell)[GETIDX(SPELL_2DA::Cleric)].m_Data = GetSpellLevelString(spell_level_checkbox_cleric, spell_level_cleric);
+    (*spell)[GETIDX(SPELL_2DA::Druid)].m_Data = GetSpellLevelString(spell_level_checkbox_druid, spell_level_druid);
+    (*spell)[GETIDX(SPELL_2DA::Paladin)].m_Data = GetSpellLevelString(spell_level_checkbox_paladin, spell_level_paladin);
+    (*spell)[GETIDX(SPELL_2DA::Ranger)].m_Data = GetSpellLevelString(spell_level_checkbox_ranger, spell_level_ranger);
+    (*spell)[GETIDX(SPELL_2DA::Wiz_Sorc)].m_Data = GetSpellLevelString(spell_level_checkbox_wiz_sorc, spell_level_wiz_sorc);
+    (*spell)[GETIDX(SPELL_2DA::Innate)].m_Data = GetSpellLevelString(spell_level_checkbox_innate, spell_level_innate);
+    
+    (*spell)[GETIDX(SPELL_2DA::ConjAnim)].m_Data = GetConjAnimString();
+    (*spell)[GETIDX(SPELL_2DA::ConjTime)].m_Data = conj_time->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjHeadVisual)].m_Data = conj_head_visual->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjHandVisual)].m_Data = conj_hand_visual->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjGrndVisual)].m_Data = conj_ground_visual->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjSoundVFX)].m_Data = conj_sound_vfx->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjSoundMale)].m_Data = conj_sound_male->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjSoundFemale)].m_Data = conj_sound_female->GetValue().ToStdString();
+    
+    (*spell)[GETIDX(SPELL_2DA::CastAnim)].m_Data = GetCastAnimString();
+    (*spell)[GETIDX(SPELL_2DA::CastTime)].m_Data = cast_time->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::CastHeadVisual)].m_Data = cast_head_visual->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::CastHandVisual)].m_Data = cast_hand_visual->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::CastGrndVisual)].m_Data = cast_ground_visual->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::CastSound)].m_Data = cast_sound->GetValue().ToStdString();
+    
+    (*spell)[GETIDX(SPELL_2DA::Proj)].m_Data = std::string(projectile->GetValue() ? "1" : "0");
+    (*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data = projectile_model->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ProjType)].m_Data = GetProjectileTypeString();
+    (*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_Data = GetProjectileSpawnString();
+    (*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data = projectile_sound->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_Data = GetProjectileOrientationString();
+    
+    (*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_Data = GetImmunityTypeString();
+    (*spell)[GETIDX(SPELL_2DA::ItemImmunity)].m_Data = std::string(item_immunity->GetValue() ? "1" : "0");
+    
+    (*spell)[GETIDX(SPELL_2DA::Master)].m_Data = master->GetValue() > 0 ? std::to_string(master->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::SubRadSpell1)].m_Data = sub_rad_spell_1->GetValue() > 0 ? std::to_string(sub_rad_spell_1->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::SubRadSpell2)].m_Data = sub_rad_spell_2->GetValue() > 0 ? std::to_string(sub_rad_spell_2->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::SubRadSpell3)].m_Data = sub_rad_spell_3->GetValue() > 0 ? std::to_string(sub_rad_spell_3->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::SubRadSpell4)].m_Data = sub_rad_spell_4->GetValue() > 0 ? std::to_string(sub_rad_spell_4->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::SubRadSpell5)].m_Data = sub_rad_spell_5->GetValue() > 0 ? std::to_string(sub_rad_spell_5->GetValue()) : std::string("****");
+    
+    (*spell)[GETIDX(SPELL_2DA::Category)].m_Data = std::to_string(category->GetValue());
+    (*spell)[GETIDX(SPELL_2DA::UserType)].m_Data = GetUserTypeString();
+    // Change (text -> strref)
+    // (*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data = description->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::UseConcentration)].m_Data = std::string(use_concentration->GetValue() ? "1" : "0");
+    (*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data = std::string(spontaneous_cast->GetValue() ? "1" : "0");
+    // Change (text -> strref)
+    // (*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data = alt_message->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::HostileSetting)].m_Data = std::string(hostile_setting->GetValue() ? "1" : "0");
+    (*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data = feat->GetValue() > 0 ? std::to_string(feat->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data = counter_1->GetValue() > 0 ? std::to_string(counter_1->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::Counter2)].m_Data = counter_2->GetValue() > 0 ? std::to_string(counter_2->GetValue()) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::HasProjectile)].m_Data = std::string(has_projectile->GetValue() ? "1" : "0");
+    
     this->EndModal(wxID_OK);
 }
 
@@ -942,6 +999,114 @@ std::string SpellForm::GetTargetTypeString()
 
     result = "0x" + result;
     return result;
+}
+
+std::string SpellForm::GetConjAnimString()
+{
+    switch (conj_anim->GetSelection())
+    {
+        case 1: return std::string("Hand");
+        default: return std::string("Head");
+    }
+}
+
+std::string SpellForm::GetCastAnimString()
+{
+    switch (cast_anim->GetSelection())
+    {
+        case 1: return std::string("Attack");
+        case 2: return std::string("Out");
+        case 3: return std::string("Self");
+        case 4: return std::string("Touch");
+        case 5: return std::string("Up");
+        default: return std::string("Area");
+    }
+}
+
+
+std::string SpellForm::GetSpellLevelString(wxCheckBox* chkbox, wxSlider* slider)
+{
+    std::string result = "";
+    if (chkbox->GetValue())
+        result = std::to_string(slider->GetValue());
+    else
+        result = "****";
+    
+    return result;
+}
+
+std::string SpellForm::GetProjectileTypeString()
+{
+    switch (projectile_type->GetSelection())
+    {
+        case 1: return std::string("Accelerating");
+        case 2: return std::string("Ballistic");
+        case 3: return std::string("Bounce");
+        case 4: return std::string("Burst");
+        case 5: return std::string("Highballistic");
+        case 6: return std::string("Homing");
+        case 7: return std::string("Linked");
+        case 8: return std::string("Spiral");
+        case 9: return std::string("Test");
+        default: return std::string("None");
+    }
+}
+
+std::string SpellForm::GetProjectileSpawnString()
+{
+    switch (projectile_spawn_point->GetSelection())
+    {
+        case 1: return std::string("Hand");
+        case 2: return std::string("Monster0");
+        case 3: return std::string("Monster1");
+        case 4: return std::string("Monster2");
+        case 5: return std::string("Monster3");
+        case 6: return std::string("Monster4");
+        default: return std::string("None");
+    }
+}
+
+std::string SpellForm::GetProjectileOrientationString()
+{
+    switch (projectile_orientation->GetSelection())
+    {
+        case 1: return std::string("Path");
+        case 2: return std::string("Target");
+        default: return std::string("None");
+    }
+}
+
+std::string SpellForm::GetImmunityTypeString()
+{
+    switch (immunity_type->GetSelection())
+    {
+        case 1: return std::string("Acid");
+        case 2: return std::string("Cold");
+        case 3: return std::string("Death");
+        case 4: return std::string("Divine");
+        case 5: return std::string("Disease");
+        case 6: return std::string("Electricity");
+        case 7: return std::string("Fear");
+        case 8: return std::string("Fire");
+        case 9: return std::string("Mind Affecting");
+        case 10: return std::string("Negative");
+        case 11: return std::string("Poison");
+        case 12: return std::string("Positive");
+        case 13: return std::string("Sonic");
+        default: return std::string("None");
+    }
+}
+
+std::string SpellForm::GetUserTypeString()
+{
+    switch (user_type->GetSelection())
+    {
+        case 1: return std::string("Spell");
+        case 2: return std::string("Creature Ability");
+        case 3: return std::string("Feat");
+        case 4: return std::string("Item Power");
+        default: return std::string("None");
+    }
 }
 
 void SpellForm::SetSpellLevels()

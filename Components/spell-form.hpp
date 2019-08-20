@@ -50,6 +50,13 @@ private:
     std::string GetSpellComponentsString();
     std::string GetMetaMagicString();
     std::string GetTargetTypeString();
+    std::string GetSpellLevelString(wxCheckBox* chkbox, wxSlider* slider);
+    std::string GetCastAnimString();
+    std::string GetProjectileTypeString();
+    std::string GetProjectileSpawnString();
+    std::string GetProjectileOrientationString();
+    std::string GetImmunityTypeString();
+    std::string GetUserTypeString();
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;
