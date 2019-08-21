@@ -29,6 +29,7 @@ public:
     void SetSpellColumns(const std::vector<std::string>& columns);
     void SetFeatColumns(const std::vector<std::string>& columns);
     void AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row);
+    void SetTlkString(const std::string& value, const std::uint32_t strref = 0);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();
@@ -37,10 +38,12 @@ public:
     std::vector<std::string> GetFeatColumns();
     wxArrayString* GetSpellList();
     wxArrayString* GetFeatList();
+    std::string GetTlkString(const std::uint32_t& strref);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
 private:
     bool loaded;
+    std::uint32_t current_tlk_row_count;
     CSimpleIniA* config;
     wxArrayString* spell_list;
     wxArrayString* feat_list;
@@ -49,6 +52,7 @@ private:
     Bif::Friendly::Bif* base_2da;
     Tlk::Friendly::Tlk* base_dialog;
 
+    Tlk::Friendly::Tlk* custom_tlk;
     std::map<std::string, TwoDA::Friendly::TwoDA* > twoda_list;
 
     /*

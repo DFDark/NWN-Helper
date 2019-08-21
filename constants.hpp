@@ -124,4 +124,6 @@ enum class FEAT_2DA
 #define TARGET_PLACEABLES 0x20
 #define TARGET_TRIGGERS 0x40
 
+#define BASE_TLK_LIMIT 16777216
+
 #endif

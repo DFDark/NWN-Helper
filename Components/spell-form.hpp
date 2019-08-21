@@ -58,6 +58,9 @@ private:
     std::string GetProjectileOrientationString();
     std::string GetImmunityTypeString();
     std::string GetUserTypeString();
+    std::string GetNameStrRefString();
+    std::string GetDescriptionStrRefString();
+    std::string GetAltMessageStrRefString();
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;

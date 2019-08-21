@@ -555,12 +555,8 @@ void SpellForm::OnOk(wxCommandEvent& event)
     // and keep twoda_list as loaded base (for comparison or other fncs)
 
     // TODO: Add validation
-    // TODO: Edit TLK values and update strrefs
-
-
     (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = label->GetValue().ToStdString();
-    // Change (text -> strref)
-    //(*spell)[GETIDX(SPELL_2DA::Name)].m_Data = name->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::Name)].m_Data = GetNameStrRefString();
     (*spell)[GETIDX(SPELL_2DA::School)].m_Data = GetSchoolSelectionString();
     (*spell)[GETIDX(SPELL_2DA::Range)].m_Data = GetRangeSelectionString();
     (*spell)[GETIDX(SPELL_2DA::VS)].m_Data = GetSpellComponentsString();
@@ -613,12 +609,10 @@ void SpellForm::OnOk(wxCommandEvent& event)
 
     (*spell)[GETIDX(SPELL_2DA::Category)].m_Data = std::to_string(category->GetSelection());
     (*spell)[GETIDX(SPELL_2DA::UserType)].m_Data = GetUserTypeString();
-    // Change (text -> strref)
-    // (*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data = description->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data = GetDescriptionStrRefString();
     (*spell)[GETIDX(SPELL_2DA::UseConcentration)].m_Data = std::string(use_concentration->GetValue() ? "1" : "0");
     (*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data = std::string(spontaneous_cast->GetValue() ? "1" : "0");
-    // Change (text -> strref)
-    // (*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data = alt_message->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data = GetAltMessageStrRefString();
     (*spell)[GETIDX(SPELL_2DA::HostileSetting)].m_Data = std::string(hostile_setting->GetValue() ? "1" : "0");
     (*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data = feat->GetSelection() > 0 ? std::to_string(feat->GetSelection() - 1) : std::string("****");
     (*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data = counter_1->GetSelection() > 0 ? std::to_string(counter_1->GetSelection() - 1) : std::string("****");
@@ -1100,6 +1094,38 @@ std::string SpellForm::GetImmunityTypeString()
 std::string SpellForm::GetUserTypeString()
 {
     return std::to_string(user_type->GetSelection());
+}
+
+std::string SpellForm::GetNameStrRefString()
+{
+    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
+    
+    /*std::string aux = name->GetValue().ToStdString();
+    
+    if (strref < BASE_TLK_LIMIT)
+    {
+        std::string base_name = configuration->GetTlkString(strref);
+        if (base_name != aux)
+        {
+        }
+    }
+    else
+    {
+    }
+    */
+    return std::to_string(strref);
+}
+
+std::string SpellForm::GetDescriptionStrRefString()
+{
+    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
+    return std::to_string(strref);
+}
+
+std::string SpellForm::GetAltMessageStrRefString()
+{
+    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
+    return std::to_string(strref);
 }
 
 void SpellForm::SetSpellLevels()
