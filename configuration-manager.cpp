@@ -41,8 +41,11 @@ bool ConfigurationManager::AttemptLoad()
             base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
             base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
             base_dialog = LoadNWNBaseDataTLKFile("dialog.tlk");
-            
+
             // TODO: Load/create custom_tlk
+            Tlk::Raw::Tlk raw_tlk;
+            custom_tlk = new Tlk::Friendly::Tlk(std::move(raw_tlk));
+
 
             std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
             for (auto const& r : base_key->GetReferencedResources())
@@ -71,9 +74,10 @@ bool ConfigurationManager::AttemptLoad()
                 spell_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
             for (auto const& row : (*twoda_list["feat"]))
                 feat_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            
+
             for (auto const& entry : (*custom_tlk))
                 current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
+            current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
         }
         catch (std::string& message)
         {
@@ -402,12 +406,23 @@ std::string ConfigurationManager::GetTlkString(const std::uint32_t& strref)
         result = (*custom_tlk)[strref];
     else
         result = (*base_dialog)[strref];
-    
+
     return result;
 }
 
-void ConfigurationManager::SetTlkString(const std::string& value, const std::uint32_t strref)
+std::uint32_t ConfigurationManager::SetTlkString(const std::string& value, std::uint32_t strref)
 {
-    //if (strref > BASE_TLK_LIMIT)
-    
+    if (strref > 0)
+    {
+        if (strref < BASE_TLK_LIMIT)
+            strref = current_tlk_row_count++;
+    }
+    else
+        strref = current_tlk_row_count++;
+
+    Tlk::Friendly::TlkEntry entry;
+    entry.m_String = value;
+    custom_tlk->Set(strref, entry);
+
+    return strref;
 }

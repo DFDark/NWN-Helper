@@ -29,7 +29,7 @@ public:
     void SetSpellColumns(const std::vector<std::string>& columns);
     void SetFeatColumns(const std::vector<std::string>& columns);
     void AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row);
-    void SetTlkString(const std::string& value, const std::uint32_t strref = 0);
+    std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     Tlk::Friendly::Tlk* GetTlk();

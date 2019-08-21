@@ -1099,20 +1099,12 @@ std::string SpellForm::GetUserTypeString()
 std::string SpellForm::GetNameStrRefString()
 {
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
-    
-    /*std::string aux = name->GetValue().ToStdString();
-    
-    if (strref < BASE_TLK_LIMIT)
-    {
-        std::string base_name = configuration->GetTlkString(strref);
-        if (base_name != aux)
-        {
-        }
-    }
-    else
-    {
-    }
-    */
+
+    std::string aux = name->GetValue().ToStdString();
+    std::string base_name = configuration->GetTlkString(strref);
+    if (base_name != aux)
+        strref = configuration->SetTlkString(aux, strref);
+
     return std::to_string(strref);
 }
 
@@ -1288,7 +1280,7 @@ void SpellForm::InitFormValues()
 
     // if strref > 0 we will output just empty name
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
-    name->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
+    name->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
 
     impact_script->SetValue(wxString(Get2DAString(SPELL_2DA::ImpactScript)));
 }
