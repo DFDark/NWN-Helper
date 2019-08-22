@@ -3,6 +3,7 @@
 #include "Components/feat-form.hpp"
 #include "Components/spell-column-form.hpp"
 #include "Components/feat-column-form.hpp"
+#include "Components/export-form.hpp"
 
 enum
 {
@@ -10,12 +11,14 @@ enum
     FEATS,
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
+    EXPORT_MENU,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
+    EVT_MENU(EXPORT_MENU, NWNHelperMain::OnExportMenu)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
 wxEND_EVENT_TABLE()
@@ -26,6 +29,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     configuration = _configuration;
 
     menu_file = new wxMenu;
+    menu_file->Append(wxID_ANY, "Export", "Exports saved files into selected directory");
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
     menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
@@ -152,4 +156,13 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
         SetFeatColumns();
         configuration->SaveCurrentSettings();
     }
+}
+
+void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
+{
+    ExportForm form(main_panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+        wxMessageBox("Files were exported successfully!", "Success", wxOK|wxICON_SUCCESS);
+    else
+        wxMessageBox("Error while exporting files!", "Error", wxOK|wxICON_ERROR);
 }

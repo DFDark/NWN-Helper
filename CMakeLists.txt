@@ -18,6 +18,8 @@ add_library(NWNHelper STATIC
     Components/spell-column-form.cpp
     Components/feat-column-form.hpp
     Components/feat-column-form.cpp
+    Components/export-form.hpp
+    Components/export-form.cpp
     ListModels/spelllist-model.hpp
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp
