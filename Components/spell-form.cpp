@@ -1111,12 +1111,24 @@ std::string SpellForm::GetNameStrRefString()
 std::string SpellForm::GetDescriptionStrRefString()
 {
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
+    
+    std::string aux = description->GetValue().ToStdString();
+    std::string base_desc = configuration->GetTlkString(strref);
+    if (base_desc != aux)
+        strref = configuration->SetTlkString(aux, strref);
+
     return std::to_string(strref);
 }
 
 std::string SpellForm::GetAltMessageStrRefString()
 {
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
+
+    std::string aux = description->GetValue().ToStdString();
+    std::string base_altmsg = configuration->GetTlkString(strref);
+    if (base_altmsg != aux)
+        strref = configuration->SetTlkString(aux, strref);
+
     return std::to_string(strref);
 }
 
@@ -1413,9 +1425,9 @@ void SpellForm::SetMiscellaneousValues()
     hostile_setting->SetValue(_hostile_setting > 0);
 
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
-    description->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
+    description->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
     strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
-    alt_message->SetValue(wxString(strref > 0 ? (*tlk)[strref] : ""));
+    alt_message->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
 
     std::string aux = Get2DAString(SPELL_2DA::FeatID);
     feat->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));

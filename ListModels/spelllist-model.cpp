@@ -1,11 +1,11 @@
 #include "spelllist-model.hpp"
 #include "../constants.hpp"
 
-SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk) :
+SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration) :
     wxDataViewVirtualListModel(_file->Size())
 {
     file = _file;
-    tlk = _tlk;
+    configuration = _configuration;
 }
 
 unsigned int SpellListModel::GetColumnCount() const
@@ -42,7 +42,7 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
             try
             {
                 std::uint32_t strref = std::stoul((*file)[row][aux].m_Data);
-                variant = (*tlk)[strref];
+                variant = configuration->GetTlkString(strref);
             }
             catch (std::exception)
             {

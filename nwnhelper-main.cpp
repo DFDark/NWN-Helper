@@ -56,7 +56,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     TwoDA::Friendly::TwoDA* _feats = configuration->Get2da("feat");
     Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
-    sp_model = new SpellListModel(_2da, tlk);
+    sp_model = new SpellListModel(_2da, configuration);
     spells->AssociateModel(sp_model);
 
     ft_model = new FeatListModel(_feats, tlk);
@@ -82,7 +82,6 @@ void NWNHelperMain::OnSpellActivated(wxDataViewEvent& event)
 {
     unsigned int row = sp_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* spell = sp_model->Get2daRow(row);
-    // Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
     SpellForm form(main_panel, configuration, spell->RowId());
     form.ShowModal();
@@ -92,7 +91,6 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
 {
     unsigned int row = ft_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* feat = ft_model->Get2daRow(row);
-    // Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
     FeatForm form(main_panel, feat);
     form.ShowModal();

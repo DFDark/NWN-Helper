@@ -40,7 +40,7 @@ public:
 
 private:
     TwoDA::Friendly::TwoDA* file;
-    Tlk::Friendly::Tlk* tlk;
+    ConfigurationManager* configuration;
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     std::size_t GetColumnID(unsigned int col) const;
