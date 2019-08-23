@@ -51,6 +51,7 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     */
     label_label = new wxStaticText(panel, wxID_ANY, wxString("Label:"));
     name_label = new wxStaticText(panel, wxID_ANY, wxString("Name:"));
+    icon_resref_label = new wxStaticText(panel, wxID_ANY, wxString("Icon ResRef:"));
     spellschool_label = new wxStaticText(panel, wxID_ANY, wxString("Spell School:"));
     spellrange_label = new wxStaticText(panel, wxID_ANY, wxString("Spell Range:"));
     impact_script_label = new wxStaticText(panel, wxID_ANY, wxString("Impact Script:"));
@@ -60,6 +61,7 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    icon_resref = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     impact_script = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     /*
@@ -248,7 +250,7 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* school_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* range_sizer = new wxBoxSizer(wxVERTICAL);
-    wxStaticBoxSizer* spell_components_sizer = new wxStaticBoxSizer(spell_components, wxHORIZONTAL);
+    wxBoxSizer* icon_resref_sizer = new wxBoxSizer(wxVERTICAL);
 
     label_sizer->Add(label_label);
     label_sizer->Add(label, 1, wxEXPAND|wxALL);
@@ -258,14 +260,14 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     school_sizer->Add(spell_school, 1, wxEXPAND|wxALL);
     range_sizer->Add(spellrange_label);
     range_sizer->Add(spell_range, 1, wxEXPAND|wxALL);
-    spell_components_sizer->Add(verbal);
-    spell_components_sizer->Add(somatic);
+    icon_resref_sizer->Add(icon_resref_label);
+    icon_resref_sizer->Add(icon_resref, 1, wxEXPAND);
 
     first_row_sizer->Add(label_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(name_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(school_sizer, 1, wxEXPAND|wxALL);
     first_row_sizer->Add(range_sizer, 1, wxEXPAND|wxALL);
-    first_row_sizer->Add(spell_components_sizer);
+    first_row_sizer->Add(icon_resref_sizer);
 
     wxStaticBoxSizer* meta_sizer = new wxStaticBoxSizer(metamagic_staticbox, wxVERTICAL);
 
@@ -502,12 +504,16 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
 
     wxBoxSizer* alt_message_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
+    wxStaticBoxSizer* spell_components_sizer = new wxStaticBoxSizer(spell_components, wxHORIZONTAL);
 
+    spell_components_sizer->Add(verbal);
+    spell_components_sizer->Add(somatic);
     category_sizer->Add(category_label);
-    category_sizer->Add(category, 1, wxEXPAND|wxALL);
+    category_sizer->Add(category, 1, wxEXPAND);
     alt_message_sizer->Add(alt_message_label);
     alt_message_sizer->Add(alt_message, 1, wxEXPAND|wxALL);
 
+    fourth_row_sizer->Add(spell_components_sizer);
     fourth_row_sizer->Add(category_sizer, 1, wxEXPAND|wxALL);
     fourth_row_sizer->Add(alt_message_sizer, 1, wxEXPAND|wxALL);
 
@@ -557,6 +563,7 @@ void SpellForm::OnOk(wxCommandEvent& event)
     // TODO: Add validation
     (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = label->GetValue().ToStdString();
     (*spell)[GETIDX(SPELL_2DA::Name)].m_Data = GetNameStrRefString();
+    (*spell)[GETIDX(SPELL_2DA::IconResRef)].m_Data = icon_resref->GetValue().ToStdString();
     (*spell)[GETIDX(SPELL_2DA::School)].m_Data = GetSchoolSelectionString();
     (*spell)[GETIDX(SPELL_2DA::Range)].m_Data = GetRangeSelectionString();
     (*spell)[GETIDX(SPELL_2DA::VS)].m_Data = GetSpellComponentsString();
@@ -1294,6 +1301,7 @@ void SpellForm::InitFormValues()
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
     name->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
 
+    icon_resref->SetValue(wxString(Get2DAString(SPELL_2DA::IconResRef)));
     impact_script->SetValue(wxString(Get2DAString(SPELL_2DA::ImpactScript)));
 }
 

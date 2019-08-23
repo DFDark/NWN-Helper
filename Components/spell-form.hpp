@@ -97,6 +97,7 @@ private:
     */
     wxStaticText* label_label;
     wxStaticText* name_label;
+    wxStaticText* icon_resref_label;
     wxStaticText* spellschool_label;
     wxStaticText* spellrange_label;
     wxStaticText* impact_script_label;
@@ -170,6 +171,7 @@ private:
 
     wxTextCtrl* label;
     wxTextCtrl* name;
+    wxTextCtrl* icon_resref;
     wxTextCtrl* impact_script;
     wxTextCtrl* conj_time;
     wxTextCtrl* conj_head_visual;

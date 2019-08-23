@@ -161,8 +161,5 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
 void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
 {
     ExportForm form(main_panel, configuration);
-    if (form.ShowModal() == wxID_OK)
-        {}//wxMessageBox("Files were exported successfully!", "Success", wxOK|wxICON_SUCCESS);
-    else
-        wxMessageBox("Error while exporting files!", "Error", wxOK|wxICON_ERROR);
+    form.ShowModal();
 }
