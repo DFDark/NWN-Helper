@@ -555,11 +555,6 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
 
 void SpellForm::OnOk(wxCommandEvent& event)
 {
-    // Here we will need to create new method to create/alter spell
-    // TODO: remove twoda_edit_list, instead we will deal only with base
-    // OR: make a copy in configuration to be able to use twoda_edit_list
-    // and keep twoda_list as loaded base (for comparison or other fncs)
-
     // TODO: Add validation
     (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = label->GetValue().ToStdString();
     (*spell)[GETIDX(SPELL_2DA::Name)].m_Data = GetNameStrRefString();

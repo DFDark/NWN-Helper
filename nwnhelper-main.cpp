@@ -12,6 +12,8 @@ enum
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
     EXPORT_MENU,
+    SPELL_POPUP_EDIT,
+    SPELL_POPUP_DELETE,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
@@ -19,8 +21,10 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
     EVT_MENU(EXPORT_MENU, NWNHelperMain::OnExportMenu)
+    EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
+    EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
 wxEND_EVENT_TABLE()
 
 NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _configuration) :
@@ -161,5 +165,28 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
 void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
 {
     ExportForm form(main_panel, configuration);
+    form.ShowModal();
+}
+
+void NWNHelperMain::OnSpellRightClick(wxDataViewEvent& event)
+{
+    wxDataViewItem item = event.GetItem();
+    if (item.IsOk())
+    {
+        wxMenu popup_menu;
+
+        popup_menu.Append(SPELL_POPUP_EDIT, "Edit Spell");
+        popup_menu.Append(SPELL_POPUP_DELETE, "Delete Spell");
+
+        PopupMenu(&popup_menu);
+    }
+}
+
+void NWNHelperMain::OnSpellPopupEdit(wxCommandEvent& event)
+{
+    unsigned int row = sp_model->GetRow(spells->GetCurrentItem());
+    TwoDA::Friendly::TwoDARow* spell = sp_model->Get2daRow(row);
+
+    SpellForm form(main_panel, configuration, spell->RowId());
     form.ShowModal();
 }
