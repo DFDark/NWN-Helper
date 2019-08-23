@@ -29,7 +29,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     configuration = _configuration;
 
     menu_file = new wxMenu;
-    menu_file->Append(wxID_ANY, "Export", "Exports saved files into selected directory");
+    menu_file->Append(EXPORT_MENU, "Export", "Exports saved files into selected directory");
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
     menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
@@ -162,7 +162,7 @@ void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
 {
     ExportForm form(main_panel, configuration);
     if (form.ShowModal() == wxID_OK)
-        wxMessageBox("Files were exported successfully!", "Success", wxOK|wxICON_SUCCESS);
+        {}//wxMessageBox("Files were exported successfully!", "Success", wxOK|wxICON_SUCCESS);
     else
         wxMessageBox("Error while exporting files!", "Error", wxOK|wxICON_ERROR);
 }

@@ -1111,7 +1111,7 @@ std::string SpellForm::GetNameStrRefString()
 std::string SpellForm::GetDescriptionStrRefString()
 {
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
-    
+
     std::string aux = description->GetValue().ToStdString();
     std::string base_desc = configuration->GetTlkString(strref);
     if (base_desc != aux)
@@ -1124,7 +1124,7 @@ std::string SpellForm::GetAltMessageStrRefString()
 {
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
 
-    std::string aux = description->GetValue().ToStdString();
+    std::string aux = alt_message->GetValue().ToStdString();
     std::string base_altmsg = configuration->GetTlkString(strref);
     if (base_altmsg != aux)
         strref = configuration->SetTlkString(aux, strref);

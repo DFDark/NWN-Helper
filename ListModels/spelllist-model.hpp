@@ -7,6 +7,7 @@
 #endif
 #include <wx/dataview.h>
 
+#include "configuration-manager.hpp"
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
@@ -28,7 +29,7 @@ public:
         IMPACT_SCRIPT
     };
 
-    SpellListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk);
+    SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(unsigned int row);
 
