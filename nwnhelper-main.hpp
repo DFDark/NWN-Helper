@@ -32,6 +32,7 @@ private:
     void OnFeatActivated(wxDataViewEvent& event);
 
     void OnSpellPopupEdit(wxCommandEvent& event);
+    void OnSpellPopupDelete(wxCommandEvent& event);
 
     void SetSpellColumns();
     void SetFeatColumns();

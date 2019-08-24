@@ -22,6 +22,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
     EVT_MENU(EXPORT_MENU, NWNHelperMain::OnExportMenu)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
+    EVT_MENU(SPELL_POPUP_DELETE, NWNHelperMain::OnSpellPopupDelete)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
@@ -189,4 +190,13 @@ void NWNHelperMain::OnSpellPopupEdit(wxCommandEvent& event)
 
     SpellForm form(main_panel, configuration, spell->RowId());
     form.ShowModal();
+}
+
+void NWNHelperMain::OnSpellPopupDelete(wxCommandEvent& event)
+{
+    // Will be implemented later
+    // We will need to make sure we replace all row ids which are used as
+    // a reference to the deleted row
+    wxMessageBox("Not yet implemented",
+        "Warning", wxOK | wxICON_WARNING );
 }
