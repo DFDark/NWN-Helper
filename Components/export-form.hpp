@@ -20,11 +20,14 @@ private:
     void OnOk(wxCommandEvent& event);
     void OnFindDirectoryClick(wxCommandEvent& event);
 
-    
+
     ConfigurationManager* configuration;
 
     wxStaticText* destination_label;
     wxTextCtrl* destination;
+
+    wxStaticText* tlk_filename_label;
+    wxTextCtrl* tlk_filename;
 
     wxButton* destination_button;
 

@@ -426,3 +426,18 @@ std::uint32_t ConfigurationManager::SetTlkString(const std::string& value, std::
 
     return strref;
 }
+
+bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename)
+{
+#if defined _WIN32 || _WIN64
+    std::string separator = "\\";
+#else
+    std::string separator = "/";
+#endif
+
+    bool result = true;
+    if ((BASE_TLK_LIMIT + 1) < current_tlk_row_count)
+        result &= custom_tlk->WriteToFile((destination + separator + tlk_filename).c_str());
+
+    return result;
+}
