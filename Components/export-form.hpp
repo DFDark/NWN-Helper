@@ -16,9 +16,17 @@ class ExportForm : public wxDialog
 public:
     ExportForm(wxWindow* parent, ConfigurationManager* _configuration);
 
-    void OnOk(wxCommandEvent& event);
 private:
+    void OnOk(wxCommandEvent& event);
+    void OnFindDirectoryClick(wxCommandEvent& event);
+
+    
     ConfigurationManager* configuration;
+
+    wxStaticText* destination_label;
+    wxTextCtrl* destination;
+
+    wxButton* destination_button;
 
     wxButton* ok_button;
     wxButton* cancel_button;
