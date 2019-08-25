@@ -354,39 +354,18 @@ bool ConfigurationManager::SaveCurrentSettings()
 
 void ConfigurationManager::AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row)
 {
-    /*
-        if we have not edited 'twoda' yet, we will have to first create
-        it's copy from base2da (twoda_list)
-    */
-    if (twoda_edit_list[twoda] == NULL)
-    {
-        // Create empty 2da
-        TwoDA::Raw::TwoDA raw;
-        TwoDA::Friendly::TwoDA* aux = new TwoDA::Friendly::TwoDA(std::move(raw));
+    // TODO: Change this to 'Add2daRow'
+}
 
-        // Copy all 2da rows from base to the new 2da
-        for (std::size_t i = 0; i < twoda_list[twoda]->Size(); i++)
-        {
-            TwoDA::Friendly::TwoDARow current = (*aux)[i];
-            TwoDA::Friendly::TwoDARow base = (*(twoda_list[twoda]))[i];
-            for (std::size_t j = 1; j < base.Size(); j++)
-                current[j] = base[j];
-        }
 
-        twoda_edit_list[twoda] = aux;
-    }
-
-    // Replace current 2da row values with new values
-    std::size_t row_count = twoda_edit_list[twoda]->Size();
-    TwoDA::Friendly::TwoDARow current = (*(twoda_edit_list[twoda]))[row_count];
-    for (std::size_t i = 1; i < row.Size(); i++)
-        current[i] = row[i];
+void ConfigurationManager::Set2daModified(const std::string& twoda, const bool& modified)
+{
+    twoda_edit_list[twoda] = modified;
 }
 
 TwoDA::Friendly::TwoDARow* ConfigurationManager::Get2daRow(const std::string& twoda, const std::uint32_t& row_id)
 {
     return &(*(twoda_list[twoda]))[row_id];
-
 }
 
 wxArrayString* ConfigurationManager::GetSpellList()
@@ -436,8 +415,15 @@ bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, co
 #endif
 
     bool result = true;
-    if ((BASE_TLK_LIMIT + 1) < current_tlk_row_count)
-        result &= custom_tlk->WriteToFile((destination + separator + tlk_filename).c_str());
+    std::string directory = destination + separator;
+    if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
+        result &= custom_tlk->WriteToFile((directory + tlk_filename).c_str());
+
+    for (auto const& entry : twoda_edit_list)
+    {
+        if (entry.second)
+            result &= twoda_list[entry.first]->WriteToFile((directory + entry.first + ".2da").c_str());
+    }
 
     return result;
 }

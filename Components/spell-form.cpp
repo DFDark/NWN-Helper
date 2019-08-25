@@ -621,6 +621,8 @@ void SpellForm::OnOk(wxCommandEvent& event)
     (*spell)[GETIDX(SPELL_2DA::Counter2)].m_Data = counter_2->GetSelection() > 0 ? std::to_string(counter_2->GetSelection() - 1) : std::string("****");
     (*spell)[GETIDX(SPELL_2DA::HasProjectile)].m_Data = std::string(has_projectile->GetValue() ? "1" : "0");
 
+    configuration->Set2daModified("spells", true);
+
     this->EndModal(wxID_OK);
 }
 
