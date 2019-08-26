@@ -231,12 +231,12 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
     configuration->LoadProjectData(project_dialog.GetPath().ToStdString());
 }
 
-void OnSaveProject(wxCommandEvent& event)
+void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
 {
 
 }
 
-void OnSaveProjectAs(wxCommandEvent& event)
+void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)
 {
-    
+
 }
