@@ -14,6 +14,8 @@ enum
     EXPORT_MENU,
     SPELL_POPUP_EDIT,
     SPELL_POPUP_DELETE,
+    NEW_PROJECT,
+    LOAD_PROJECT,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
@@ -23,6 +25,8 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(EXPORT_MENU, NWNHelperMain::OnExportMenu)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_MENU(SPELL_POPUP_DELETE, NWNHelperMain::OnSpellPopupDelete)
+    EVT_MENU(NEW_PROJECT, NWNHelperMain::OnNewProject)
+    EVT_MENU(LOAD_PROJECT, NWNHelperMain::OnLoadProject)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
@@ -34,6 +38,9 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     configuration = _configuration;
 
     menu_file = new wxMenu;
+    menu_file->Append(NEW_PROJECT, "New Project", "Creates new NWN Helper project");
+    menu_file->Append(LOAD_PROJECT, "Load Project", "Loads NWN Helper project");
+    menu_file->Append(wxID_SEPARATOR);
     menu_file->Append(EXPORT_MENU, "Export", "Exports saved files into selected directory");
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
@@ -199,4 +206,20 @@ void NWNHelperMain::OnSpellPopupDelete(wxCommandEvent& event)
     // a reference to the deleted row
     wxMessageBox("Not yet implemented",
         "Warning", wxOK | wxICON_WARNING );
+}
+
+void NWNHelperMain::OnNewProject(wxCommandEvent& event)
+{
+    configuration->LoadProjectData();
+}
+
+void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
+{
+    wxFileDialog project_dialog(panel, wxString("Locate *.nwh file"), "", "",
+        "*.nwh", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+    if (project_dialog.ShowModal() == wxID_CANCEL)
+        return;
+
+    configuration->LoadProjectData(ini_dialog.GetPath().ToStdString());
 }

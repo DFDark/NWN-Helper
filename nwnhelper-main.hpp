@@ -34,6 +34,9 @@ private:
     void OnSpellPopupEdit(wxCommandEvent& event);
     void OnSpellPopupDelete(wxCommandEvent& event);
 
+    void OnNewProject(wxCommandEvent& event);
+    void OnLoadProject(wxCommandEvent& event);
+
     void SetSpellColumns();
     void SetFeatColumns();
 

@@ -25,6 +25,7 @@ public:
     ~ConfigurationManager();
 
     bool AttemptLoad();
+    bool LoadProjectData(const std::string& project_file = "");
     bool SaveCurrentSettings();
     bool ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename);
     void SetSpellColumns(const std::vector<std::string>& columns);

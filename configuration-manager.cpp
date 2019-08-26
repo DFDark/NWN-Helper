@@ -35,61 +35,7 @@ bool ConfigurationManager::AttemptLoad()
         loaded = InitialConfiguration();
 
     if (loaded)
-    {
-        try
-        {
-            base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
-            base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
-            base_dialog = LoadNWNBaseDataTLKFile("dialog.tlk");
-
-            // TODO: Load/create custom_tlk
-            Tlk::Raw::Tlk raw_tlk;
-            custom_tlk = new Tlk::Friendly::Tlk(std::move(raw_tlk));
-
-
-            std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
-            for (auto const& r : base_key->GetReferencedResources())
-            {
-                if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
-                    resourcelist.emplace_back(r);
-            }
-
-            for (auto const& kvp : base_2da->GetResources())
-            {
-                if (resourcelist.size() <= kvp.first)
-                    continue;
-
-                std::string filename = resourcelist[kvp.first].m_ResRef;
-                twoda_list[filename] = LoadTwoDAFile(filename,
-                    kvp.second.m_DataBlock->GetData(),
-                    kvp.second.m_DataBlock->GetDataLength()
-                );
-            }
-
-            // Preloading lists (for large arrays like spells/feats)
-            // to save time from loading them on SpellForm init
-            spell_list->Add("None");
-            feat_list->Add("None");
-            for (auto const& row : (*twoda_list["spells"]))
-                spell_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
-            for (auto const& row : (*twoda_list["feat"]))
-                feat_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
-
-            for (auto const& entry : (*custom_tlk))
-                current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
-            current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
-        }
-        catch (std::string& message)
-        {
-            wxMessageBox(message, "Error", wxOK | wxICON_ERROR );
-            loaded = false;
-        }
-        catch (std::exception& e)
-        {
-            wxMessageBox(e.what(), "Error", wxOK | wxICON_ERROR );
-            loaded = false;
-        }
-    }
+        loaded = LoadProjectData();
 
     return loaded;
 }
@@ -141,6 +87,82 @@ bool ConfigurationManager::InitialConfiguration()
     }
 
     return result;
+}
+
+bool ConfigurationManager::LoadProjectData(const std::string& project_file)
+{
+    bool loaded = true;
+    bool has_project_file = project_file.size() > 0;
+    try
+    {
+        CSimpleIniA project(true, true, true);
+        if (has_project_file)
+        {
+            if (project.LoadFile(project_file) < 0)
+                throw std::string("Loading project '" + project_file + "' has failed!");
+        }
+
+        base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
+        base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
+        base_dialog = LoadNWNBaseDataTLKFile("dialog.tlk");
+
+        Tlk::Raw::Tlk raw_tlk;
+        if (has_project_file)
+        {
+            std::string tlk_file = config->GetValue("Files", "TLK");
+            if (tlk_file.size() > 0 && !Tlk::Raw::Tlk::ReadFromFile(tlk_file.c_str(), &raw_tlk))
+            {
+                std::string error = std::string("Couldn't load ") + tlk_file;
+                throw error;
+            }
+        }
+        custom_tlk = new Tlk::Friendly::Tlk(std::move(raw_tlk));
+
+
+        std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
+        for (auto const& r : base_key->GetReferencedResources())
+        {
+            if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
+                resourcelist.emplace_back(r);
+        }
+
+        for (auto const& kvp : base_2da->GetResources())
+        {
+            if (resourcelist.size() <= kvp.first)
+                continue;
+
+            std::string filename = resourcelist[kvp.first].m_ResRef;
+            twoda_list[filename] = LoadTwoDAFile(filename,
+                kvp.second.m_DataBlock->GetData(),
+                kvp.second.m_DataBlock->GetDataLength()
+            );
+        }
+
+        // Preloading lists (for large arrays like spells/feats)
+        // to save time from loading them on SpellForm init
+        spell_list->Add("None");
+        feat_list->Add("None");
+        for (auto const& row : (*twoda_list["spells"]))
+            spell_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
+        for (auto const& row : (*twoda_list["feat"]))
+            feat_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
+
+        for (auto const& entry : (*custom_tlk))
+            current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
+        current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
+    }
+    catch (std::string& message)
+    {
+        wxMessageBox(message, "Error", wxOK | wxICON_ERROR );
+        loaded = false;
+    }
+    catch (std::exception& e)
+    {
+        wxMessageBox(e.what(), "Error", wxOK | wxICON_ERROR );
+        loaded = false;
+    }
+    
+    return loaded;
 }
 
 Key::Friendly::Key* ConfigurationManager::LoadNWNBaseDataKEYFile(const char* filename)
