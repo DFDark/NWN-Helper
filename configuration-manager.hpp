@@ -28,6 +28,7 @@ public:
     bool LoadProjectData(const std::string& project_file = "");
     bool SaveCurrentSettings();
     bool ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename);
+    void ClearProjectData();
     void SetSpellColumns(const std::vector<std::string>& columns);
     void SetFeatColumns(const std::vector<std::string>& columns);
     void AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row);

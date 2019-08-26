@@ -22,6 +22,9 @@ ConfigurationManager::~ConfigurationManager()
     for (auto const& data : twoda_list)
         delete data.second;
 
+    spell_list->clear();
+    feat_list->clear();
+
     delete spell_list;
     delete feat_list;
 }
@@ -448,4 +451,29 @@ bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, co
     }
 
     return result;
+}
+
+void ConfigurationManager::ClearProjectData()
+{
+    delete base_key;
+    base_key = NULL;
+
+    delete base_2da;
+    base_2da = NULL;
+
+    delete base_dialog;
+    base_dialog = NULL;
+
+    delete custom_tlk;
+    custom_tlk = NULL;
+
+    for (auto const& entry : twoda_list)
+        delete entry.second;
+
+    twoda_list.clear();
+    twoda_edit_list.clear();
+
+    // No need to redeclare these since we're emptying them here
+    spell_list->clear();
+    feat_list->clear();
 }
