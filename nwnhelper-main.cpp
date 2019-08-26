@@ -16,6 +16,8 @@ enum
     SPELL_POPUP_DELETE,
     NEW_PROJECT,
     LOAD_PROJECT,
+    SAVE_PROJECT,
+    SAVE_PROJECT_AS,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
@@ -27,6 +29,8 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SPELL_POPUP_DELETE, NWNHelperMain::OnSpellPopupDelete)
     EVT_MENU(NEW_PROJECT, NWNHelperMain::OnNewProject)
     EVT_MENU(LOAD_PROJECT, NWNHelperMain::OnLoadProject)
+    EVT_MENU(SAVE_PROJECT, NWNHelperMain::OnSaveProject)
+    EVT_MENU(SAVE_PROJECT_AS, NWNHelperMain::OnSaveProjectAs)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
@@ -40,8 +44,11 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_file = new wxMenu;
     menu_file->Append(NEW_PROJECT, "New Project", "Creates new NWN Helper project");
     menu_file->Append(LOAD_PROJECT, "Load Project", "Loads NWN Helper project");
+    menu_file->Append(SAVE_PROJECT, "Save Project", "Save current project");
+    menu_file->Append(SAVE_PROJECT_AS, "Save Project As", "Save current project as");
     menu_file->Append(wxID_SEPARATOR);
     menu_file->Append(EXPORT_MENU, "Export", "Exports saved files into selected directory");
+    menu_file->Append(wxID_SEPARATOR);
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
     menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
@@ -215,11 +222,21 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 
 void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 {
-    wxFileDialog project_dialog(panel, wxString("Locate *.nwh file"), "", "",
+    wxFileDialog project_dialog(this, wxString("Locate *.nwh file"), "", "",
         "*.nwh", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if (project_dialog.ShowModal() == wxID_CANCEL)
         return;
 
-    configuration->LoadProjectData(ini_dialog.GetPath().ToStdString());
+    configuration->LoadProjectData(project_dialog.GetPath().ToStdString());
+}
+
+void OnSaveProject(wxCommandEvent& event)
+{
+
+}
+
+void OnSaveProjectAs(wxCommandEvent& event)
+{
+    
 }

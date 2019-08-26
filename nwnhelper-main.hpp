@@ -36,6 +36,8 @@ private:
 
     void OnNewProject(wxCommandEvent& event);
     void OnLoadProject(wxCommandEvent& event);
+    void OnSaveProject(wxCommandEvent& event);
+    void OnSaveProjectAs(wxCommandEvent& event);
 
     void SetSpellColumns();
     void SetFeatColumns();

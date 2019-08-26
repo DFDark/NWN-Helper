@@ -98,7 +98,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& project_file)
         CSimpleIniA project(true, true, true);
         if (has_project_file)
         {
-            if (project.LoadFile(project_file) < 0)
+            if (project.LoadFile(project_file.c_str()) < 0)
                 throw std::string("Loading project '" + project_file + "' has failed!");
         }
 
@@ -161,7 +161,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& project_file)
         wxMessageBox(e.what(), "Error", wxOK | wxICON_ERROR );
         loaded = false;
     }
-    
+
     return loaded;
 }
 
