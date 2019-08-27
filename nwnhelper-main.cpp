@@ -219,10 +219,10 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 {
     // TODO: Find the memory leak here somewhere
     
-    spells->ClearColumns();
+    /*spells->ClearColumns();
     feats->ClearColumns();
 
-    tabs->DeleteAllPages();
+    tabs->DeleteAllPages();*/
 
     /*if (spells != NULL)
     {
@@ -236,15 +236,21 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
         feats = NULL;
     }*/
 
-    delete sp_model;
+    /*delete sp_model;
     sp_model = NULL;
 
     delete ft_model;
     ft_model = NULL;
+*/
+    sp_model->SetFile(NULL);
+    ft_model->SetFile(NULL);
 
     configuration->ClearProjectData();
     configuration->LoadProjectData();
-
+    
+    sp_model->SetFile(configuration->Get2da("spells"));
+    ft_model->SetFile(configuration->Get2da("feat"));
+/*
     spells = new wxDataViewCtrl(tabs, SPELLS);
     feats = new wxDataViewCtrl(tabs, FEATS);
 
@@ -263,6 +269,7 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 
     SetSpellColumns();
     SetFeatColumns();
+    */
 }
 
 void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
@@ -278,7 +285,7 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
 {
-
+    
 }
 
 void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)

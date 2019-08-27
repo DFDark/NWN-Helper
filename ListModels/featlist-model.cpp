@@ -1,16 +1,19 @@
 #include "featlist-model.hpp"
 #include "../constants.hpp"
 
-FeatListModel::FeatListModel(TwoDA::Friendly::TwoDA* _file, Tlk::Friendly::Tlk* _tlk) :
+FeatListModel::FeatListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration) :
     wxDataViewVirtualListModel(_file->Size())
 {
     file = _file;
-    tlk = _tlk;
+    configuration = _configuration;
 }
 
 unsigned int FeatListModel::GetColumnCount() const
 {
-    return file->GetColumnNames().size();
+    if (file != NULL)
+        return file->GetColumnNames().size();
+
+    return 0;
 }
 
 wxString FeatListModel::GetColumnType(unsigned int col) const
@@ -28,6 +31,9 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
         return;
     }
 
+    if (file == NULL)
+        return;
+
     unsigned int aux = GetColumnID(col);
     if ((*file)[row][aux].m_IsEmpty)
     {
@@ -42,7 +48,7 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
             try
             {
                 std::uint32_t strref = std::stoul((*file)[row][aux].m_Data);
-                variant = (*tlk)[strref];
+                variant = configuration->GetTlkString(strref);
             }
             catch (std::exception)
             {
@@ -55,11 +61,15 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
 
 bool FeatListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
-    unsigned int aux = GetColumnID(col);
-    if (col == FeatListModel::ID)
-        (*file)[row][aux].m_Data = std::to_string(row);
-    else
-        (*file)[row][aux].m_Data = variant.GetString();
+    if (file != NULL)
+    {
+        unsigned int aux = GetColumnID(col);
+        if (col == FeatListModel::ID)
+            (*file)[row][aux].m_Data = std::to_string(row);
+        else
+            (*file)[row][aux].m_Data = variant.GetString();
+    }
+
     return true;
 }
 
@@ -84,4 +94,10 @@ std::size_t FeatListModel::GetColumnID(unsigned int col) const
 
     //TODO: Some sort of error management
     return 0;
+}
+
+void FeatListModel::SetFile(TwoDA::Friendly::TwoDA* _file)
+{
+    file = _file;
+    Cleared();
 }

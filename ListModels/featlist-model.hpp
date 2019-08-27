@@ -34,7 +34,7 @@ public:
 
 private:
     TwoDA::Friendly::TwoDA* file;
-    Tlk::Friendly::Tlk* tlk;
+    ConfigurationManager* configuration;
     
     std::size_t GetColumnID(unsigned int col) const;
 };

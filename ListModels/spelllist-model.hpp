@@ -39,6 +39,7 @@ public:
     virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col) wxOVERRIDE;
     virtual bool GetAttrByRow(unsigned int row, unsigned int col, wxDataViewItemAttr& attr) const wxOVERRIDE;
 
+    void SetFile(TwoDA::Friendly::TwoDA* _file);
 private:
     TwoDA::Friendly::TwoDA* file;
     ConfigurationManager* configuration;

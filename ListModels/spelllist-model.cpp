@@ -10,7 +10,10 @@ SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManag
 
 unsigned int SpellListModel::GetColumnCount() const
 {
-    return file->GetColumnNames().size();
+    if (file != NULL)
+        return file->GetColumnNames().size();
+    
+    return 0;
 }
 
 wxString SpellListModel::GetColumnType(unsigned int col) const
@@ -27,6 +30,9 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
         variant = std::to_string(row);
         return;
     }
+
+    if (file == NULL)
+        return;
 
     unsigned int aux = GetColumnID(col);
     if ((*file)[row][aux].m_IsEmpty)
@@ -61,11 +67,15 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
 
 bool SpellListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
-    unsigned int aux = GetColumnID(col);
-    if (col == SpellListModel::ID)
-        (*file)[row][aux].m_Data = std::to_string(row);
-    else
-        (*file)[row][aux].m_Data = variant.GetString();
+    if (file != NULL)
+    {
+        unsigned int aux = GetColumnID(col);
+        if (col == SpellListModel::ID)
+            (*file)[row][aux].m_Data = std::to_string(row);
+        else
+            (*file)[row][aux].m_Data = variant.GetString();
+    }
+
     return true;
 }
 
@@ -194,4 +204,10 @@ std::string SpellListModel::GetTargetType(std::string target_type) const
     for (unsigned int i = 0; i < list.size(); i++)
         result += (i > 0 ? "," : "") + list[i];
     return result;
+}
+
+void SpellListModel::SetFile(TwoDA::Friendly::TwoDA* _file)
+{
+    file = _file;
+    Cleared();
 }
