@@ -12,7 +12,7 @@ unsigned int SpellListModel::GetColumnCount() const
 {
     if (file != NULL)
         return file->GetColumnNames().size();
-    
+
     return 0;
 }
 
@@ -209,5 +209,8 @@ std::string SpellListModel::GetTargetType(std::string target_type) const
 void SpellListModel::SetFile(TwoDA::Friendly::TwoDA* _file)
 {
     file = _file;
-    Cleared();
+    if (file == NULL)
+        Cleared();
+    else
+        Reset(static_cast<unsigned int>(file->Size()));
 }

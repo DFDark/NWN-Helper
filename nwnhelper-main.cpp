@@ -77,12 +77,11 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     TwoDA::Friendly::TwoDA* _2da = configuration->Get2da("spells");
     TwoDA::Friendly::TwoDA* _feats = configuration->Get2da("feat");
-    Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
 
     sp_model = new SpellListModel(_2da, configuration);
     spells->AssociateModel(sp_model);
 
-    ft_model = new FeatListModel(_feats, tlk);
+    ft_model = new FeatListModel(_feats, configuration);
     feats->AssociateModel(ft_model);
 
     SetSpellColumns();
@@ -217,59 +216,16 @@ void NWNHelperMain::OnSpellPopupDelete(wxCommandEvent& event)
 
 void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 {
-    // TODO: Find the memory leak here somewhere
-    
-    /*spells->ClearColumns();
-    feats->ClearColumns();
-
-    tabs->DeleteAllPages();*/
-
-    /*if (spells != NULL)
-    {
-        delete spells;
-        spells = NULL;
-    }
-
-    if (feats != NULL)
-    {
-        delete feats;
-        feats = NULL;
-    }*/
-
-    /*delete sp_model;
-    sp_model = NULL;
-
-    delete ft_model;
-    ft_model = NULL;
-*/
     sp_model->SetFile(NULL);
     ft_model->SetFile(NULL);
 
+    // Todo: Check where is the memory leak from
     configuration->ClearProjectData();
     configuration->LoadProjectData();
-    
+
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
-/*
-    spells = new wxDataViewCtrl(tabs, SPELLS);
-    feats = new wxDataViewCtrl(tabs, FEATS);
 
-    tabs->AddPage(spells, wxString("Spells"));
-    tabs->AddPage(feats, wxString("Feats"));
-
-    TwoDA::Friendly::TwoDA* _2da = configuration->Get2da("spells");
-    TwoDA::Friendly::TwoDA* _feats = configuration->Get2da("feat");
-    Tlk::Friendly::Tlk* tlk = configuration->GetTlk();
-
-    sp_model = new SpellListModel(_2da, configuration);
-    spells->AssociateModel(sp_model);
-
-    ft_model = new FeatListModel(_feats, tlk);
-    feats->AssociateModel(ft_model);
-
-    SetSpellColumns();
-    SetFeatColumns();
-    */
 }
 
 void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
@@ -285,7 +241,7 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
 {
-    
+
 }
 
 void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)

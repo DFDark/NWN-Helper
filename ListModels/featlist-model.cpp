@@ -99,5 +99,8 @@ std::size_t FeatListModel::GetColumnID(unsigned int col) const
 void FeatListModel::SetFile(TwoDA::Friendly::TwoDA* _file)
 {
     file = _file;
-    Cleared();
+    if (file == NULL)
+        Cleared();
+    else
+        Reset(static_cast<unsigned int>(file->Size()));
 }
