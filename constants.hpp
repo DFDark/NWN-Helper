@@ -128,9 +128,9 @@ enum class FEAT_2DA
 
 
 #if defined _WIN32 || _WIN64
-#define DIR_SEPARATOR "\\"
+#define SEPARATOR "\\"
 #else
-#define DIR_SEPARATOR "/"
+#define SEPARATOR "/"
 #endif
 
 
