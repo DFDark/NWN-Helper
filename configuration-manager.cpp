@@ -7,6 +7,7 @@ ConfigurationManager::ConfigurationManager()
     loaded = false;
     spell_list = new wxArrayString();
     feat_list = new wxArrayString();
+    project_loaded = false;
 }
 
 ConfigurationManager::~ConfigurationManager()
@@ -103,6 +104,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& project_file)
         {
             if (project.LoadFile(project_file.c_str()) < 0)
                 throw std::string("Loading project '" + project_file + "' has failed!");
+            project_loaded = true;
         }
 
         base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
@@ -433,14 +435,8 @@ std::uint32_t ConfigurationManager::SetTlkString(const std::string& value, std::
 
 bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename)
 {
-#if defined _WIN32 || _WIN64
-    std::string separator = "\\";
-#else
-    std::string separator = "/";
-#endif
-
     bool result = true;
-    std::string directory = destination + separator;
+    std::string directory = destination + SEPARATOR;
     if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
         result &= custom_tlk->WriteToFile((directory + tlk_filename).c_str());
 
@@ -476,4 +472,43 @@ void ConfigurationManager::ClearProjectData()
     // No need to redeclare these since we're emptying them here
     spell_list->clear();
     feat_list->clear();
+}
+
+void ConfigurationManager::SaveProject(const bool& force_prompt)
+{
+    if (force_prompt || project_file.size() <= 0)
+    {
+        wxFileDialog project_dialog(this, wxString("Save as *.nwh file"), "", "",
+            "*.nwh", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+        if (project_dialog.ShowModal() == wxID_CANCEL)
+            return;
+
+        project_directory = project_dialog.GetDirectory().ToStdString();
+        project_file = project_dialog.GetFilename().ToStdString();
+    }
+    
+    
+    CSimpleIniA project(true, true, true);
+    if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
+    {
+        project->SetValue("Files", "TLK", project_directory + SEPARATOR + "dialog.tlk");
+        custom_tlk->WriteToFile((project_directory + SEPARATOR + "dialog.tlk").c_str());
+    }
+
+    unsigned int file_count = 0;
+    for (auto const& entry : twoda_edit_list)
+    {
+        if (!entry.second)
+            continue;
+        
+        project->SetValue("2da", "_" + std::to_string(++file_count), entry.first);
+        twoda_list[entry.first]->WriteToFile((project_directory + SEPARATOR + entry.first).c_str());
+    }
+
+    if (file_count > 0)
+        project->SetValue("Files", "2DA_COUNT", std::to_string(file_count));
+    
+    if (project->SaveFile(project_directory + SEPARATOR + project_file) < 0)
+        wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
 }

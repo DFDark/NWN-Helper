@@ -126,4 +126,12 @@ enum class FEAT_2DA
 
 #define BASE_TLK_LIMIT 16777216
 
+
+#if defined _WIN32 || _WIN64
+#define DIR_SEPARATOR "\\"
+#else
+#define DIR_SEPARATOR "/"
+#endif
+
+
 #endif

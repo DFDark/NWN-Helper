@@ -33,6 +33,7 @@ public:
     void SetFeatColumns(const std::vector<std::string>& columns);
     void AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row);
     void Set2daModified(const std::string& twoda, const bool& modified = false);
+    void SaveProject(const bool& force_prompt = false);
     std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
@@ -51,6 +52,10 @@ private:
     CSimpleIniA* config;
     wxArrayString* spell_list;
     wxArrayString* feat_list;
+
+    bool project_loaded;
+    std::string project_file;
+    std::string project_directory;
 
     Key::Friendly::Key* base_key;
     Bif::Friendly::Bif* base_2da;

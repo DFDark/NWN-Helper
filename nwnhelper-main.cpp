@@ -241,10 +241,10 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
 {
-
+    configuration->SaveProject();
 }
 
 void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)
 {
-
+    configuration->SaveProject(true);
 }
