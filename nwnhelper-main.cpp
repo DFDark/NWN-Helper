@@ -235,8 +235,11 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
     if (project_dialog.ShowModal() == wxID_CANCEL)
         return;
-
-    configuration->LoadProjectData(project_dialog.GetPath().ToStdString());
+    
+    std::string directory = project_dialog.GetDirectory().ToStdString();
+    std::string filename = project_dialog.GetFilename().ToStdString();
+    
+    configuration->LoadProjectData(directory, filename);
 }
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)

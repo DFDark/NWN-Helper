@@ -25,7 +25,7 @@ public:
     ~ConfigurationManager();
 
     bool AttemptLoad();
-    bool LoadProjectData(const std::string& project_file = "");
+    bool LoadProjectData(const std::string& _directory = "", const std::string& _filename = "");
     bool SaveCurrentSettings();
     bool ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename);
     void ClearProjectData();
@@ -70,6 +70,7 @@ private:
     Bif::Friendly::Bif* LoadNWNBaseDataBIFFile(const char* filename);
     Tlk::Friendly::Tlk* LoadNWNBaseDataTLKFile(const char* filename);
     TwoDA::Friendly::TwoDA* LoadTwoDAFile(std::string name, std::byte const* entry, std::size_t length);
+    TwoDA::Friendly::TwoDA* Load2daFromFile(const std::string& path);
 };
 
 #endif

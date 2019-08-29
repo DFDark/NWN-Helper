@@ -93,16 +93,18 @@ bool ConfigurationManager::InitialConfiguration()
     return result;
 }
 
-bool ConfigurationManager::LoadProjectData(const std::string& project_file)
+bool ConfigurationManager::LoadProjectData(const std::string& _directory, const std::string& _filename)
 {
     bool loaded = true;
-    bool has_project_file = project_file.size() > 0;
+    bool has_project_file = _filename.size() > 0;
     try
     {
         CSimpleIniA project(true, true, true);
         if (has_project_file)
         {
-            if (project.LoadFile(project_file.c_str()) < 0)
+            project_directory = _directory;
+            project_file = _filename;
+            if (project.LoadFile((project_directory + std::string(SEPARATOR) + project_file).c_str()) < 0)
                 throw std::string("Loading project '" + project_file + "' has failed!");
             project_loaded = true;
         }
@@ -114,7 +116,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& project_file)
         Tlk::Raw::Tlk raw_tlk;
         if (has_project_file)
         {
-            std::string tlk_file = config->GetValue("Files", "TLK");
+            std::string tlk_file = project.GetValue("Files", "TLK");
             if (tlk_file.size() > 0 && !Tlk::Raw::Tlk::ReadFromFile(tlk_file.c_str(), &raw_tlk))
             {
                 std::string error = std::string("Couldn't load ") + tlk_file;
@@ -123,7 +125,6 @@ bool ConfigurationManager::LoadProjectData(const std::string& project_file)
         }
         custom_tlk = new Tlk::Friendly::Tlk(std::move(raw_tlk));
 
-
         std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
         for (auto const& r : base_key->GetReferencedResources())
         {
@@ -131,16 +132,30 @@ bool ConfigurationManager::LoadProjectData(const std::string& project_file)
                 resourcelist.emplace_back(r);
         }
 
+        std::map<std::string, bool> project_2da_list;
+        if (has_project_file)
+        {
+            std::uint32_t files = std::stoul(project.GetValue("Files", "2DA_COUNT"));
+            for (unsigned int i = 0; i < files; i++)
+            {
+                project_2da_list[project.GetValue("2da", std::string("_") + std::to_string(i))] = true;
+            }
+        }
+
+        std::string twoda_dir = "2da" + std::string(SEPARATOR);
         for (auto const& kvp : base_2da->GetResources())
         {
             if (resourcelist.size() <= kvp.first)
                 continue;
 
             std::string filename = resourcelist[kvp.first].m_ResRef;
-            twoda_list[filename] = LoadTwoDAFile(filename,
-                kvp.second.m_DataBlock->GetData(),
-                kvp.second.m_DataBlock->GetDataLength()
-            );
+            if (project_2da_list[filename])
+                twoda_list[filename] = Load2daFromFile(project_directory + twoda_dir + filename + std::string(".2da"));
+            else
+                twoda_list[filename] = LoadTwoDAFile(filename,
+                    kvp.second.m_DataBlock->GetData(),
+                    kvp.second.m_DataBlock->GetDataLength()
+                );
         }
 
         // Preloading lists (for large arrays like spells/feats)
@@ -499,13 +514,14 @@ void ConfigurationManager::SaveProject(const bool& force_prompt)
     }
 
     unsigned int file_count = 0;
+    std::string twoda_dir = "2da" + std::string(SEPARATOR);
     for (auto const& entry : twoda_edit_list)
     {
         if (!entry.second)
             continue;
 
         project.SetValue("2da", (std::string("_") + std::to_string(++file_count)).c_str(), entry.first.c_str());
-        twoda_list[entry.first]->WriteToFile((base_path + entry.first).c_str());
+        twoda_list[entry.first]->WriteToFile((base_path + twoda_dir + entry.first).c_str());
     }
 
     if (file_count > 0)
@@ -513,4 +529,17 @@ void ConfigurationManager::SaveProject(const bool& force_prompt)
 
     if (project.SaveFile((base_path + project_file).c_str()) < 0)
         wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
+}
+
+TwoDA::Friendly::TwoDA* ConfigurationManager::Load2daFromFile(const std::string& path)
+{
+    TwoDA::Raw::TwoDA raw;
+    if (!TwoDA::Raw::TwoDA::ReadFromBytes(path, &raw))
+    {
+        std::string error = std::string("Couldn't load ") + path;
+        throw error;
+    }
+
+    TwoDA::Friendly::TwoDA* result = new TwoDA::Friendly::TwoDA(std::move(raw));
+    return result;
 }
