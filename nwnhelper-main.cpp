@@ -235,11 +235,18 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
     if (project_dialog.ShowModal() == wxID_CANCEL)
         return;
-    
+
     std::string directory = project_dialog.GetDirectory().ToStdString();
     std::string filename = project_dialog.GetFilename().ToStdString();
-    
+
+    sp_model->SetFile(NULL);
+    ft_model->SetFile(NULL);
+
+    configuration->ClearProjectData();
     configuration->LoadProjectData(directory, filename);
+
+    sp_model->SetFile(configuration->Get2da("spells"));
+    ft_model->SetFile(configuration->Get2da("feat"));
 }
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)

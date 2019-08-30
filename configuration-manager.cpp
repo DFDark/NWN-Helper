@@ -105,7 +105,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
             project_directory = _directory;
             project_file = _filename;
             if (project.LoadFile((project_directory + std::string(SEPARATOR) + project_file).c_str()) < 0)
-                throw std::string("Loading project '" + project_file + "' has failed!");
+                throw std::string("Loading project '" + (project_directory + std::string(SEPARATOR) + project_file) + "' has failed!");
             project_loaded = true;
         }
 
@@ -138,11 +138,12 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
             std::uint32_t files = std::stoul(project.GetValue("Files", "2DA_COUNT"));
             for (unsigned int i = 0; i < files; i++)
             {
-                project_2da_list[project.GetValue("2da", std::string("_") + std::to_string(i))] = true;
+                std::string aux = (std::string("_") + std::to_string(i));
+                project_2da_list[project.GetValue("2da", aux.c_str())] = true;
             }
         }
 
-        std::string twoda_dir = "2da" + std::string(SEPARATOR);
+        std::string twoda_dir = std::string(SEPARATOR) + "2da" + std::string(SEPARATOR);
         for (auto const& kvp : base_2da->GetResources())
         {
             if (resourcelist.size() <= kvp.first)
@@ -514,14 +515,17 @@ void ConfigurationManager::SaveProject(const bool& force_prompt)
     }
 
     unsigned int file_count = 0;
-    std::string twoda_dir = "2da" + std::string(SEPARATOR);
+    std::string twoda_dir = base_path + "2da" + std::string(SEPARATOR);
+    if (!wxDirExists(wxString(twoda_dir)))
+        wxMkdir(twoda_dir);
+
     for (auto const& entry : twoda_edit_list)
     {
         if (!entry.second)
             continue;
 
-        project.SetValue("2da", (std::string("_") + std::to_string(++file_count)).c_str(), entry.first.c_str());
-        twoda_list[entry.first]->WriteToFile((base_path + twoda_dir + entry.first).c_str());
+        project.SetValue("2da", (std::string("_") + std::to_string(file_count++)).c_str(), entry.first.c_str());
+        twoda_list[entry.first]->WriteToFile((twoda_dir + entry.first).c_str());
     }
 
     if (file_count > 0)
@@ -534,7 +538,7 @@ void ConfigurationManager::SaveProject(const bool& force_prompt)
 TwoDA::Friendly::TwoDA* ConfigurationManager::Load2daFromFile(const std::string& path)
 {
     TwoDA::Raw::TwoDA raw;
-    if (!TwoDA::Raw::TwoDA::ReadFromBytes(path, &raw))
+    if (!TwoDA::Raw::TwoDA::ReadFromFile(path.c_str(), &raw))
     {
         std::string error = std::string("Couldn't load ") + path;
         throw error;
