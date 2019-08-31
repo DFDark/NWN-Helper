@@ -117,6 +117,13 @@ std::size_t SpellListModel::GetColumnID(unsigned int col) const
         case SpellListModel::META_MAGIC: return GETIDX(SPELL_2DA::MetaMagic);
         case SpellListModel::TARGET_TYPE: return GETIDX(SPELL_2DA::TargetType);
         case SpellListModel::IMPACT_SCRIPT: return GETIDX(SPELL_2DA::ImpactScript);
+        case SpellListModel::BARD: return GETIDX(SPELL_2DA::Bard);
+        case SpellListModel::CLERIC: return GETIDX(SPELL_2DA::Cleric);
+        case SpellListModel::DRUID: return GETIDX(SPELL_2DA::Druid);
+        case SpellListModel::PALADIN: return GETIDX(SPELL_2DA::Paladin);
+        case SpellListModel::RANGER: return GETIDX(SPELL_2DA::Ranger);
+        case SpellListModel::WIZ_SORC: return GETIDX(SPELL_2DA::Wiz_Sorc);
+        case SpellListModel::INNATE: return GETIDX(SPELL_2DA::Innate);
     }
 
     //TODO: Some sort of error management

@@ -84,7 +84,14 @@ void SpellColumnForm::SetInitialColumns()
     columns["metamagic"] = false;
     columns["targettype"] = false;
     columns["impactscript"] = false;
-    
+    columns["bard"] = false;
+    columns["cleric"] = false;
+    columns["druid"] = false;
+    columns["palading"] = false;
+    columns["ranger"] = false;
+    columns["wiz_sorc"] = false;
+    columns["innate"] = false;
+
     for (auto const& column : configuration->GetSpellColumns())
     {
         columns[column] = true;

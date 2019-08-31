@@ -26,7 +26,14 @@ public:
         VS,
         META_MAGIC,
         TARGET_TYPE,
-        IMPACT_SCRIPT
+        IMPACT_SCRIPT,
+        BARD,
+        CLERIC,
+        DRUID,
+        PALADIN,
+        RANGER,
+        WIZ_SORC,
+        INNATE
     };
 
     SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration);

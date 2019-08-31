@@ -140,6 +140,20 @@ void NWNHelperMain::SetSpellColumns()
             spells->AppendTextColumn("TargetType", SpellListModel::TARGET_TYPE);
         else if (col == "impactscript")
             spells->AppendTextColumn("ImpactScript", SpellListModel::IMPACT_SCRIPT);
+        else if (col == "bard")
+            spells->AppendTextColumn("Bard", SpellListModel::BARD);
+        else if (col == "cleric")
+            spells->AppendTextColumn("Cleric", SpellListModel::CLERIC);
+        else if (col == "druid")
+            spells->AppendTextColumn("Druid", SpellListModel::DRUID);
+        else if (col == "paladin")
+            spells->AppendTextColumn("Paladin", SpellListModel::PALADIN);
+        else if (col == "ranger")
+            spells->AppendTextColumn("Ranger", SpellListModel::RANGER);
+        else if (col == "wiz_sorc")
+            spells->AppendTextColumn("Wiz/Sorc", SpellListModel::WIZ_SORC);
+        else if (col == "innate")
+            spells->AppendTextColumn("Innate", SpellListModel::INNATE);
     }
 }
 
