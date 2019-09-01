@@ -7,6 +7,7 @@
 #endif
 
 #include "constants.hpp"
+#include "project.hpp"
 
 #define SI_SUPPORT_IOSTREAMS
 #include "simpleini/SimpleIni.h"
@@ -52,6 +53,8 @@ private:
     CSimpleIniA* config;
     wxArrayString* spell_list;
     wxArrayString* feat_list;
+
+    // Project project;
 
     bool project_loaded;
     std::string project_file;

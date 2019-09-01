@@ -8,6 +8,8 @@ add_library(NWNHelper STATIC
     nwnhelper.cpp
     nwnhelper-main.hpp
     nwnhelper-main.cpp
+    project.hpp
+    project.cpp
     Components/spell-form.hpp
     Components/spell-form.cpp
     Components/feat-form.hpp

@@ -8,6 +8,8 @@ ConfigurationManager::ConfigurationManager()
     spell_list = new wxArrayString();
     feat_list = new wxArrayString();
     project_loaded = false;
+
+    // project = Project();
 }
 
 ConfigurationManager::~ConfigurationManager()
@@ -96,11 +98,10 @@ bool ConfigurationManager::InitialConfiguration()
 bool ConfigurationManager::LoadProjectData(const std::string& _directory, const std::string& _filename)
 {
     bool loaded = true;
-    bool has_project_file = _filename.size() > 0;
     try
     {
         CSimpleIniA project(true, true, true);
-        if (has_project_file)
+        if (_filename.size() > 0)
         {
             project_directory = _directory;
             project_file = _filename;
@@ -114,7 +115,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
         base_dialog = LoadNWNBaseDataTLKFile("dialog.tlk");
 
         Tlk::Raw::Tlk raw_tlk;
-        if (has_project_file)
+        if (_filename.size())
         {
             std::string tlk_file = project.GetValue("Files", "TLK");
             if (tlk_file.size() > 0 && !Tlk::Raw::Tlk::ReadFromFile(tlk_file.c_str(), &raw_tlk))
@@ -133,7 +134,7 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
         }
 
         std::map<std::string, bool> project_2da_list;
-        if (has_project_file)
+        if (_filename.size())
         {
             std::uint32_t files = std::stoul(project.GetValue("Files", "2DA_COUNT"));
             for (unsigned int i = 0; i < files; i++)
