@@ -7,16 +7,16 @@ Project::Project()
 bool Project::Initialize(const std::string& data_folder)
 {
     base_key = LoadKEYFile(data_folder + std::string(SEPARATOR) + "nwn_base.key");
-    base_2da = LoadBIFFile(date_folder + std::string(SEPARATOR) + "base_2da.bif");
-    base_dialog = LoadTLKFile(date_folder + std::string(SEPARATOR) + "dialog.tlk");
-    
+    base_2da = LoadBIFFile(data_folder + std::string(SEPARATOR) + "base_2da.bif");
+    base_dialog = LoadTLKFile(data_folder + std::string(SEPARATOR) + "dialog.tlk");
+
     std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
     for (auto const& r : base_key->GetReferencedResources())
     {
         if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
             resourcelist.emplace_back(r);
     }
-    
+
     for (auto const& kvp : base_2da->GetResources())
     {
         if (resourcelist.size() <= kvp.first)
@@ -48,12 +48,12 @@ bool Project::LoadProject(const std::string& project_file)
     for (std::uint32_t i = 0; i < twoda_count; i++)
     {
         std::string twoda = project.GetValue("2da", ("_" + std::to_string(i)).c_str());
-        std::string filepath = base_patch + std::string(SEPARATOR) + twoda + ".2da";
+        std::string filepath = base_path + std::string(SEPARATOR) + twoda + ".2da";
         TwoDA::Friendly::TwoDA* aux = Load2DAFile(filepath);
         if (aux == NULL)
             {} // Todo: some throw prob?
-        
-        
+
+
         // Release the new 2da
         delete aux;
         aux = NULL;
@@ -106,7 +106,7 @@ Key::Friendly::Key* Project::LoadKEYFile(const std::string& filename)
     Key::Raw::Key raw;
     if (!Key::Raw::Key::ReadFromFile(filename.c_str(), &raw))
         throw std::string("Couldn't load ") + filename;
-    
+
     Key::Friendly::Key* result = new Key::Friendly::Key(std::move(raw));
     return result;
 }
@@ -131,7 +131,7 @@ Tlk::Friendly::Tlk* Project::LoadTLKFile(const std::string& filename)
     return result;
 }
 
-TwoDA::Friendly::Tlk* Project::Load2DAFile(const std::string& filename)
+TwoDA::Friendly::TwoDA* Project::Load2DAFile(const std::string& filename)
 {
     TwoDA::Raw::TwoDA raw;
     if (!TwoDA::Raw::TwoDA::ReadFromFile(filename.c_str(), &raw))
@@ -141,7 +141,7 @@ TwoDA::Friendly::Tlk* Project::Load2DAFile(const std::string& filename)
     return result;
 }
 
-TwoDA::Friendly::Tlk* Project::Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length)
+TwoDA::Friendly::TwoDA* Project::Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length)
 {
     TwoDA::Raw::TwoDA raw;
     if (!TwoDA::Raw::TwoDA::ReadFromBytes(entry, length, &raw))

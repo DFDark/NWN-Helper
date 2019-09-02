@@ -47,13 +47,15 @@ private:
     std::map<std::string, TwoDA::Friendly::TwoDA* > twoda_list;
     std::map<std::string, bool> twoda_edit_list;
 
+    std::uint32_t current_tlk_row_count;
+
     bool SetUpProject();
-    
+
     Key::Friendly::Key* LoadKEYFile(const std::string& filename);
     Bif::Friendly::Bif* LoadBIFFile(const std::string& filename);
     Tlk::Friendly::Tlk* LoadTLKFile(const std::string& filename);
-    TwoDA::Friendly::Tlk* Load2DAFile(const std::string& filename);
-    TwoDA::Friendly::Tlk* Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length);
+    TwoDA::Friendly::TwoDA* Load2DAFile(const std::string& filename);
+    TwoDA::Friendly::TwoDA* Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length);
 };
 
 #endif
