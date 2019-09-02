@@ -23,8 +23,13 @@ class Project
 public:
     Project();
 
+    bool Initialize(const std::string& data_folder);
     bool SaveProject();
     bool LoadProject(const std::string& project_file);
+
+    std::string GetTlkString(const std::uint32_t& strref);
+
+    std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);
 
     std::string project_name;
     std::string base_path;
@@ -43,6 +48,12 @@ private:
     std::map<std::string, bool> twoda_edit_list;
 
     bool SetUpProject();
+    
+    Key::Friendly::Key* LoadKEYFile(const std::string& filename);
+    Bif::Friendly::Bif* LoadBIFFile(const std::string& filename);
+    Tlk::Friendly::Tlk* LoadTLKFile(const std::string& filename);
+    TwoDA::Friendly::Tlk* Load2DAFile(const std::string& filename);
+    TwoDA::Friendly::Tlk* Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length);
 };
 
 #endif
