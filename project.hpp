@@ -50,6 +50,7 @@ private:
     std::uint32_t current_tlk_row_count;
 
     bool SetUpProject();
+    void Replace2daRows(TwoDA::Friendly::TwoDA* to, TwoDA::Friendly::TwoDA* from);
 
     Key::Friendly::Key* LoadKEYFile(const std::string& filename);
     Bif::Friendly::Bif* LoadBIFFile(const std::string& filename);

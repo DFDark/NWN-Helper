@@ -53,11 +53,19 @@ bool Project::LoadProject(const std::string& project_file)
         if (aux == NULL)
             {} // Todo: some throw prob?
 
+        Replace2daRows(twoda_list[twoda], aux);
+        twoda_edit_list[twoda] = true;
 
         // Release the new 2da
         delete aux;
         aux = NULL;
     }
+    
+    custom_tlk = LoadTLKFile(tlk_filename);
+    
+    for (auto const& entry : (*custom_tlk))
+        current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
+    current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
 
     loaded = true;
     return loaded;
@@ -124,7 +132,7 @@ Bif::Friendly::Bif* Project::LoadBIFFile(const std::string& filename)
 Tlk::Friendly::Tlk* Project::LoadTLKFile(const std::string& filename)
 {
     Tlk::Raw::Tlk raw;
-    if (!Tlk::Raw::Tlk::ReadFromFile(filename.c_str(), &raw))
+    if (filename.size() > 0 && !Tlk::Raw::Tlk::ReadFromFile(filename.c_str(), &raw))
         throw std::string("Couldn't load ") + filename;
 
     Tlk::Friendly::Tlk* result = new Tlk::Friendly::Tlk(std::move(raw));
@@ -149,4 +157,12 @@ TwoDA::Friendly::TwoDA* Project::Load2DAFile(const std::string& filename, std::b
 
     TwoDA::Friendly::TwoDA* result = new TwoDA::Friendly::TwoDA(std::move(raw));
     return result;
+}
+
+
+void Project::Replace2daRows(TwoDA::Friendly::TwoDA* to, TwoDA::Friendly::TwoDA* from)
+{
+    // TODO:
+    // Remove rows from to
+    // insert from rows to 'to'
 }
