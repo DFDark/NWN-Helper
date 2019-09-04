@@ -9,21 +9,13 @@ ConfigurationManager::ConfigurationManager()
     feat_list = new wxArrayString();
     project_loaded = false;
 
-    // project = Project();
+    project = Project();
 }
 
 ConfigurationManager::~ConfigurationManager()
 {
     delete config;
-    delete base_2da;
-    delete base_key;
-
     config = NULL;
-    base_2da = NULL;
-    base_key = NULL;
-
-    for (auto const& data : twoda_list)
-        delete data.second;
 
     spell_list->clear();
     feat_list->clear();
@@ -39,6 +31,9 @@ bool ConfigurationManager::AttemptLoad()
 
     if (!loaded)
         loaded = InitialConfiguration();
+
+    if (loaded)
+        loaded = project.Initialize(std::string(config->GetValue("General", "DATA_FOLDER")));
 
     if (loaded)
         loaded = LoadProjectData();
@@ -187,88 +182,9 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
     return loaded;
 }
 
-Key::Friendly::Key* ConfigurationManager::LoadNWNBaseDataKEYFile(const char* filename)
-{
-    char* path = new char[255];
-    memset(path, '\0', sizeof(char) * 255);
-    sprintf(path, "%s/%s", config->GetValue("General", "DATA_FOLDER"), filename);
-
-    Key::Raw::Key raw;
-    if (!Key::Raw::Key::ReadFromFile(path, &raw))
-    {
-        std::string error = std::string("Couldn't load ") + std::string(path);
-        throw error;
-    }
-
-    Key::Friendly::Key* result = new Key::Friendly::Key(std::move(raw));
-
-    delete [] path;
-    path = NULL;
-
-    return result;
-}
-
-Bif::Friendly::Bif* ConfigurationManager::LoadNWNBaseDataBIFFile(const char* filename)
-{
-    char* path = new char[255];
-    memset(path, '\0', sizeof(char) * 255);
-    sprintf(path, "%s/%s", config->GetValue("General", "DATA_FOLDER"), filename);
-
-    Bif::Raw::Bif raw;
-    if (!Bif::Raw::Bif::ReadFromFile(path, &raw))
-    {
-        std::string error = std::string("Couldn't load ") + std::string(path);
-        throw error;
-    }
-
-    Bif::Friendly::Bif* result = new Bif::Friendly::Bif(std::move(raw));
-
-    delete [] path;
-    path = NULL;
-
-    return result;
-}
-
-Tlk::Friendly::Tlk* ConfigurationManager::LoadNWNBaseDataTLKFile(const char* filename)
-{
-    char* path = new char[255];
-    memset(path, '\0', sizeof(char) * 255);
-    sprintf(path, "%s/%s", config->GetValue("General", "DATA_FOLDER"), filename);
-
-    Tlk::Raw::Tlk raw;
-    if (!Tlk::Raw::Tlk::ReadFromFile(path, &raw))
-    {
-        std::string error = std::string("Couldn't load ") + std::string(path);
-        throw error;
-    }
-
-    Tlk::Friendly::Tlk* result = new Tlk::Friendly::Tlk(std::move(raw));
-
-    delete [] path;
-    path = NULL;
-
-    return result;
-}
-
-TwoDA::Friendly::TwoDA* ConfigurationManager::LoadTwoDAFile(std::string name, std::byte const* entry, std::size_t length)
-{
-    TwoDA::Raw::TwoDA raw;
-    if (!TwoDA::Raw::TwoDA::ReadFromBytes(entry, length, &raw))
-    {
-        std::string error = std::string("Couldn't load ") + name;
-        throw error;
-    }
-
-    TwoDA::Friendly::TwoDA* result = new TwoDA::Friendly::TwoDA(std::move(raw));
-    return result;
-}
-
 TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
 {
-    if (twoda_list.find(name) == twoda_list.end())
-        throw (std::string("Cannot find ") + name + std::string(".2da data!"));
-
-    return twoda_list[name];
+    return project.Get2da(name);
 }
 
 Tlk::Friendly::Tlk* ConfigurationManager::GetTlk()
@@ -424,30 +340,12 @@ wxArrayString* ConfigurationManager::GetFeatList()
 
 std::string ConfigurationManager::GetTlkString(const std::uint32_t& strref)
 {
-    std::string result = "";
-    if (strref > BASE_TLK_LIMIT)
-        result = (*custom_tlk)[strref];
-    else
-        result = (*base_dialog)[strref];
-
-    return result;
+    return project.GetTlkString(strref);
 }
 
 std::uint32_t ConfigurationManager::SetTlkString(const std::string& value, std::uint32_t strref)
 {
-    if (strref > 0)
-    {
-        if (strref < BASE_TLK_LIMIT)
-            strref = current_tlk_row_count++;
-    }
-    else
-        strref = current_tlk_row_count++;
-
-    Tlk::Friendly::TlkEntry entry;
-    entry.m_String = value;
-    custom_tlk->Set(strref, entry);
-
-    return strref;
+    return project.SetTlkString(value, strref);
 }
 
 bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename)
@@ -468,23 +366,6 @@ bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, co
 
 void ConfigurationManager::ClearProjectData()
 {
-    delete base_key;
-    base_key = NULL;
-
-    delete base_2da;
-    base_2da = NULL;
-
-    delete base_dialog;
-    base_dialog = NULL;
-
-    delete custom_tlk;
-    custom_tlk = NULL;
-
-    for (auto const& entry : twoda_list)
-        delete entry.second;
-
-    twoda_list.clear();
-    twoda_edit_list.clear();
 
     // No need to redeclare these since we're emptying them here
     spell_list->clear();
@@ -493,58 +374,5 @@ void ConfigurationManager::ClearProjectData()
 
 void ConfigurationManager::SaveProject(const bool& force_prompt)
 {
-    if (force_prompt || project_file.size() <= 0)
-    {
-        wxFileDialog project_dialog(NULL, wxString("Save as *.nwh file"), "", "",
-            "*.nwh", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-        if (project_dialog.ShowModal() == wxID_CANCEL)
-            return;
-
-        project_directory = project_dialog.GetDirectory().ToStdString();
-        project_file = project_dialog.GetFilename().ToStdString();
-    }
-
-    CSimpleIniA project(true, true, true);
-    std::string base_path = project_directory + std::string(SEPARATOR);
-    if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
-    {
-        // TODO: Create "ProjectSettings" to setup things like tlk filename etc.
-        std::string tlk_filename = base_path + std::string("dialog.tlk");
-        project.SetValue("Files", "TLK", tlk_filename.c_str());
-        custom_tlk->WriteToFile(tlk_filename.c_str());
-    }
-
-    unsigned int file_count = 0;
-    std::string twoda_dir = base_path + "2da" + std::string(SEPARATOR);
-    if (!wxDirExists(wxString(twoda_dir)))
-        wxMkdir(twoda_dir);
-
-    for (auto const& entry : twoda_edit_list)
-    {
-        if (!entry.second)
-            continue;
-
-        project.SetValue("2da", (std::string("_") + std::to_string(file_count++)).c_str(), entry.first.c_str());
-        twoda_list[entry.first]->WriteToFile((twoda_dir + entry.first).c_str());
-    }
-
-    if (file_count > 0)
-        project.SetValue("Files", "2DA_COUNT", std::to_string(file_count).c_str());
-
-    if (project.SaveFile((base_path + project_file).c_str()) < 0)
-        wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
-}
-
-TwoDA::Friendly::TwoDA* ConfigurationManager::Load2daFromFile(const std::string& path)
-{
-    TwoDA::Raw::TwoDA raw;
-    if (!TwoDA::Raw::TwoDA::ReadFromFile(path.c_str(), &raw))
-    {
-        std::string error = std::string("Couldn't load ") + path;
-        throw error;
-    }
-
-    TwoDA::Friendly::TwoDA* result = new TwoDA::Friendly::TwoDA(std::move(raw));
-    return result;
+    project.SaveProject(force_prompt);
 }

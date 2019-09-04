@@ -54,26 +54,9 @@ private:
     wxArrayString* spell_list;
     wxArrayString* feat_list;
 
-    // Project project;
-
-    bool project_loaded;
-    std::string project_file;
-    std::string project_directory;
-
-    Key::Friendly::Key* base_key;
-    Bif::Friendly::Bif* base_2da;
-    Tlk::Friendly::Tlk* base_dialog;
-
-    Tlk::Friendly::Tlk* custom_tlk;
-    std::map<std::string, TwoDA::Friendly::TwoDA* > twoda_list;
-    std::map<std::string, bool> twoda_edit_list;
+    Project project;
 
     bool InitialConfiguration();
-    Key::Friendly::Key* LoadNWNBaseDataKEYFile(const char* filename);
-    Bif::Friendly::Bif* LoadNWNBaseDataBIFFile(const char* filename);
-    Tlk::Friendly::Tlk* LoadNWNBaseDataTLKFile(const char* filename);
-    TwoDA::Friendly::TwoDA* LoadTwoDAFile(std::string name, std::byte const* entry, std::size_t length);
-    TwoDA::Friendly::TwoDA* Load2daFromFile(const std::string& path);
 };
 
 #endif

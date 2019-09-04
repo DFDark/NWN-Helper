@@ -4,6 +4,18 @@ Project::Project()
 {
     loaded = false;
 }
+
+Project::~Project()
+{
+    delete base_key;
+    delete base_2da;
+    delete base_dialog;
+    
+    base_key = NULL;
+    base_2da = NULL;
+    base_dialog = NULL;
+}
+
 bool Project::Initialize(const std::string& data_folder)
 {
     base_key = LoadKEYFile(data_folder + std::string(SEPARATOR) + "nwn_base.key");
@@ -53,12 +65,15 @@ bool Project::LoadProject(const std::string& project_file)
         if (aux == NULL)
             {} // Todo: some throw prob?
 
-        Replace2daRows(twoda_list[twoda], aux);
+        delete twoda_list[twoda];
+        twoda_list[twoda] = aux;
+
+        // Replace2daRows(twoda_list[twoda], aux);
         twoda_edit_list[twoda] = true;
 
         // Release the new 2da
-        delete aux;
-        aux = NULL;
+        // delete aux;
+        // aux = NULL;
     }
     
     custom_tlk = LoadTLKFile(tlk_filename);
@@ -71,14 +86,65 @@ bool Project::LoadProject(const std::string& project_file)
     return loaded;
 }
 
-bool Project::SaveProject()
+bool Project::SaveProject(const bool& force_prompt)
 {
+    if (force_prompt || !loaded)
+    {
+        // TODO: Change this to directory
+        wxFileDialog project_dialog(NULL, wxString("Save as *.nwh file"), "", "",
+            "*.nwh", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+        if (project_dialog.ShowModal() == wxID_CANCEL)
+        {
+            // TODO: return or throw? not really sure
+            return false;
+        }
+        base_path = project_dialog.GetPath().ToStdString();
+    }
+
+    CSimpleIniA project(true, true, true);
+    if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
+    {
+        // TODO: Create "ProjectSettings" to setup things like tlk filename etc.
+        std::string path = base_path + std::string(SEPARATOR) + tlk_filename;
+        project.SetValue("Files", "TLK", path.c_str());
+        custom_tlk->WriteToFile(path.c_str());
+    }
+
+    unsigned int file_count = 0;
+    std::string twoda_dir = base_path + std::string(SEPARATOR) + "2da" + std::string(SEPARATOR);
+    if (!wxDirExists(wxString(twoda_dir)))
+        wxMkdir(twoda_dir);
+
+    for (auto const& entry : twoda_edit_list)
+    {
+        if (!entry.second)
+            continue;
+
+        project.SetValue("2da", (std::string("_") + std::to_string(file_count++)).c_str(), entry.first.c_str());
+        twoda_list[entry.first]->WriteToFile((twoda_dir + entry.first).c_str());
+    }
+
+    if (file_count > 0)
+        project.SetValue("Files", "2DA_COUNT", std::to_string(file_count).c_str());
+
+    if (project.SaveFile((base_path + project_name + ".nwh").c_str()) < 0)
+        wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
+
     return false;
 }
 
 bool Project::SetUpProject()
 {
     return false;
+}
+
+TwoDA::Friendly::TwoDA* Project::Get2da(const std::string& name)
+{
+    if (twoda_list.find(name) == twoda_list.end())
+        throw (std::string("Cannot find ") + name + std::string(".2da data!"));
+
+    return twoda_list[name];
 }
 
 std::string Project::GetTlkString(const std::uint32_t& strref)

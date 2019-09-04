@@ -22,11 +22,13 @@ class Project
 {
 public:
     Project();
+    ~Project();
 
     bool Initialize(const std::string& data_folder);
-    bool SaveProject();
+    bool SaveProject(const bool& force_prompt = false);
     bool LoadProject(const std::string& project_file);
 
+    TwoDA::Friendly::TwoDA* Get2da(const std::string& name);
     std::string GetTlkString(const std::uint32_t& strref);
 
     std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);
