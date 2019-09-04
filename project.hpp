@@ -27,8 +27,11 @@ public:
     bool Initialize(const std::string& data_folder);
     bool SaveProject(const bool& force_prompt = false);
     bool LoadProject(const std::string& project_file);
+    
+    void Set2daModified(const std::string& twoda, const bool& modified);
 
     TwoDA::Friendly::TwoDA* Get2da(const std::string& name);
+    TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
     std::string GetTlkString(const std::uint32_t& strref);
 
     std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);

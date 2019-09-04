@@ -85,7 +85,6 @@ private:
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* spell;
-    Tlk::Friendly::Tlk* tlk;
 
     wxPanel* panel;
 

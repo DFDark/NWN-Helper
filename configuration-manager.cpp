@@ -7,9 +7,6 @@ ConfigurationManager::ConfigurationManager()
     loaded = false;
     spell_list = new wxArrayString();
     feat_list = new wxArrayString();
-    project_loaded = false;
-
-    project = Project();
 }
 
 ConfigurationManager::~ConfigurationManager()
@@ -92,7 +89,7 @@ bool ConfigurationManager::InitialConfiguration()
 
 bool ConfigurationManager::LoadProjectData(const std::string& _directory, const std::string& _filename)
 {
-    bool loaded = true;
+    /*bool loaded = true;
     try
     {
         CSimpleIniA project(true, true, true);
@@ -105,9 +102,6 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
             project_loaded = true;
         }
 
-        base_key = LoadNWNBaseDataKEYFile("nwn_base.key");
-        base_2da = LoadNWNBaseDataBIFFile("base_2da.bif");
-        base_dialog = LoadNWNBaseDataTLKFile("dialog.tlk");
 
         Tlk::Raw::Tlk raw_tlk;
         if (_filename.size())
@@ -179,17 +173,13 @@ bool ConfigurationManager::LoadProjectData(const std::string& _directory, const 
         loaded = false;
     }
 
-    return loaded;
+    return loaded;*/
+    return true;
 }
 
 TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
 {
     return project.Get2da(name);
-}
-
-Tlk::Friendly::Tlk* ConfigurationManager::GetTlk()
-{
-    return base_dialog;
 }
 
 wxSize ConfigurationManager::GetWindowResolution()
@@ -320,12 +310,12 @@ void ConfigurationManager::AddOrEdit2DARow(const std::string& twoda, const TwoDA
 
 void ConfigurationManager::Set2daModified(const std::string& twoda, const bool& modified)
 {
-    twoda_edit_list[twoda] = modified;
+    project.Set2daModified(twoda, modified);
 }
 
 TwoDA::Friendly::TwoDARow* ConfigurationManager::Get2daRow(const std::string& twoda, const std::uint32_t& row_id)
 {
-    return &(*(twoda_list[twoda]))[row_id];
+    return project.Get2daRow(twoda, row_id);
 }
 
 wxArrayString* ConfigurationManager::GetSpellList()
@@ -350,7 +340,7 @@ std::uint32_t ConfigurationManager::SetTlkString(const std::string& value, std::
 
 bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename)
 {
-    bool result = true;
+    /*bool result = true;
     std::string directory = destination + SEPARATOR;
     if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
         result &= custom_tlk->WriteToFile((directory + tlk_filename).c_str());
@@ -361,7 +351,8 @@ bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, co
             result &= twoda_list[entry.first]->WriteToFile((directory + entry.first + ".2da").c_str());
     }
 
-    return result;
+    return result;*/
+    return true;
 }
 
 void ConfigurationManager::ClearProjectData()

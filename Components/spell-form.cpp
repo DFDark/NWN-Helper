@@ -44,7 +44,6 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     panel = new wxPanel(this, wxID_ANY);
     configuration = _configuration;
     spell = configuration->Get2daRow("spells", row_id);
-    tlk = configuration->GetTlk();
 
     /*
     * FORM LABELS

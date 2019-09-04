@@ -10,7 +10,7 @@ Project::~Project()
     delete base_key;
     delete base_2da;
     delete base_dialog;
-    
+
     base_key = NULL;
     base_2da = NULL;
     base_dialog = NULL;
@@ -75,9 +75,9 @@ bool Project::LoadProject(const std::string& project_file)
         // delete aux;
         // aux = NULL;
     }
-    
+
     custom_tlk = LoadTLKFile(tlk_filename);
-    
+
     for (auto const& entry : (*custom_tlk))
         current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
     current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
@@ -139,12 +139,22 @@ bool Project::SetUpProject()
     return false;
 }
 
+void Project::Set2daModified(const std::string& twoda, const bool& modified)
+{
+    twoda_edit_list[twoda] = modified;
+}
+
 TwoDA::Friendly::TwoDA* Project::Get2da(const std::string& name)
 {
     if (twoda_list.find(name) == twoda_list.end())
         throw (std::string("Cannot find ") + name + std::string(".2da data!"));
 
     return twoda_list[name];
+}
+
+TwoDA::Friendly::TwoDARow* Project::Get2daRow(const std::string& twoda, const std::uint32_t& row_id)
+{
+    return &((*twoda_list[twoda]))[row_id];
 }
 
 std::string Project::GetTlkString(const std::uint32_t& strref)

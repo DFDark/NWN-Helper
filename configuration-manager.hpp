@@ -38,7 +38,6 @@ public:
     std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
-    Tlk::Friendly::Tlk* GetTlk();
     wxSize GetWindowResolution();
     std::vector<std::string> GetSpellColumns();
     std::vector<std::string> GetFeatColumns();
