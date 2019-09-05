@@ -15,11 +15,14 @@ ExportForm::ExportForm(wxWindow* parent, ConfigurationManager* _configuration) :
 {
     configuration = _configuration;
 
-    destination_label = new wxStaticText(this, wxID_OK, wxString("Destination directory"));
+    destination_label = new wxStaticText(this, wxID_ANY, wxString("Project directory"));
     destination = new wxTextCtrl(this, wxID_ANY, wxString(""));
 
-    tlk_filename_label = new wxStaticText(this, wxID_OK, wxString("TLK filename"));
+    tlk_filename_label = new wxStaticText(this, wxID_ANY, wxString("TLK filename"));
     tlk_filename = new wxTextCtrl(this, wxID_ANY, wxString(""));
+
+    project_name_label = new wxStaticText(this, wxID_ANY, wxString("Project name"));
+    project_name = new wxTextCtrl(this, wxID_ANY, wxString(""));
 
     destination_button = new wxButton(this, DIRECTORY_BUTTON, wxString("Find"));
     Connect(DIRECTORY_BUTTON, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ExportForm::OnFindDirectoryClick));
@@ -32,6 +35,7 @@ ExportForm::ExportForm(wxWindow* parent, ConfigurationManager* _configuration) :
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
+    wxBoxSizer* first_row_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* destination_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* destination_sizer_r2 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -42,18 +46,25 @@ ExportForm::ExportForm(wxWindow* parent, ConfigurationManager* _configuration) :
 
     destination_sizer->Add(destination_sizer_r2, 1, wxEXPAND);
 
+    wxBoxSizer* project_name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* tlk_filename_sizer = new wxBoxSizer(wxVERTICAL);
+
+    project_name_sizer->Add(project_name_label);
+    project_name_sizer->Add(project_name);
 
     tlk_filename_sizer->Add(tlk_filename_label);
     tlk_filename_sizer->Add(tlk_filename);
+
+    first_row_sizer->Add(project_name_sizer);
+    first_row_sizer->Add(tlk_filename_sizer);
 
     wxBoxSizer* buttons_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     buttons_sizer->Add(cancel_button);
     buttons_sizer->Add(ok_button);
 
+    main_sizer->Add(first_row_sizer, 0, wxEXPAND);
     main_sizer->Add(destination_sizer, 0, wxEXPAND);
-    main_sizer->Add(tlk_filename_sizer, 0, wxEXPAND);
     main_sizer->Add(buttons_sizer, 1, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
     this->SetSizer(main_sizer);
@@ -85,8 +96,7 @@ void ExportForm::OnOk(wxCommandEvent& event)
 
 void ExportForm::OnFindDirectoryClick(wxCommandEvent& event)
 {
-    wxDirDialog destination_dialog(this, wxString("Locate folder to export current project to"), "",
-        wxDD_DIR_MUST_EXIST);
+    wxDirDialog destination_dialog(this, wxString("Locate folder to save current project to"), "");
 
     if (destination_dialog.ShowModal() == wxID_CANCEL)
         return;

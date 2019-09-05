@@ -23,6 +23,9 @@ private:
 
     ConfigurationManager* configuration;
 
+    wxStaticText* project_name_label;
+    wxTextCtrl* project_name;
+
     wxStaticText* destination_label;
     wxTextCtrl* destination;
 

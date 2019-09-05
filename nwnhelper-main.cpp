@@ -192,10 +192,10 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
 
 void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
 {
-    /*ExportForm form(main_panel, configuration);
-    form.ShowModal();*/
-    SpellSelectionForm form(this, configuration);
-    if (form.ShowModal() == wxID_OK)
+    ExportForm form(main_panel, configuration);
+    form.ShowModal();
+    //SpellSelectionForm form(this, configuration);
+    //if (form.ShowModal() == wxID_OK)
         {} // printf("Selection: %u\n", form.GetSpellSelection());
 
 }
