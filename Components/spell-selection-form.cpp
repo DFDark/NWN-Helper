@@ -19,6 +19,7 @@ SpellSelectionForm::SpellSelectionForm(wxWindow* parent, ConfigurationManager* _
 
     sp_model = new SpellListModel(twoda, configuration);
     spells->AssociateModel(sp_model);
+    SetSpellColumns();
 
     ok_button = new wxButton(this, wxID_OK, wxString("Ok"));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SpellSelectionForm::OnOk));
@@ -34,20 +35,21 @@ SpellSelectionForm::SpellSelectionForm(wxWindow* parent, ConfigurationManager* _
     buttons_sizer->Add(cancel_button);
     buttons_sizer->Add(ok_button);
 
-    main_sizer->Add(destination_sizer, 0, wxEXPAND);
-    main_sizer->Add(buttons_sizer, 1, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
+    main_sizer->Add(destination_sizer, 1, wxEXPAND);
+    main_sizer->Add(buttons_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
     this->SetSizer(main_sizer);
 }
 
-void SpellSelectionForm::OnOk()
+void SpellSelectionForm::OnOk(wxCommandEvent& event)
 {
     if (!spells->HasSelection()) {
         wxMessageBox("No value selected!", "Error", wxOK|wxICON_ERROR);
         return;
     }
 
-    // selection = ;
+    TwoDA::Friendly::TwoDARow* row = sp_model->Get2daRow(sp_model->GetRow(spells->GetSelection()));
+    selection = row->RowId();
 
     this->EndModal(wxID_OK);
 }

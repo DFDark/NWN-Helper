@@ -11,6 +11,7 @@
 #include "configuration-manager.hpp"
 #include "ListModels/spelllist-model.hpp"
 #include "ListModels/featlist-model.hpp"
+#include "Components/spell-selection-form.hpp"
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 

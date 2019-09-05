@@ -7,6 +7,7 @@
 #endif
 
 #include "configuration-manager.hpp"
+#include "ListModels/spelllist-model.hpp"
 
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
@@ -25,6 +26,8 @@ private:
 
     std::uint32_t selection;
     ConfigurationManager* configuration;
+
+    SpellListModel* sp_model;
 
     wxDataViewCtrl* spells;
 
