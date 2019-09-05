@@ -128,6 +128,9 @@ bool Project::SaveProject(const bool& force_prompt)
     if (file_count > 0)
         project.SetValue("Files", "2DA_COUNT", std::to_string(file_count).c_str());
 
+    project.SetValue("General", "ProjectName", project_name.c_str());
+    project.SetValue("General", "BaseDir", base_path.c_str());
+
     if (project.SaveFile((base_path + project_name + ".nwh").c_str()) < 0)
         wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
 
