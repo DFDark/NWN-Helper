@@ -6,22 +6,20 @@
     #include <wx/wx.h>
 #endif
 
-#include "configuration-manager.hpp"
-
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
 class ExportForm : public wxDialog
 {
 public:
-    ExportForm(wxWindow* parent, ConfigurationManager* _configuration);
+    ExportForm(wxWindow* parent);
 
+    std::string GetProjectName();
+    std::string GetBasePath();
+    std::string GetTLKName();
 private:
     void OnOk(wxCommandEvent& event);
     void OnFindDirectoryClick(wxCommandEvent& event);
-
-
-    ConfigurationManager* configuration;
 
     wxStaticText* project_name_label;
     wxTextCtrl* project_name;

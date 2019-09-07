@@ -27,7 +27,7 @@ public:
     bool Initialize(const std::string& data_folder);
     bool SaveProject(const bool& force_prompt = false);
     bool LoadProject(const std::string& project_file);
-    
+
     void Set2daModified(const std::string& twoda, const bool& modified);
 
     TwoDA::Friendly::TwoDA* Get2da(const std::string& name);

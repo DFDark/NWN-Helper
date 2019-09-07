@@ -1,4 +1,5 @@
 #include "project.hpp"
+#include "Components/export-form.hpp"
 
 Project::Project()
 {
@@ -40,6 +41,10 @@ bool Project::Initialize(const std::string& data_folder)
             kvp.second.m_DataBlock->GetDataLength()
         );
     }
+
+    // Create empty TLK
+    custom_tlk = LoadTLKFile("");
+    current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1);
 }
 
 bool Project::LoadProject(const std::string& project_file)
@@ -90,24 +95,24 @@ bool Project::SaveProject(const bool& force_prompt)
 {
     if (force_prompt || !loaded)
     {
-        // TODO: Change this to directory
-        wxFileDialog project_dialog(NULL, wxString("Save as *.nwh file"), "", "",
-            "*.nwh", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-        if (project_dialog.ShowModal() == wxID_CANCEL)
-        {
-            // TODO: return or throw? not really sure
+        ExportForm project_form(NULL);
+        if (project_form.ShowModal() == wxID_CANCEL)
             return false;
-        }
-        base_path = project_dialog.GetPath().ToStdString();
+
+        base_path = project_form.GetBasePath();
+        project_name = project_form.GetProjectName();
+        tlk_filename = project_form.GetTLKName();
+        loaded = true;
     }
 
     CSimpleIniA project(true, true, true);
+    project.SetValue("General", "ProjectName", project_name.c_str());
+    project.SetValue("General", "BaseDir", base_path.c_str());
     if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
     {
         // TODO: Create "ProjectSettings" to setup things like tlk filename etc.
-        std::string path = base_path + std::string(SEPARATOR) + tlk_filename;
-        project.SetValue("Files", "TLK", path.c_str());
+        std::string path = base_path + std::string(SEPARATOR) + tlk_filename + ".tlk";
+        project.SetValue("General", "TlkFilename", path.c_str());
         custom_tlk->WriteToFile(path.c_str());
     }
 
@@ -126,12 +131,10 @@ bool Project::SaveProject(const bool& force_prompt)
     }
 
     if (file_count > 0)
-        project.SetValue("Files", "2DA_COUNT", std::to_string(file_count).c_str());
+        project.SetValue("General", "2daCount", std::to_string(file_count).c_str());
 
-    project.SetValue("General", "ProjectName", project_name.c_str());
-    project.SetValue("General", "BaseDir", base_path.c_str());
-
-    if (project.SaveFile((base_path + project_name + ".nwh").c_str()) < 0)
+    std::string project_file_path = base_path + std::string(SEPARATOR) + project_name + ".nwh";
+    if (project.SaveFile(project_file_path.c_str()) < 0)
         wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
 
     return false;

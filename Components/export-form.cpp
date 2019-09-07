@@ -10,11 +10,9 @@ wxBEGIN_EVENT_TABLE(ExportForm, wxDialog)
     EVT_MENU(DIRECTORY_BUTTON, ExportForm::OnFindDirectoryClick)
 wxEND_EVENT_TABLE()
 
-ExportForm::ExportForm(wxWindow* parent, ConfigurationManager* _configuration) :
+ExportForm::ExportForm(wxWindow* parent) :
     wxDialog(parent, wxID_ANY, wxString("Export Form"), wxDefaultPosition, wxSize(480, 320))
 {
-    configuration = _configuration;
-
     destination_label = new wxStaticText(this, wxID_ANY, wxString("Project directory"));
     destination = new wxTextCtrl(this, wxID_ANY, wxString(""));
 
@@ -86,10 +84,12 @@ void ExportForm::OnOk(wxCommandEvent& event)
         return;
     }
 
-    if (configuration->ExportCurrentFiles(destination->GetValue().ToStdString(), tlk_filename->GetValue().ToStdString()))
-        wxMessageBox("Files exported successfully!", "", wxOK);
-    else
-        wxMessageBox("Unable to export files!", "Error", wxOK|wxICON_ERROR);
+    if (project_name->GetValue().IsEmpty())
+    {
+        wxMessageBox("Project name must be entered to export files!",
+            "Error", wxOK|wxICON_ERROR);
+        return;
+    }
 
     this->EndModal(wxID_OK);
 }
@@ -102,4 +102,19 @@ void ExportForm::OnFindDirectoryClick(wxCommandEvent& event)
         return;
 
     destination->SetValue(destination_dialog.GetPath());
+}
+
+std::string ExportForm::GetProjectName()
+{
+    return std::string(project_name->GetValue());
+}
+
+std::string ExportForm::GetBasePath()
+{
+    return std::string(destination->GetValue());
+}
+
+std::string ExportForm::GetTLKName()
+{
+    return std::string(tlk_filename->GetValue());
 }
