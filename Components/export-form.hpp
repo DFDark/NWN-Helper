@@ -12,7 +12,8 @@
 class ExportForm : public wxDialog
 {
 public:
-    ExportForm(wxWindow* parent);
+    ExportForm(const std::string& _project_name = "", const std::string& _base_path = "",
+        const std::string& _tlk_filename = "");
 
     std::string GetProjectName();
     std::string GetBasePath();

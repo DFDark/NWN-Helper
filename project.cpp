@@ -91,13 +91,13 @@ bool Project::LoadProject(const std::string& project_file)
     return loaded;
 }
 
-bool Project::SaveProject(const bool& force_prompt)
+void Project::SaveProject(const bool& force_prompt)
 {
     if (force_prompt || !loaded)
     {
-        ExportForm project_form(NULL);
+        ExportForm project_form(project_name, base_path, tlk_filename);
         if (project_form.ShowModal() == wxID_CANCEL)
-            return false;
+            return;
 
         base_path = project_form.GetBasePath();
         project_name = project_form.GetProjectName();
@@ -108,12 +108,13 @@ bool Project::SaveProject(const bool& force_prompt)
     CSimpleIniA project(true, true, true);
     project.SetValue("General", "ProjectName", project_name.c_str());
     project.SetValue("General", "BaseDir", base_path.c_str());
-    if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
+    if ((BASE_TLK_LIMIT + 1) < current_tlk_row_count)
     {
         // TODO: Create "ProjectSettings" to setup things like tlk filename etc.
         std::string path = base_path + std::string(SEPARATOR) + tlk_filename + ".tlk";
         project.SetValue("General", "TlkFilename", path.c_str());
-        custom_tlk->WriteToFile(path.c_str());
+        if (!custom_tlk->WriteToFile(path.c_str()))
+            throw std::string("Unable save " + path + " file!");
     }
 
     unsigned int file_count = 0;
@@ -126,8 +127,10 @@ bool Project::SaveProject(const bool& force_prompt)
         if (!entry.second)
             continue;
 
+        std::string path = twoda_dir + entry.first;
         project.SetValue("2da", (std::string("_") + std::to_string(file_count++)).c_str(), entry.first.c_str());
-        twoda_list[entry.first]->WriteToFile((twoda_dir + entry.first).c_str());
+        if (!twoda_list[entry.first]->WriteToFile(path.c_str()))
+            throw std::string("Unable save " + path + " file!");
     }
 
     if (file_count > 0)
@@ -135,9 +138,7 @@ bool Project::SaveProject(const bool& force_prompt)
 
     std::string project_file_path = base_path + std::string(SEPARATOR) + project_name + ".nwh";
     if (project.SaveFile(project_file_path.c_str()) < 0)
-        wxMessageBox("Unable save project file!", "Error", wxOK | wxICON_ERROR);
-
-    return false;
+        throw std::string("Unable save " + project_file_path + " file!");
 }
 
 bool Project::SetUpProject()

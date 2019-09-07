@@ -192,8 +192,6 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
 
 void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
 {
-    ExportForm form(main_panel);//, configuration);
-    form.ShowModal();
     //SpellSelectionForm form(this, configuration);
     //if (form.ShowModal() == wxID_OK)
         {} // printf("Selection: %u\n", form.GetSpellSelection());
@@ -269,7 +267,14 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
 {
-    configuration->SaveProject();
+    try
+    {
+        configuration->SaveProject();
+    }
+    catch (const std::string& exception)
+    {
+        wxMessageBox(exception, "Error", wxOK|wxICON_ERROR);
+    }
 }
 
 void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)

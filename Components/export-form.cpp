@@ -10,17 +10,18 @@ wxBEGIN_EVENT_TABLE(ExportForm, wxDialog)
     EVT_MENU(DIRECTORY_BUTTON, ExportForm::OnFindDirectoryClick)
 wxEND_EVENT_TABLE()
 
-ExportForm::ExportForm(wxWindow* parent) :
-    wxDialog(parent, wxID_ANY, wxString("Export Form"), wxDefaultPosition, wxSize(480, 320))
+ExportForm::ExportForm(const std::string& _project_name, const std::string& _base_path,
+    const std::string& _tlk_filename) :
+    wxDialog(NULL, wxID_ANY, wxString("Export Form"), wxDefaultPosition, wxSize(480, 320))
 {
     destination_label = new wxStaticText(this, wxID_ANY, wxString("Project directory"));
-    destination = new wxTextCtrl(this, wxID_ANY, wxString(""));
+    destination = new wxTextCtrl(this, wxID_ANY, wxString(_base_path));
 
     tlk_filename_label = new wxStaticText(this, wxID_ANY, wxString("TLK filename"));
-    tlk_filename = new wxTextCtrl(this, wxID_ANY, wxString(""));
+    tlk_filename = new wxTextCtrl(this, wxID_ANY, wxString(_tlk_filename));
 
     project_name_label = new wxStaticText(this, wxID_ANY, wxString("Project name"));
-    project_name = new wxTextCtrl(this, wxID_ANY, wxString(""));
+    project_name = new wxTextCtrl(this, wxID_ANY, wxString(_project_name));
 
     destination_button = new wxButton(this, DIRECTORY_BUTTON, wxString("Find"));
     Connect(DIRECTORY_BUTTON, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ExportForm::OnFindDirectoryClick));
@@ -96,7 +97,7 @@ void ExportForm::OnOk(wxCommandEvent& event)
 
 void ExportForm::OnFindDirectoryClick(wxCommandEvent& event)
 {
-    wxDirDialog destination_dialog(this, wxString("Locate folder to save current project to"), "");
+    wxDirDialog destination_dialog(this, wxString("Locate folder to save current project to"), destination->GetValue());
 
     if (destination_dialog.ShowModal() == wxID_CANCEL)
         return;

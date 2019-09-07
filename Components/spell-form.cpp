@@ -1126,6 +1126,8 @@ std::string SpellForm::GetDescriptionStrRefString()
 std::string SpellForm::GetAltMessageStrRefString()
 {
     std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
+    if (alt_message->GetValue().IsEmpty())
+        return "****";
 
     std::string aux = alt_message->GetValue().ToStdString();
     std::string base_altmsg = configuration->GetTlkString(strref);
