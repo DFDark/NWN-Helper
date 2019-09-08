@@ -135,13 +135,13 @@ std::string SpellListModel::GetSchool(std::string school) const
     std::string result;
     switch (school[0])
     {
-        case 'C': result = "Abjuration"; break;
-        case 'D': result = "Conjuration"; break;
-        case 'E': result = "Divination"; break;
-        case 'V': result = "Enchantment"; break;
-        case 'I': result = "Evocation"; break;
-        case 'N': result = "Illusion"; break;
-        case 'T': result = "Necromancy"; break;
+        case 'A': result = "Abjuration"; break;
+        case 'C': result = "Conjuration"; break;
+        case 'D': result = "Divination"; break;
+        case 'E': result = "Enchantment"; break;
+        case 'V': result = "Evocation"; break;
+        case 'I': result = "Illusion"; break;
+        case 'N': result = "Necromancy"; break;
         default: result = "Transmutation"; break;
     }
 
