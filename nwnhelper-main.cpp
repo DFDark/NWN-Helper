@@ -237,7 +237,7 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 
     // Todo: Check where is the memory leak from
     configuration->ClearProjectData();
-    configuration->LoadProjectData();
+    // configuration->LoadProjectData();
 
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
@@ -252,14 +252,13 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
     if (project_dialog.ShowModal() == wxID_CANCEL)
         return;
 
-    std::string directory = project_dialog.GetDirectory().ToStdString();
-    std::string filename = project_dialog.GetFilename().ToStdString();
+    std::string path = project_dialog.GetPath().ToStdString();
 
     sp_model->SetFile(NULL);
     ft_model->SetFile(NULL);
 
     configuration->ClearProjectData();
-    configuration->LoadProjectData(directory, filename);
+    configuration->LoadProjectData(path);
 
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));

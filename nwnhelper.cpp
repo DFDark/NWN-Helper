@@ -23,17 +23,19 @@ NWNHelper::~NWNHelper()
 
 bool NWNHelper::OnInit()
 {
-    if (!configuration_manager->AttemptLoad())
-        exit_code = 1;
-    else
+    try
     {
+        configuration_manager->AttemptLoad();
+
         nwnhelper_main = new NWNHelperMain("NWNHelperMain", configuration_manager);
         nwnhelper_main->Show(true);
         SetTopWindow(nwnhelper_main);
     }
-
-    // Load base NWN files
-    //return false;
+    catch (const std::string& e)
+    {
+        wxMessageBox(e, "Error", wxOK|wxICON_ERROR);
+        exit_code = 1;
+    }
 
     return true;
 }

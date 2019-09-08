@@ -45,6 +45,7 @@ bool Project::Initialize(const std::string& data_folder)
     // Create empty TLK
     custom_tlk = LoadTLKFile("");
     current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1);
+    return true;
 }
 
 bool Project::LoadProject(const std::string& project_file)
@@ -59,32 +60,37 @@ bool Project::LoadProject(const std::string& project_file)
     project_name = std::string(project.GetValue("General", "ProjectName"));
     project_filename = project_file;
     base_path = std::string(project.GetValue("General", "BaseDir"));
-    tlk_filename = std::string(project.GetValue("General", "TlkName"));
+    tlk_filename = std::string(project.GetValue("General", "TlkFilename"));
 
-    std::uint32_t twoda_count = std::stoul(std::string(project.GetValue("General", "2DA_COUNT")));
+    std::uint32_t twoda_count = std::stoul(std::string(project.GetValue("General", "2daCount")));
     for (std::uint32_t i = 0; i < twoda_count; i++)
     {
-        std::string twoda = project.GetValue("2da", ("_" + std::to_string(i)).c_str());
-        std::string filepath = base_path + std::string(SEPARATOR) + twoda + ".2da";
-        TwoDA::Friendly::TwoDA* aux = Load2DAFile(filepath);
-        if (aux == NULL)
-            {} // Todo: some throw prob?
+        try
+        {
+            std::string twoda = project.GetValue("2da", ("_" + std::to_string(i)).c_str());
+            std::string filepath = base_path + std::string(SEPARATOR);
+            filepath += "2da" + std::string(SEPARATOR) + twoda ;//+ ".2da";
 
-        delete twoda_list[twoda];
-        twoda_list[twoda] = aux;
+            TwoDA::Friendly::TwoDA* aux = Load2DAFile(filepath);
 
-        // Replace2daRows(twoda_list[twoda], aux);
-        twoda_edit_list[twoda] = true;
+            if (aux == NULL)
+                {} // Todo: some throw prob?
 
-        // Release the new 2da
-        // delete aux;
-        // aux = NULL;
+            delete twoda_list[twoda];
+            twoda_list[twoda] = aux;
+            // Replace2daRows(twoda_list[twoda], aux);
+            twoda_edit_list[twoda] = true;
+        }
+        catch (const std::string& msg)
+        {
+            wxMessageBox(msg, "Error", wxOK|wxICON_ERROR);
+        }
     }
 
     custom_tlk = LoadTLKFile(tlk_filename);
 
     for (auto const& entry : (*custom_tlk))
-        current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
+        current_tlk_row_count = std::max((entry.first + BASE_TLK_LIMIT + 1), current_tlk_row_count);
     current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
 
     loaded = true;

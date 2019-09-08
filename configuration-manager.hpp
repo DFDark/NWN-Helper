@@ -25,8 +25,8 @@ public:
     ConfigurationManager();
     ~ConfigurationManager();
 
-    bool AttemptLoad();
-    bool LoadProjectData(const std::string& _directory = "", const std::string& _filename = "");
+    void AttemptLoad();
+    bool LoadProjectData(const std::string& _path);
     bool SaveCurrentSettings();
     bool ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename);
     void ClearProjectData();
@@ -47,7 +47,6 @@ public:
 
     TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
 private:
-    bool loaded;
     std::uint32_t current_tlk_row_count;
     CSimpleIniA* config;
     wxArrayString* spell_list;

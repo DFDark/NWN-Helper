@@ -4,7 +4,6 @@
 ConfigurationManager::ConfigurationManager()
 {
     config = new CSimpleIniA(true, true, true);
-    loaded = false;
     spell_list = new wxArrayString();
     feat_list = new wxArrayString();
 }
@@ -21,21 +20,16 @@ ConfigurationManager::~ConfigurationManager()
     delete feat_list;
 }
 
-bool ConfigurationManager::AttemptLoad()
+void ConfigurationManager::AttemptLoad()
 {
     config->Reset();
-    loaded = config->LoadFile("nwnhelper.ini") >= 0;
+    bool result = config->LoadFile("nwnhelper.ini") >= 0;
 
-    if (!loaded)
-        loaded = InitialConfiguration();
+    if (!result && !InitialConfiguration())
+        throw std::string("Initial configuration failed!");
 
-    if (loaded)
-        loaded = project.Initialize(std::string(config->GetValue("General", "DATA_FOLDER")));
-
-    if (loaded)
-        loaded = LoadProjectData();
-
-    return loaded;
+    if (result && !project.Initialize(std::string(config->GetValue("General", "DATA_FOLDER"))))
+        throw std::string("Project initialization failed!");
 }
 
 bool ConfigurationManager::InitialConfiguration()
@@ -87,94 +81,9 @@ bool ConfigurationManager::InitialConfiguration()
     return result;
 }
 
-bool ConfigurationManager::LoadProjectData(const std::string& _directory, const std::string& _filename)
+bool ConfigurationManager::LoadProjectData(const std::string& _path)
 {
-    /*bool loaded = true;
-    try
-    {
-        CSimpleIniA project(true, true, true);
-        if (_filename.size() > 0)
-        {
-            project_directory = _directory;
-            project_file = _filename;
-            if (project.LoadFile((project_directory + std::string(SEPARATOR) + project_file).c_str()) < 0)
-                throw std::string("Loading project '" + (project_directory + std::string(SEPARATOR) + project_file) + "' has failed!");
-            project_loaded = true;
-        }
-
-
-        Tlk::Raw::Tlk raw_tlk;
-        if (_filename.size())
-        {
-            std::string tlk_file = project.GetValue("Files", "TLK");
-            if (tlk_file.size() > 0 && !Tlk::Raw::Tlk::ReadFromFile(tlk_file.c_str(), &raw_tlk))
-            {
-                std::string error = std::string("Couldn't load ") + tlk_file;
-                throw error;
-            }
-        }
-        custom_tlk = new Tlk::Friendly::Tlk(std::move(raw_tlk));
-
-        std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
-        for (auto const& r : base_key->GetReferencedResources())
-        {
-            if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
-                resourcelist.emplace_back(r);
-        }
-
-        std::map<std::string, bool> project_2da_list;
-        if (_filename.size())
-        {
-            std::uint32_t files = std::stoul(project.GetValue("Files", "2DA_COUNT"));
-            for (unsigned int i = 0; i < files; i++)
-            {
-                std::string aux = (std::string("_") + std::to_string(i));
-                project_2da_list[project.GetValue("2da", aux.c_str())] = true;
-            }
-        }
-
-        std::string twoda_dir = std::string(SEPARATOR) + "2da" + std::string(SEPARATOR);
-        for (auto const& kvp : base_2da->GetResources())
-        {
-            if (resourcelist.size() <= kvp.first)
-                continue;
-
-            std::string filename = resourcelist[kvp.first].m_ResRef;
-            if (project_2da_list[filename])
-                twoda_list[filename] = Load2daFromFile(project_directory + twoda_dir + filename + std::string(".2da"));
-            else
-                twoda_list[filename] = LoadTwoDAFile(filename,
-                    kvp.second.m_DataBlock->GetData(),
-                    kvp.second.m_DataBlock->GetDataLength()
-                );
-        }
-
-        // Preloading lists (for large arrays like spells/feats)
-        // to save time from loading them on SpellForm init
-        spell_list->Add("None");
-        feat_list->Add("None");
-        for (auto const& row : (*twoda_list["spells"]))
-            spell_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
-        for (auto const& row : (*twoda_list["feat"]))
-            feat_list->Add(row[GETIDX(SPELL_2DA::Label)].m_Data);
-
-        for (auto const& entry : (*custom_tlk))
-            current_tlk_row_count = std::max(entry.first, current_tlk_row_count);
-        current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
-    }
-    catch (std::string& message)
-    {
-        wxMessageBox(message, "Error", wxOK | wxICON_ERROR );
-        loaded = false;
-    }
-    catch (std::exception& e)
-    {
-        wxMessageBox(e.what(), "Error", wxOK | wxICON_ERROR );
-        loaded = false;
-    }
-
-    return loaded;*/
-    return true;
+    return project.LoadProject(_path);
 }
 
 TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
