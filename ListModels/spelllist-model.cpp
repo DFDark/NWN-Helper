@@ -1,11 +1,12 @@
 #include "spelllist-model.hpp"
 #include "../constants.hpp"
 
-SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration) :
-    wxDataViewVirtualListModel(_file->Size())
+SpellListModel::SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration, const bool& _has_none) :
+    wxDataViewVirtualListModel(_file->Size() + (_has_none ? 1 : 0))
 {
     file = _file;
     configuration = _configuration;
+    has_none = _has_none;
 }
 
 unsigned int SpellListModel::GetColumnCount() const
@@ -27,15 +28,30 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
 {
     if (col == SpellListModel::ID)
     {
-        variant = std::to_string(row);
+        if (has_none)
+        {
+            if (row == 0)
+                variant = "-";
+            else
+                variant = std::to_string(row - 1);
+        }
+        else
+            variant = std::to_string(row);
         return;
     }
 
     if (file == NULL)
         return;
 
+    if (has_none && row == 0)
+    {
+        variant = col == SpellListModel::SPELL ? "None" : "****";
+        return;
+    }
+
+    unsigned int _row = has_none ? (row - 1) : row;
     unsigned int aux = GetColumnID(col);
-    if ((*file)[row][aux].m_IsEmpty)
+    if ((*file)[_row][aux].m_IsEmpty)
     {
         variant = "****";
         return;
@@ -47,21 +63,21 @@ void SpellListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigne
         {
             try
             {
-                std::uint32_t strref = std::stoul((*file)[row][aux].m_Data);
+                std::uint32_t strref = std::stoul((*file)[_row][aux].m_Data);
                 variant = configuration->GetTlkString(strref);
             }
             catch (std::exception)
             {
-                variant = (*file)[row][aux].m_Data;
+                variant = (*file)[_row][aux].m_Data;
             }
         } break;
-        case SpellListModel::SCHOOL: variant = GetSchool((*file)[row][aux].m_Data); break;
-        case SpellListModel::RANGE: variant = GetRange((*file)[row][aux].m_Data); break;
-        case SpellListModel::VS: variant = (*file)[row][aux].m_Data; break;
-        case SpellListModel::META_MAGIC: variant = GetMetaMagic((*file)[row][aux].m_Data); break;
-        case SpellListModel::TARGET_TYPE: variant = GetTargetType((*file)[row][aux].m_Data); break;
+        case SpellListModel::SCHOOL: variant = GetSchool((*file)[_row][aux].m_Data); break;
+        case SpellListModel::RANGE: variant = GetRange((*file)[_row][aux].m_Data); break;
+        case SpellListModel::VS: variant = (*file)[_row][aux].m_Data; break;
+        case SpellListModel::META_MAGIC: variant = GetMetaMagic((*file)[_row][aux].m_Data); break;
+        case SpellListModel::TARGET_TYPE: variant = GetTargetType((*file)[_row][aux].m_Data); break;
         // case SpellListModel::IMPACT_SCRIPT: variant = (*file)[row][aux].m_Data; break;
-        default: variant = (*file)[row][aux].m_Data; break;
+        default: variant = (*file)[_row][aux].m_Data; break;
     }
 }
 

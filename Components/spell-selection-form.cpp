@@ -17,7 +17,7 @@ SpellSelectionForm::SpellSelectionForm(wxWindow* parent, ConfigurationManager* _
     spells = new wxDataViewCtrl(this, SPELLS);
     TwoDA::Friendly::TwoDA* twoda = configuration->Get2da("spells");
 
-    sp_model = new SpellListModel(twoda, configuration);
+    sp_model = new SpellListModel(twoda, configuration, true);
     spells->AssociateModel(sp_model);
     SetSpellColumns();
 

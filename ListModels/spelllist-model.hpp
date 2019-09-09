@@ -36,7 +36,7 @@ public:
         INNATE
     };
 
-    SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration);
+    SpellListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration, const bool& _has_none = false);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(unsigned int row);
 
@@ -50,6 +50,7 @@ public:
 private:
     TwoDA::Friendly::TwoDA* file;
     ConfigurationManager* configuration;
+    bool has_none;
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     std::size_t GetColumnID(unsigned int col) const;
