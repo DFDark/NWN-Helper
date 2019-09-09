@@ -43,7 +43,7 @@ bool Project::Initialize(const std::string& data_folder)
     }
 
     // Create empty TLK
-    custom_tlk = LoadTLKFile("");
+    custom_tlk = LoadTLKFile();
     current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1);
     return true;
 }
@@ -254,4 +254,44 @@ void Project::Replace2daRows(TwoDA::Friendly::TwoDA* to, TwoDA::Friendly::TwoDA*
     // TODO:
     // Remove rows from to
     // insert from rows to 'to'
+}
+
+void Project::NewProject()
+{
+    base_path = "";
+    project_name = "";
+    tlk_filename = "";
+
+    loaded = false;
+
+    current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1);
+    if (custom_tlk != NULL)
+    {
+        delete custom_tlk;
+        custom_tlk = LoadTLKFile();
+    }
+    
+    std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
+    for (auto const& r : base_key->GetReferencedResources())
+    {
+        if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
+            resourcelist.emplace_back(r);
+    }
+
+    for (auto const& kvp : base_2da->GetResources())
+    {
+        if (resourcelist.size() <= kvp.first)
+            continue;
+
+        std::string filename = resourcelist[kvp.first].m_ResRef;
+        if (!twoda_edit_list[filename])
+            continue;
+        
+        delete twoda_list[filename];
+        twoda_list[filename] = Load2DAFile(filename,
+            kvp.second.m_DataBlock->GetData(),
+            kvp.second.m_DataBlock->GetDataLength()
+        );
+        twoda_edit_list[filename] = false;
+    }
 }

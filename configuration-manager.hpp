@@ -26,6 +26,7 @@ public:
     ~ConfigurationManager();
 
     void AttemptLoad();
+    void NewProject();
     bool LoadProjectData(const std::string& _path);
     bool SaveCurrentSettings();
     bool ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename);

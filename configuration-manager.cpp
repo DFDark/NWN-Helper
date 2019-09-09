@@ -276,3 +276,8 @@ void ConfigurationManager::SaveProject(const bool& force_prompt)
 {
     project.SaveProject(force_prompt);
 }
+
+void ConfigurationManager::NewProject()
+{
+    project.NewProject();
+}

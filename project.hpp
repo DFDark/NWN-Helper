@@ -27,6 +27,7 @@ public:
     bool Initialize(const std::string& data_folder);
     void SaveProject(const bool& force_prompt = false);
     bool LoadProject(const std::string& project_file);
+    void NewProject();
 
     void Set2daModified(const std::string& twoda, const bool& modified);
 
@@ -59,7 +60,7 @@ private:
 
     Key::Friendly::Key* LoadKEYFile(const std::string& filename);
     Bif::Friendly::Bif* LoadBIFFile(const std::string& filename);
-    Tlk::Friendly::Tlk* LoadTLKFile(const std::string& filename);
+    Tlk::Friendly::Tlk* LoadTLKFile(const std::string& filename = "");
     TwoDA::Friendly::TwoDA* Load2DAFile(const std::string& filename);
     TwoDA::Friendly::TwoDA* Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length);
 };

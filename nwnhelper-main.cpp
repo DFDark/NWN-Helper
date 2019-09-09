@@ -237,7 +237,7 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 
     // Todo: Check where is the memory leak from
     configuration->ClearProjectData();
-    // configuration->LoadProjectData();
+    configuration->NewProjectData();
 
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
