@@ -90,6 +90,10 @@ private:
     void OnSubSpell4(wxCommandEvent& event);
     void OnSubSpell5(wxCommandEvent& event);
 
+    void OnFeatClick(wxCommandEvent& event);
+    void OnCounterClick1(wxCommandEvent& event);
+    void OnCounterClick2(wxCommandEvent& event);
+
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* spell;
 
@@ -206,9 +210,10 @@ private:
     wxComboBox* immunity_type;
     wxComboBox* user_type;
     wxComboBox* category;
-    wxComboBox* feat;
-    wxComboBox* counter_1;
-    wxComboBox* counter_2;
+
+    wxButton* feat;
+    wxButton* counter_1;
+    wxButton* counter_2;
 
     wxButton* master;
     wxButton* sub_rad_spell_1;
@@ -223,6 +228,9 @@ private:
     std::uint32_t sub_rad_spell_3_id;
     std::uint32_t sub_rad_spell_4_id;
     std::uint32_t sub_rad_spell_5_id;
+    std::uint32_t feat_id;
+    std::uint32_t counter_1_id;
+    std::uint32_t counter_2_id;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;
