@@ -7,6 +7,7 @@ enum
 
 wxBEGIN_EVENT_TABLE(SpellSelectionForm, wxDialog)
     EVT_MENU(wxID_OK, SpellSelectionForm::OnOk)
+    EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, SpellSelectionForm::OnDoubleClick)
 wxEND_EVENT_TABLE()
 
 SpellSelectionForm::SpellSelectionForm(wxWindow* parent, ConfigurationManager* _configuration) :
@@ -51,6 +52,14 @@ void SpellSelectionForm::OnOk(wxCommandEvent& event)
     TwoDA::Friendly::TwoDARow* row = sp_model->Get2daRow(sp_model->GetRow(spells->GetSelection()));
     selection = row->RowId();
 
+    this->EndModal(wxID_OK);
+}
+
+void SpellSelectionForm::OnDoubleClick(wxDataViewEvent& event)
+{
+    TwoDA::Friendly::TwoDARow* row = sp_model->Get2daRow(sp_model->GetRow(event.GetItem()));
+    selection = row->RowId();
+    
     this->EndModal(wxID_OK);
 }
 

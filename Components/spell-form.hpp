@@ -83,6 +83,13 @@ private:
     void OnRangerCheck(wxCommandEvent& event);
     void OnWizSorcCheck(wxCommandEvent& event);
 
+    void OnMasterClick(wxCommandEvent& event);
+    void OnSubSpell1(wxCommandEvent& event);
+    void OnSubSpell2(wxCommandEvent& event);
+    void OnSubSpell3(wxCommandEvent& event);
+    void OnSubSpell4(wxCommandEvent& event);
+    void OnSubSpell5(wxCommandEvent& event);
+
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* spell;
 
@@ -199,15 +206,23 @@ private:
     wxComboBox* immunity_type;
     wxComboBox* user_type;
     wxComboBox* category;
-    wxComboBox* master;
-    wxComboBox* sub_rad_spell_1;
-    wxComboBox* sub_rad_spell_2;
-    wxComboBox* sub_rad_spell_3;
-    wxComboBox* sub_rad_spell_4;
-    wxComboBox* sub_rad_spell_5;
     wxComboBox* feat;
     wxComboBox* counter_1;
     wxComboBox* counter_2;
+
+    wxButton* master;
+    wxButton* sub_rad_spell_1;
+    wxButton* sub_rad_spell_2;
+    wxButton* sub_rad_spell_3;
+    wxButton* sub_rad_spell_4;
+    wxButton* sub_rad_spell_5;
+    
+    std::uint32_t master_id;
+    std::uint32_t sub_rad_spell_1_id;
+    std::uint32_t sub_rad_spell_2_id;
+    std::uint32_t sub_rad_spell_3_id;
+    std::uint32_t sub_rad_spell_4_id;
+    std::uint32_t sub_rad_spell_5_id;
 
     wxToggleButton* verbal;
     wxToggleButton* somatic;

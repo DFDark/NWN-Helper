@@ -22,6 +22,7 @@ public:
 private:
     void OnOk(wxCommandEvent& event);
     void SetSpellColumns();
+    void OnDoubleClick(wxDataViewEvent& event);
 
 
     std::uint32_t selection;

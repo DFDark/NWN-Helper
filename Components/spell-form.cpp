@@ -1,5 +1,6 @@
 #include "spell-form.hpp"
 #include "../constants.hpp"
+#include "spell-selection-form.hpp"
 
 enum
 {
@@ -16,7 +17,13 @@ enum
     SP_CHECKBOX_DRUID,
     SP_CHECKBOX_PALADIN,
     SP_CHECKBOX_RANGER,
-    SP_CHECKBOX_WIZ_SORC
+    SP_CHECKBOX_WIZ_SORC,
+    SP_BUTTON_MASTER,
+    SP_BUTTON_SUB_SPELL_1,
+    SP_BUTTON_SUB_SPELL_2,
+    SP_BUTTON_SUB_SPELL_3,
+    SP_BUTTON_SUB_SPELL_4,
+    SP_BUTTON_SUB_SPELL_5
 };
 
 wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
@@ -36,6 +43,12 @@ wxBEGIN_EVENT_TABLE(SpellForm, wxDialog)
     EVT_CHECKBOX(SP_CHECKBOX_PALADIN, SpellForm::OnPaladinCheck)
     EVT_CHECKBOX(SP_CHECKBOX_RANGER, SpellForm::OnRangerCheck)
     EVT_CHECKBOX(SP_CHECKBOX_WIZ_SORC, SpellForm::OnWizSorcCheck)
+    EVT_MENU(SP_BUTTON_MASTER, SpellForm::OnMasterClick)
+    EVT_MENU(SP_BUTTON_SUB_SPELL_1, SpellForm::OnSubSpell1)
+    EVT_MENU(SP_BUTTON_SUB_SPELL_2, SpellForm::OnSubSpell2)
+    EVT_MENU(SP_BUTTON_SUB_SPELL_3, SpellForm::OnSubSpell3)
+    EVT_MENU(SP_BUTTON_SUB_SPELL_4, SpellForm::OnSubSpell4)
+    EVT_MENU(SP_BUTTON_SUB_SPELL_5, SpellForm::OnSubSpell5)
 wxEND_EVENT_TABLE()
 
 SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -204,11 +217,12 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     sub_rad_spell_4_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 4"));
     sub_rad_spell_5_label = new wxStaticText(panel, wxID_ANY, wxString("SubRad Spell 5"));
 
-    sub_rad_spell_1 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
-    sub_rad_spell_2 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
-    sub_rad_spell_3 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
-    sub_rad_spell_4 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
-    sub_rad_spell_5 = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
+    master = new wxButton(panel, SP_BUTTON_MASTER, wxString("None"));
+    sub_rad_spell_1 = new wxButton(panel, SP_BUTTON_SUB_SPELL_1, wxString("None"));
+    sub_rad_spell_2 = new wxButton(panel, SP_BUTTON_SUB_SPELL_2, wxString("None"));
+    sub_rad_spell_3 = new wxButton(panel, SP_BUTTON_SUB_SPELL_3, wxString("None"));
+    sub_rad_spell_4 = new wxButton(panel, SP_BUTTON_SUB_SPELL_4, wxString("None"));
+    sub_rad_spell_5 = new wxButton(panel, SP_BUTTON_SUB_SPELL_5, wxString("None"));
 
     master_label = new wxStaticText(panel, wxID_ANY, wxString("Master"));
     user_type_label = new wxStaticText(panel, wxID_ANY, wxString("User Type"));
@@ -218,7 +232,6 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     counter_1_label = new wxStaticText(panel, wxID_ANY, wxString("Counter 1"));
     counter_2_label = new wxStaticText(panel, wxID_ANY, wxString("Counter 2"));
 
-    master = new wxComboBox(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxDefaultSize, (*configuration->GetSpellList()));
     user_type = new wxComboBox(panel, wxID_ANY, wxString(""));
     description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(450, -1), wxTE_MULTILINE);
     alt_message = new wxTextCtrl(panel, wxID_ANY, wxString(""));
@@ -466,10 +479,7 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     proj_settings_sizer->Add(projectile_sound_sizer, 1, wxEXPAND|wxALL);
     proj_settings_sizer->Add(projectile_orientation_sizer, 1, wxEXPAND|wxALL);
 
-    wxStaticBoxSizer* master_sub_spells_sizer = new wxStaticBoxSizer(master_sub_spells, wxVERTICAL);
-
-    wxBoxSizer* master_sub_spells_sizer_r1 = new wxBoxSizer(wxHORIZONTAL);
-    wxBoxSizer* master_sub_spells_sizer_r2 = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticBoxSizer* master_sub_spells_sizer = new wxStaticBoxSizer(master_sub_spells, wxHORIZONTAL);
 
     wxBoxSizer* master_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* sub_rad_spell_1_sizer = new wxBoxSizer(wxVERTICAL);
@@ -491,15 +501,12 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     sub_rad_spell_5_sizer->Add(sub_rad_spell_5_label);
     sub_rad_spell_5_sizer->Add(sub_rad_spell_5, 1, wxEXPAND|wxALL);
 
-    master_sub_spells_sizer_r1->Add(master_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer_r1->Add(sub_rad_spell_1_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer_r1->Add(sub_rad_spell_2_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer_r2->Add(sub_rad_spell_3_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer_r2->Add(sub_rad_spell_4_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer_r2->Add(sub_rad_spell_5_sizer, 1, wxEXPAND|wxALL);
-
-    master_sub_spells_sizer->Add(master_sub_spells_sizer_r1, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer->Add(master_sub_spells_sizer_r2, 1, wxEXPAND|wxALL);
+    master_sub_spells_sizer->Add(master_sizer, 1, wxEXPAND|wxALL);
+    master_sub_spells_sizer->Add(sub_rad_spell_1_sizer, 1, wxEXPAND|wxALL);
+    master_sub_spells_sizer->Add(sub_rad_spell_2_sizer, 1, wxEXPAND|wxALL);
+    master_sub_spells_sizer->Add(sub_rad_spell_3_sizer, 1, wxEXPAND|wxALL);
+    master_sub_spells_sizer->Add(sub_rad_spell_4_sizer, 1, wxEXPAND|wxALL);
+    master_sub_spells_sizer->Add(sub_rad_spell_5_sizer, 1, wxEXPAND|wxALL);
 
     wxBoxSizer* alt_message_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
@@ -1462,22 +1469,157 @@ void SpellForm::LoadMasterSubSpells()
 {
     TwoDA::Friendly::TwoDA* spells = configuration->Get2da("spells");
 
+    master_id = 0;
+    sub_rad_spell_1_id = 0;
+    sub_rad_spell_2_id = 0;
+    sub_rad_spell_3_id = 0;
+    sub_rad_spell_4_id = 0;
+    sub_rad_spell_5_id = 0;
+
     if (spells != NULL)
     {
-        // TODO: Loading optimization
-        // Probably lists should be somewhat limited to only possible spells
-
         std::string aux = Get2DAString(SPELL_2DA::Master);
-        master->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+        if (aux.size() > 0)
+        {
+            master_id = GetUintFromString(aux) + 1;
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", master_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+
         aux = Get2DAString(SPELL_2DA::SubRadSpell1);
-        sub_rad_spell_1->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+        if (aux.size() > 0)
+        {
+            sub_rad_spell_1_id = GetUintFromString(aux) + 1;
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_1_id - 1);
+            sub_rad_spell_1->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+
         aux = Get2DAString(SPELL_2DA::SubRadSpell2);
-        sub_rad_spell_2->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+        if (aux.size() > 0)
+        {
+            sub_rad_spell_2_id = GetUintFromString(aux) + 1;
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_2_id - 1);
+            sub_rad_spell_2->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+
         aux = Get2DAString(SPELL_2DA::SubRadSpell3);
-        sub_rad_spell_3->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+        if (aux.size() > 0)
+        {
+            sub_rad_spell_3_id = GetUintFromString(aux) + 1;
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_3_id - 1);
+            sub_rad_spell_3->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+
         aux = Get2DAString(SPELL_2DA::SubRadSpell4);
-        sub_rad_spell_4->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+        if (aux.size() > 0)
+        {
+            sub_rad_spell_4_id = GetUintFromString(aux) + 1;
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_4_id - 1);
+            sub_rad_spell_4->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+
         aux = Get2DAString(SPELL_2DA::SubRadSpell5);
-        sub_rad_spell_5->SetSelection(aux.size() == 0 ? 0 : (GetUintFromString(aux) + 1));
+        if (aux.size() > 0)
+        {
+            sub_rad_spell_5_id = GetUintFromString(aux) + 1;
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_5_id - 1);
+            sub_rad_spell_5->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+    }
+}
+
+void SpellForm::OnMasterClick(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        master_id = form.GetSpellSelection();
+        if (master_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", master_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+        else
+            master->SetLabel("None");
+    }
+}
+
+void SpellForm::OnSubSpell1(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        sub_rad_spell_1_id = form.GetSpellSelection();
+        if (sub_rad_spell_1_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_1_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+        else
+            master->SetLabel("None");
+    }
+}
+
+void SpellForm::OnSubSpell2(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        sub_rad_spell_2_id = form.GetSpellSelection();
+        if (sub_rad_spell_2_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_2_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+        else
+            master->SetLabel("None");
+    }
+}
+
+void SpellForm::OnSubSpell3(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        sub_rad_spell_3_id = form.GetSpellSelection();
+        if (sub_rad_spell_3_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_3_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+        else
+            master->SetLabel("None");
+    }
+}
+
+void SpellForm::OnSubSpell4(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        sub_rad_spell_4_id = form.GetSpellSelection();
+        if (sub_rad_spell_4_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_4_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+        else
+            master->SetLabel("None");
+    }
+}
+
+void SpellForm::OnSubSpell5(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        sub_rad_spell_5_id = form.GetSpellSelection();
+        if (sub_rad_spell_5_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_5_id - 1);
+            master->SetLabel((*row)[GETIDX(SPELL_2DA::Spell)].m_Data);
+        }
+        else
+            master->SetLabel("None");
     }
 }
