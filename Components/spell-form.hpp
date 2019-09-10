@@ -66,6 +66,7 @@ private:
     int GetIntFromString(const std::string& num) const;
     unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) const;
     std::string Get2DAString(const auto& column);
+    std::string Get2DAString(TwoDA::Friendly::TwoDARow* row, const auto& column);
 
     void OnInnateChange(wxCommandEvent& event);
     void OnBardChange(wxCommandEvent& event);
@@ -221,7 +222,7 @@ private:
     wxButton* sub_rad_spell_3;
     wxButton* sub_rad_spell_4;
     wxButton* sub_rad_spell_5;
-    
+
     std::uint32_t master_id;
     std::uint32_t sub_rad_spell_1_id;
     std::uint32_t sub_rad_spell_2_id;
