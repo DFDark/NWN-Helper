@@ -4,20 +4,12 @@
 ConfigurationManager::ConfigurationManager()
 {
     config = new CSimpleIniA(true, true, true);
-    spell_list = new wxArrayString();
-    feat_list = new wxArrayString();
 }
 
 ConfigurationManager::~ConfigurationManager()
 {
     delete config;
     config = NULL;
-
-    spell_list->clear();
-    feat_list->clear();
-
-    delete spell_list;
-    delete feat_list;
 }
 
 void ConfigurationManager::AttemptLoad()
@@ -227,16 +219,6 @@ TwoDA::Friendly::TwoDARow* ConfigurationManager::Get2daRow(const std::string& tw
     return project.Get2daRow(twoda, row_id);
 }
 
-wxArrayString* ConfigurationManager::GetSpellList()
-{
-    return spell_list;
-}
-
-wxArrayString* ConfigurationManager::GetFeatList()
-{
-    return feat_list;
-}
-
 std::string ConfigurationManager::GetTlkString(const std::uint32_t& strref)
 {
     return project.GetTlkString(strref);
@@ -262,14 +244,6 @@ bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, co
 
     return result;*/
     return true;
-}
-
-void ConfigurationManager::ClearProjectData()
-{
-
-    // No need to redeclare these since we're emptying them here
-    spell_list->clear();
-    feat_list->clear();
 }
 
 void ConfigurationManager::SaveProject(const bool& force_prompt)

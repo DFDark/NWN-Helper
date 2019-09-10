@@ -42,16 +42,12 @@ public:
     wxSize GetWindowResolution();
     std::vector<std::string> GetSpellColumns();
     std::vector<std::string> GetFeatColumns();
-    wxArrayString* GetSpellList();
-    wxArrayString* GetFeatList();
     std::string GetTlkString(const std::uint32_t& strref);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
 private:
     std::uint32_t current_tlk_row_count;
     CSimpleIniA* config;
-    wxArrayString* spell_list;
-    wxArrayString* feat_list;
 
     Project project;
 
