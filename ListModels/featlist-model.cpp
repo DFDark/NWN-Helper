@@ -1,11 +1,12 @@
 #include "featlist-model.hpp"
 #include "../constants.hpp"
 
-FeatListModel::FeatListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration) :
+FeatListModel::FeatListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration, const bool& _has_none) :
     wxDataViewVirtualListModel(_file->Size())
 {
     file = _file;
     configuration = _configuration;
+    has_none = _has_none;
 }
 
 unsigned int FeatListModel::GetColumnCount() const
@@ -27,15 +28,30 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
 {
     if (col == FeatListModel::ID)
     {
-        variant = std::to_string(row);
+        if (has_none)
+        {
+            if (row == 0)
+                variant = "-";
+            else
+                variant = std::to_string(row - 1);
+        }
+        else
+            variant = std::to_string(row);
         return;
     }
 
     if (file == NULL)
         return;
 
+    if (has_none && row == 0)
+    {
+        variant = col == FeatListModel::FEAT ? "None" : "****";
+        return;
+    }
+
+    unsigned int _row = has_none ? (row - 1) : row;
     unsigned int aux = GetColumnID(col);
-    if ((*file)[row][aux].m_IsEmpty)
+    if ((*file)[_row][aux].m_IsEmpty)
     {
         variant = "****";
         return;
@@ -47,15 +63,15 @@ void FeatListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned
         {
             try
             {
-                std::uint32_t strref = std::stoul((*file)[row][aux].m_Data);
+                std::uint32_t strref = std::stoul((*file)[_row][aux].m_Data);
                 variant = configuration->GetTlkString(strref);
             }
             catch (std::exception)
             {
-                variant = (*file)[row][aux].m_Data;
+                variant = (*file)[_row][aux].m_Data;
             }
         } break;
-        default: variant = (*file)[row][aux].m_Data; break;
+        default: variant = (*file)[_row][aux].m_Data; break;
     }
 }
 

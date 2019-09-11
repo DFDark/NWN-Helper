@@ -21,7 +21,7 @@ public:
         FEAT
     };
 
-    FeatListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration);
+    FeatListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration, const bool& _has_none = false);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(unsigned int row);
 
@@ -35,6 +35,7 @@ public:
 private:
     TwoDA::Friendly::TwoDA* file;
     ConfigurationManager* configuration;
+    bool has_none;
 
     std::size_t GetColumnID(unsigned int col) const;
 };

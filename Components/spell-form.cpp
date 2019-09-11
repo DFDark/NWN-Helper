@@ -1,6 +1,7 @@
 #include "spell-form.hpp"
 #include "../constants.hpp"
 #include "spell-selection-form.hpp"
+#include "feat-selection-form.hpp"
 
 enum
 {

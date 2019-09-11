@@ -24,6 +24,8 @@ add_library(NWNHelper STATIC
     Components/export-form.cpp
     Components/spell-selection-form.hpp
     Components/spell-selection-form.cpp
+    Components/feat-selection-form.hpp
+    Components/feat-selection-form.cpp
     ListModels/spelllist-model.hpp
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp
