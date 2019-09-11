@@ -1,5 +1,5 @@
-#ifndef SPELL_SELECTION_FORM_HPP
-#define SPELL_SELECTION_FORM_HPP
+#ifndef FEAT_SELECTION_FORM_HPP
+#define FEAT_SELECTION_FORM_HPP
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -7,35 +7,35 @@
 #endif
 
 #include "configuration-manager.hpp"
-#include "ListModels/spelllist-model.hpp"
+#include "ListModels/featlist-model.hpp"
 
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
-class SpellSelectionForm : public wxDialog
+class FeatSelectionForm : public wxDialog
 {
 public:
-    SpellSelectionForm(wxWindow* parent, ConfigurationManager* _configuration);
+    FeatSelectionForm(wxWindow* parent, ConfigurationManager* _configuration);
 
-    std::uint32_t GetSpellSelection();
+    std::uint32_t GetFeatSelection();
 
 private:
     void OnOk(wxCommandEvent& event);
-    void SetSpellColumns();
+    void SetFeatColumns();
     void OnDoubleClick(wxDataViewEvent& event);
-
 
     std::uint32_t selection;
     ConfigurationManager* configuration;
 
-    SpellListModel* sp_model;
+    FeatListModel* ft_model;
 
-    wxDataViewCtrl* spells;
+    wxDataViewCtrl* feats;
 
     wxButton* ok_button;
     wxButton* cancel_button;
 
     wxDECLARE_EVENT_TABLE();
 };
+
 
 #endif

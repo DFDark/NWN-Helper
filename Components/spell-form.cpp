@@ -1679,19 +1679,19 @@ void SpellForm::OnSubSpell5(wxCommandEvent& event)
 
 void SpellForm::OnFeatClick(wxCommandEvent& event)
 {
-    /*SpellSelectionForm form(panel, configuration);
+    FeatSelectionForm form(panel, configuration);
     if (form.ShowModal() == wxID_OK)
     {
-        feat_id = form.GetSpellSelection();
+        feat_id = form.GetFeatSelection();
         if (feat_id > 0)
         {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", feat_id - 1);
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", feat_id - 1);
             std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
             feat->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
         }
         else
             feat->SetLabel("None");
-    }*/
+    }
 }
 
 void SpellForm::OnCounterClick1(wxCommandEvent& event)
