@@ -570,16 +570,16 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
 void SpellForm::OnOk(wxCommandEvent& event)
 {
     // TODO: Add validation
-    (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = label->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = GetStringFromTextCtrl(label);
     (*spell)[GETIDX(SPELL_2DA::Name)].m_Data = GetNameStrRefString();
-    (*spell)[GETIDX(SPELL_2DA::IconResRef)].m_Data = icon_resref->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::IconResRef)].m_Data = GetStringFromTextCtrl(icon_resref);
     (*spell)[GETIDX(SPELL_2DA::School)].m_Data = GetSchoolSelectionString();
     (*spell)[GETIDX(SPELL_2DA::Range)].m_Data = GetRangeSelectionString();
     (*spell)[GETIDX(SPELL_2DA::VS)].m_Data = GetSpellComponentsString();
 
     (*spell)[GETIDX(SPELL_2DA::MetaMagic)].m_Data = GetMetaMagicString();
     (*spell)[GETIDX(SPELL_2DA::TargetType)].m_Data = GetTargetTypeString();
-    (*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data = impact_script->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ImpactScript)].m_Data = GetStringFromTextCtrl(impact_script);
 
     // sliders
     (*spell)[GETIDX(SPELL_2DA::Bard)].m_Data = GetSpellLevelString(spell_level_checkbox_bard, spell_level_bard);
@@ -591,26 +591,26 @@ void SpellForm::OnOk(wxCommandEvent& event)
     (*spell)[GETIDX(SPELL_2DA::Innate)].m_Data = GetSpellLevelString(spell_level_checkbox_innate, spell_level_innate);
 
     (*spell)[GETIDX(SPELL_2DA::ConjAnim)].m_Data = GetConjAnimString();
-    (*spell)[GETIDX(SPELL_2DA::ConjTime)].m_Data = conj_time->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::ConjHeadVisual)].m_Data = conj_head_visual->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::ConjHandVisual)].m_Data = conj_hand_visual->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::ConjGrndVisual)].m_Data = conj_ground_visual->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::ConjSoundVFX)].m_Data = conj_sound_vfx->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::ConjSoundMale)].m_Data = conj_sound_male->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::ConjSoundFemale)].m_Data = conj_sound_female->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ConjTime)].m_Data = GetStringFromTextCtrl(conj_time);
+    (*spell)[GETIDX(SPELL_2DA::ConjHeadVisual)].m_Data = GetStringFromTextCtrl(conj_head_visual);
+    (*spell)[GETIDX(SPELL_2DA::ConjHandVisual)].m_Data = GetStringFromTextCtrl(conj_hand_visual);
+    (*spell)[GETIDX(SPELL_2DA::ConjGrndVisual)].m_Data = GetStringFromTextCtrl(conj_ground_visual);
+    (*spell)[GETIDX(SPELL_2DA::ConjSoundVFX)].m_Data = GetStringFromTextCtrl(conj_sound_vfx);
+    (*spell)[GETIDX(SPELL_2DA::ConjSoundMale)].m_Data = GetStringFromTextCtrl(conj_sound_male);
+    (*spell)[GETIDX(SPELL_2DA::ConjSoundFemale)].m_Data = GetStringFromTextCtrl(conj_sound_female);
 
     (*spell)[GETIDX(SPELL_2DA::CastAnim)].m_Data = GetCastAnimString();
-    (*spell)[GETIDX(SPELL_2DA::CastTime)].m_Data = cast_time->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::CastHeadVisual)].m_Data = cast_head_visual->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::CastHandVisual)].m_Data = cast_hand_visual->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::CastGrndVisual)].m_Data = cast_ground_visual->GetValue().ToStdString();
-    (*spell)[GETIDX(SPELL_2DA::CastSound)].m_Data = cast_sound->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::CastTime)].m_Data = GetStringFromTextCtrl(cast_time);
+    (*spell)[GETIDX(SPELL_2DA::CastHeadVisual)].m_Data = GetStringFromTextCtrl(cast_head_visual);
+    (*spell)[GETIDX(SPELL_2DA::CastHandVisual)].m_Data = GetStringFromTextCtrl(cast_hand_visual);
+    (*spell)[GETIDX(SPELL_2DA::CastGrndVisual)].m_Data = GetStringFromTextCtrl(cast_ground_visual);
+    (*spell)[GETIDX(SPELL_2DA::CastSound)].m_Data = GetStringFromTextCtrl(cast_sound);
 
     (*spell)[GETIDX(SPELL_2DA::Proj)].m_Data = std::string(projectile->GetValue() ? "1" : "0");
-    (*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data = projectile_model->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ProjModel)].m_Data = GetStringFromTextCtrl(projectile_model);
     (*spell)[GETIDX(SPELL_2DA::ProjType)].m_Data = GetProjectileTypeString();
     (*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_Data = GetProjectileSpawnString();
-    (*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data = projectile_sound->GetValue().ToStdString();
+    (*spell)[GETIDX(SPELL_2DA::ProjSound)].m_Data = GetStringFromTextCtrl(projectile_sound);
     (*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_Data = GetProjectileOrientationString();
 
     (*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_Data = GetImmunityTypeString();
@@ -1727,4 +1727,16 @@ void SpellForm::OnCounterClick2(wxCommandEvent& event)
         else
             counter_2->SetLabel("None");
     }
+}
+
+std::string SpellForm::GetStringFromTextCtrl(wxTextCtrl* component)
+{
+    if (component == NULL)
+        throw std::string("Unknown component for GetStringFromTextCtrl");
+
+    wxString value = component->GetValue();
+    if (value.IsEmpty())
+        return std::string("****");
+
+    return value.ToStdString();
 }
