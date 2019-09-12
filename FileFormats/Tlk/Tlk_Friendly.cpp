@@ -1,12 +1,13 @@
 #include "FileFormats/Tlk/Tlk_Friendly.hpp"
 #include "Utility/Assert.hpp"
+#include "constants.hpp"
 
 #include <cstring>
 #include <string>
 
 namespace FileFormats::Tlk::Friendly {
 
-Tlk::Tlk(Raw::Tlk const& rawTlk)
+Tlk::Tlk(Raw::Tlk const& rawTlk, const bool& custom)
 {
     m_LanguageId = rawTlk.m_Header.m_LanguageID;
 
@@ -32,7 +33,7 @@ Tlk::Tlk(Raw::Tlk const& rawTlk)
             tlkEntry.m_SoundLength = data.m_SoundLength;
         }
 
-        m_TlkMap.insert(std::make_pair(static_cast<StrRef>(i), std::move(tlkEntry)));
+        m_TlkMap.insert(std::make_pair(static_cast<StrRef>(i + (custom ? (BASE_TLK_LIMIT + 1) : 0)), std::move(tlkEntry)));
     }
 }
 

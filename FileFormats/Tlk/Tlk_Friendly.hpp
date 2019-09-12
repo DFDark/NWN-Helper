@@ -21,7 +21,7 @@ struct TlkEntry
 class Tlk
 {
 public:
-    Tlk(Raw::Tlk const& rawKey);
+    Tlk(Raw::Tlk const& rawKey, const bool& custom = false);
 
     // We use a map rather than unordered_map here because it's more user friendly to iterate from 0 -> max.
     using TlkMapType = std::map<StrRef, TlkEntry>;

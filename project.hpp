@@ -60,7 +60,7 @@ private:
 
     Key::Friendly::Key* LoadKEYFile(const std::string& filename);
     Bif::Friendly::Bif* LoadBIFFile(const std::string& filename);
-    Tlk::Friendly::Tlk* LoadTLKFile(const std::string& filename = "");
+    Tlk::Friendly::Tlk* LoadTLKFile(const std::string& filename = "", const bool& custom = false);
     TwoDA::Friendly::TwoDA* Load2DAFile(const std::string& filename);
     TwoDA::Friendly::TwoDA* Load2DAFile(const std::string& filename, std::byte const* entry, std::size_t length);
 };

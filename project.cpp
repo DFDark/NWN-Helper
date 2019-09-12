@@ -87,7 +87,7 @@ bool Project::LoadProject(const std::string& project_file)
         }
     }
 
-    custom_tlk = LoadTLKFile(tlk_filename);
+    custom_tlk = LoadTLKFile(tlk_filename, true);
 
     for (auto const& entry : (*custom_tlk))
         current_tlk_row_count = std::max((entry.first + BASE_TLK_LIMIT + 1), current_tlk_row_count);
@@ -218,13 +218,13 @@ Bif::Friendly::Bif* Project::LoadBIFFile(const std::string& filename)
     return result;
 }
 
-Tlk::Friendly::Tlk* Project::LoadTLKFile(const std::string& filename)
+Tlk::Friendly::Tlk* Project::LoadTLKFile(const std::string& filename, const bool& custom)
 {
     Tlk::Raw::Tlk raw;
     if (filename.size() > 0 && !Tlk::Raw::Tlk::ReadFromFile(filename.c_str(), &raw))
         throw std::string("Couldn't load ") + filename;
 
-    Tlk::Friendly::Tlk* result = new Tlk::Friendly::Tlk(std::move(raw));
+    Tlk::Friendly::Tlk* result = new Tlk::Friendly::Tlk(std::move(raw), custom);
     return result;
 }
 
@@ -270,7 +270,7 @@ void Project::NewProject()
         delete custom_tlk;
         custom_tlk = LoadTLKFile();
     }
-    
+
     std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
     for (auto const& r : base_key->GetReferencedResources())
     {
@@ -286,7 +286,7 @@ void Project::NewProject()
         std::string filename = resourcelist[kvp.first].m_ResRef;
         if (!twoda_edit_list[filename])
             continue;
-        
+
         delete twoda_list[filename];
         twoda_list[filename] = Load2DAFile(filename,
             kvp.second.m_DataBlock->GetData(),
