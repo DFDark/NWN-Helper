@@ -229,23 +229,6 @@ std::uint32_t ConfigurationManager::SetTlkString(const std::string& value, std::
     return project.SetTlkString(value, strref);
 }
 
-bool ConfigurationManager::ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename)
-{
-    /*bool result = true;
-    std::string directory = destination + SEPARATOR;
-    if ((BASE_TLK_LIMIT + 2) < current_tlk_row_count)
-        result &= custom_tlk->WriteToFile((directory + tlk_filename).c_str());
-
-    for (auto const& entry : twoda_edit_list)
-    {
-        if (entry.second)
-            result &= twoda_list[entry.first]->WriteToFile((directory + entry.first + ".2da").c_str());
-    }
-
-    return result;*/
-    return true;
-}
-
 void ConfigurationManager::SaveProject(const bool& force_prompt)
 {
     project.SaveProject(force_prompt);

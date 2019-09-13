@@ -11,7 +11,6 @@ enum
     FEATS,
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
-    EXPORT_MENU,
     SPELL_POPUP_EDIT,
     SPELL_POPUP_DELETE,
     NEW_PROJECT,
@@ -24,7 +23,6 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
-    EVT_MENU(EXPORT_MENU, NWNHelperMain::OnExportMenu)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_MENU(SPELL_POPUP_DELETE, NWNHelperMain::OnSpellPopupDelete)
     EVT_MENU(NEW_PROJECT, NWNHelperMain::OnNewProject)
@@ -46,8 +44,6 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_file->Append(LOAD_PROJECT, "Load Project", "Loads NWN Helper project");
     menu_file->Append(SAVE_PROJECT, "Save Project", "Save current project");
     menu_file->Append(SAVE_PROJECT_AS, "Save Project As", "Save current project as");
-    menu_file->Append(wxID_SEPARATOR);
-    menu_file->Append(EXPORT_MENU, "Export", "Exports saved files into selected directory");
     menu_file->Append(wxID_SEPARATOR);
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
@@ -188,14 +184,6 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
         SetFeatColumns();
         configuration->SaveCurrentSettings();
     }
-}
-
-void NWNHelperMain::OnExportMenu(wxCommandEvent& event)
-{
-    SpellSelectionForm form(this, configuration);
-    if (form.ShowModal() == wxID_OK)
-        printf("Selection: %u\n", form.GetSpellSelection());
-
 }
 
 void NWNHelperMain::OnSpellRightClick(wxDataViewEvent& event)

@@ -29,7 +29,6 @@ public:
     void NewProject();
     bool LoadProjectData(const std::string& _path);
     bool SaveCurrentSettings();
-    bool ExportCurrentFiles(const std::string& destination, const std::string& tlk_filename);
     void ClearProjectData();
     void SetSpellColumns(const std::vector<std::string>& columns);
     void SetFeatColumns(const std::vector<std::string>& columns);
