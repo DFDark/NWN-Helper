@@ -33,7 +33,7 @@ Tlk::Tlk(Raw::Tlk const& rawTlk, const bool& custom)
             tlkEntry.m_SoundLength = data.m_SoundLength;
         }
 
-        m_TlkMap.insert(std::make_pair(static_cast<StrRef>(i + (custom ? (BASE_TLK_LIMIT + 1) : 0)), std::move(tlkEntry)));
+        m_TlkMap.insert(std::make_pair(static_cast<StrRef>(i + (custom ? BASE_TLK_LIMIT : 0)), std::move(tlkEntry)));
     }
 }
 

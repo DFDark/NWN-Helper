@@ -44,7 +44,7 @@ bool Project::Initialize(const std::string& data_folder)
 
     // Create empty TLK
     custom_tlk = LoadTLKFile();
-    current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1);
+    current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT);
     return true;
 }
 
@@ -90,8 +90,8 @@ bool Project::LoadProject(const std::string& project_file)
     custom_tlk = LoadTLKFile(tlk_filename, true);
 
     for (auto const& entry : (*custom_tlk))
-        current_tlk_row_count = std::max((entry.first + BASE_TLK_LIMIT + 1), current_tlk_row_count);
-    current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1));
+        current_tlk_row_count = std::max((entry.first + BASE_TLK_LIMIT), current_tlk_row_count);
+    current_tlk_row_count = std::max(current_tlk_row_count, static_cast<std::uint32_t>(BASE_TLK_LIMIT));
 
     loaded = true;
     return loaded;
@@ -114,7 +114,7 @@ void Project::SaveProject(const bool& force_prompt)
     CSimpleIniA project(true, true, true);
     project.SetValue("General", "ProjectName", project_name.c_str());
     project.SetValue("General", "BaseDir", base_path.c_str());
-    if ((BASE_TLK_LIMIT + 1) < current_tlk_row_count)
+    if (BASE_TLK_LIMIT < current_tlk_row_count)
     {
         // TODO: Create "ProjectSettings" to setup things like tlk filename etc.
         std::string path = base_path + std::string(SEPARATOR) + tlk_filename + ".tlk";
@@ -173,7 +173,7 @@ TwoDA::Friendly::TwoDARow* Project::Get2daRow(const std::string& twoda, const st
 std::string Project::GetTlkString(const std::uint32_t& strref)
 {
     std::string result = "";
-    if (strref > BASE_TLK_LIMIT)
+    if (strref >= BASE_TLK_LIMIT)
         result = (*custom_tlk)[strref];
     else
         result = (*base_dialog)[strref];
@@ -264,7 +264,7 @@ void Project::NewProject()
 
     loaded = false;
 
-    current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT + 1);
+    current_tlk_row_count = static_cast<std::uint32_t>(BASE_TLK_LIMIT);
     if (custom_tlk != NULL)
     {
         delete custom_tlk;
