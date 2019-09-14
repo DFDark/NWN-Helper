@@ -11,6 +11,7 @@ enum
     FEATS,
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
+    SPELL_POPUP_ADD,
     SPELL_POPUP_EDIT,
     SPELL_POPUP_DELETE,
     NEW_PROJECT,
@@ -23,6 +24,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
+    EVT_MENU(SPELL_POPUP_ADD, NWNHelperMain::OnSpellPopupAdd)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_MENU(SPELL_POPUP_DELETE, NWNHelperMain::OnSpellPopupDelete)
     EVT_MENU(NEW_PROJECT, NWNHelperMain::OnNewProject)
@@ -193,11 +195,23 @@ void NWNHelperMain::OnSpellRightClick(wxDataViewEvent& event)
     {
         wxMenu popup_menu;
 
+        popup_menu.Append(SPELL_POPUP_ADD, "Add Spell");
         popup_menu.Append(SPELL_POPUP_EDIT, "Edit Spell");
         popup_menu.Append(SPELL_POPUP_DELETE, "Delete Spell");
 
         PopupMenu(&popup_menu);
     }
+}
+
+void NWNHelperMain::OnSpellPopupAdd(wxCommandEvent& event)
+{
+    std::uint32_t spell_count = configuration->Get2da("spells")->Size();
+    TwoDA::Friendly::TwoDARow* spell = configuration->Get2daRow("spells", spell_count);
+
+    SpellForm form(main_panel, configuration, spell->RowId());
+    form.ShowModal();
+    // Reread 2da file, since we're adding row outside of wxDataViewModel
+    sp_model->Reset(configuration->Get2da("spells")->Size());
 }
 
 void NWNHelperMain::OnSpellPopupEdit(wxCommandEvent& event)
