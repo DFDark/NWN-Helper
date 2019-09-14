@@ -33,6 +33,7 @@ private:
 
     void OnSpellPopupAdd(wxCommandEvent& event);
     void OnSpellPopupEdit(wxCommandEvent& event);
+    void OnSpellPopupCopy(wxCommandEvent& event);
     void OnSpellPopupDelete(wxCommandEvent& event);
 
     void OnNewProject(wxCommandEvent& event);
