@@ -214,7 +214,10 @@ void NWNHelperMain::OnSpellPopupAdd(wxCommandEvent& event)
     SpellForm form(main_panel, configuration, spell->RowId());
     form.ShowModal();
     // Reread 2da file, since we're adding row outside of wxDataViewModel
-    sp_model->Reset(configuration->Get2da("spells")->Size());
+    sp_model->Reset(spell_count + 1);
+    // Select new row
+    spells->Select(sp_model->GetItem(spell_count));
+    spells->EnsureVisible(sp_model->GetItem(spell_count));
 }
 
 void NWNHelperMain::OnSpellPopupEdit(wxCommandEvent& event)
@@ -240,7 +243,10 @@ void NWNHelperMain::OnSpellPopupCopy(wxCommandEvent& event)
     SpellForm form(main_panel, configuration, spell_target->RowId());
     form.ShowModal();
     // Reread 2da file, since we're adding row outside of wxDataViewModel
-    sp_model->Reset(configuration->Get2da("spells")->Size());
+    sp_model->Reset(spell_count + 1);
+    // Select new row
+    spells->Select(sp_model->GetItem(spell_count));
+    spells->EnsureVisible(sp_model->GetItem(spell_count));
 }
 
 void NWNHelperMain::OnSpellPopupDelete(wxCommandEvent& event)
