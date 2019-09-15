@@ -61,6 +61,7 @@ private:
     std::string GetNameStrRefString();
     std::string GetDescriptionStrRefString();
     std::string GetAltMessageStrRefString();
+    std::string GetFeatId();
 
     unsigned int GetUIntFromHex(const std::string& hex) const;
     int GetIntFromString(const std::string& num) const;

@@ -630,7 +630,7 @@ void SpellForm::OnOk(wxCommandEvent& event)
     (*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data = std::string(spontaneous_cast->GetValue() ? "1" : "0");
     (*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data = GetAltMessageStrRefString();
     (*spell)[GETIDX(SPELL_2DA::HostileSetting)].m_Data = std::string(hostile_setting->GetValue() ? "1" : "0");
-    (*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data = feat_id > 0 ? std::to_string(feat_id - 1) : std::string("****");
+    (*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data = GetFeatId();
     (*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data = counter_1_id > 0 ? std::to_string(counter_1_id - 1) : std::string("****");
     (*spell)[GETIDX(SPELL_2DA::Counter2)].m_Data = counter_2_id > 0 ? std::to_string(counter_2_id - 1) : std::string("****");
     (*spell)[GETIDX(SPELL_2DA::HasProjectile)].m_Data = std::string(has_projectile->GetValue() ? "1" : "0");
@@ -1471,6 +1471,11 @@ void SpellForm::SetMiscellaneousValues()
     if (aux.size() > 0)
     {
         feat_id = GetUintFromString(aux) + 1;
+        // if feat_id is greater than 65536 then its used in radial menu
+        // 65536 * (Subradial Option (min: 5000)) + (FeatId) = SPELL_2DA::FeatID
+        if (feat_id > 65536)
+            feat_id = ((feat_id - 1) & 0xFFFF) + 1;
+
         TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", feat_id - 1);
         std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
         feat->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
@@ -1739,4 +1744,49 @@ std::string SpellForm::GetStringFromTextCtrl(wxTextCtrl* component)
         return std::string("****");
 
     return value.ToStdString();
+}
+
+std::string SpellForm::GetFeatId()
+{
+    // feat_id > 0 ? std::to_string(feat_id - 1) : std::string("****");
+    if (feat_id == 0)
+        return std::string("****");
+
+    // if feat and master are both set then its subrad spell
+    // and we need to modify feat id
+    /*
+    if (master_id > 0)
+    {
+        TwoDA::Friendly::TwoDARow* master_spell = configuration->Get2daRow("spells", master_id - 1);
+
+        int index = -1;
+        std::size_t sub_start = GETIDX(SPELL_2DA::SubRadSpell1);
+        for (std::size_t i = 0; i < 5; i++)
+        {
+            std::uint32_t aux = GetUintFromString((*master_spell)[sub_start + i].m_Data);
+            if (aux == 0)
+                continue;
+            else if (aux == spell->RowId())
+                index = static_cast<int>(i);
+            else
+            {
+                TwoDA::Friendly::TwoDARow* rad_spell = configuration->Get2daRow("spells", aux);
+
+                std::uint32_t _mt = GetUintFromString((*rad_spell)[GETIDX(SPELL_2DA::FeatID)].m_Data) & 0xFFFF;
+                std::uint32_t _ft = (65536 * (5000 + i)) + _mt;
+
+                (*rad_spell)[GETIDX(SPELL_2DA::FeatID)].m_Data = std::to_string(_ft);
+            }
+        }
+
+        // TODO: Implement some sort of fix (adding id to master spell?)
+        if (index < 0)
+            wxMessageBox("Subrad spells in master spell are not set up correcly!",
+                "Warning", wxICON_WARNING | wxOK);
+        else
+            return std::to_string((65536 * (5000 + index)) + (feat_id-1));
+    }
+    */
+
+    return std::to_string(feat_id - 1);
 }
