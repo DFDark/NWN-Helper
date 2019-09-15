@@ -1754,7 +1754,7 @@ std::string SpellForm::GetFeatId()
 
     // if feat and master are both set then its subrad spell
     // and we need to modify feat id
-    /*
+
     if (master_id > 0)
     {
         TwoDA::Friendly::TwoDARow* master_spell = configuration->Get2daRow("spells", master_id - 1);
@@ -1763,11 +1763,26 @@ std::string SpellForm::GetFeatId()
         std::size_t sub_start = GETIDX(SPELL_2DA::SubRadSpell1);
         for (std::size_t i = 0; i < 5; i++)
         {
-            std::uint32_t aux = GetUintFromString((*master_spell)[sub_start + i].m_Data);
-            if (aux == 0)
-                continue;
-            else if (aux == spell->RowId())
+            if (GetUintFromString((*master_spell)[sub_start + i].m_Data) == spell->RowId())
+            {
                 index = static_cast<int>(i);
+                break;
+            }
+        }
+
+        // TODO: Implement some sort of fix (adding id to master spell?)
+        if (index < 0)
+        {
+            wxMessageBox("Subrad spells in master spell are not set up correcly! FeatId was not set. Set up master's spell subrad spells first!",
+                "Warning", wxICON_WARNING | wxOK);
+            return std::string("****");
+        }
+
+        for (std::size_t i = 0; i < 5; i++)
+        {
+            std::uint32_t aux = GetUintFromString((*master_spell)[sub_start + i].m_Data);
+            if ((aux == 0) || (aux == spell->RowId()))
+                continue;
             else
             {
                 TwoDA::Friendly::TwoDARow* rad_spell = configuration->Get2daRow("spells", aux);
@@ -1779,14 +1794,9 @@ std::string SpellForm::GetFeatId()
             }
         }
 
-        // TODO: Implement some sort of fix (adding id to master spell?)
-        if (index < 0)
-            wxMessageBox("Subrad spells in master spell are not set up correcly!",
-                "Warning", wxICON_WARNING | wxOK);
-        else
-            return std::to_string((65536 * (5000 + index)) + (feat_id-1));
+        return std::to_string((65536 * (5000 + index)) + (feat_id - 1));
     }
-    */
+
 
     return std::to_string(feat_id - 1);
 }
