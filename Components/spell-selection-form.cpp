@@ -61,7 +61,7 @@ void SpellSelectionForm::OnDoubleClick(wxDataViewEvent& event)
 {
     TwoDA::Friendly::TwoDARow* row = sp_model->Get2daRow(sp_model->GetRow(event.GetItem()));
     selection = row->RowId();
-    
+
     this->EndModal(wxID_OK);
 }
 

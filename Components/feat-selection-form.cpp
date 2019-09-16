@@ -87,7 +87,7 @@ void FeatSelectionForm::OnShow(wxShowEvent& event)
 {
     if (event.IsShown())
     {
-        feats->Selection(ft_model->GetItem(selection));
+        feats->Select(ft_model->GetItem(selection));
         feats->EnsureVisible(ft_model->GetItem(selection));
     }
 }
