@@ -7,13 +7,15 @@ enum
 
 wxBEGIN_EVENT_TABLE(FeatSelectionForm, wxDialog)
     EVT_MENU(wxID_OK, FeatSelectionForm::OnOk)
+    EVT_SHOW(FeatSelectionForm::OnShow)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, FeatSelectionForm::OnDoubleClick)
 wxEND_EVENT_TABLE()
 
-FeatSelectionForm::FeatSelectionForm(wxWindow* parent, ConfigurationManager* _configuration) :
+FeatSelectionForm::FeatSelectionForm(wxWindow* parent, ConfigurationManager* _configuration, const std::uint32_t& _selection) :
     wxDialog(parent, wxID_ANY, wxString("Feat selection form"), wxDefaultPosition, wxSize(480, 480))
 {
     configuration = _configuration;
+    selection = _selection;
 
     feats = new wxDataViewCtrl(this, FEATS);
     TwoDA::Friendly::TwoDA* twoda = configuration->Get2da("feat");
@@ -79,4 +81,13 @@ void FeatSelectionForm::SetFeatColumns()
 std::uint32_t FeatSelectionForm::GetFeatSelection()
 {
     return selection;
+}
+
+void FeatSelectionForm::OnShow(wxShowEvent& event)
+{
+    if (event.IsShown())
+    {
+        feats->Selection(ft_model->GetItem(selection));
+        feats->EnsureVisible(ft_model->GetItem(selection));
+    }
 }

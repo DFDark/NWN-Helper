@@ -1685,7 +1685,7 @@ void SpellForm::OnSubSpell5(wxCommandEvent& event)
 
 void SpellForm::OnFeatClick(wxCommandEvent& event)
 {
-    FeatSelectionForm form(panel, configuration);
+    FeatSelectionForm form(panel, configuration, feat_id);
     if (form.ShowModal() == wxID_OK)
     {
         feat_id = form.GetFeatSelection();

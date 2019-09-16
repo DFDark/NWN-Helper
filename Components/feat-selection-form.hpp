@@ -15,11 +15,12 @@
 class FeatSelectionForm : public wxDialog
 {
 public:
-    FeatSelectionForm(wxWindow* parent, ConfigurationManager* _configuration);
+    FeatSelectionForm(wxWindow* parent, ConfigurationManager* _configuration, const std::uint32_t& _selection = 0);
 
     std::uint32_t GetFeatSelection();
 
 private:
+    void OnShow(wxShowEvent& event);
     void OnOk(wxCommandEvent& event);
     void SetFeatColumns();
     void OnDoubleClick(wxDataViewEvent& event);
