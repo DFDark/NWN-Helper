@@ -15,11 +15,12 @@
 class SpellSelectionForm : public wxDialog
 {
 public:
-    SpellSelectionForm(wxWindow* parent, ConfigurationManager* _configuration);
+    SpellSelectionForm(wxWindow* parent, ConfigurationManager* _configuration, const std::uint32_t& _selection = 0);
 
     std::uint32_t GetSpellSelection();
 
 private:
+    void OnShow(wxShowEvent& event);
     void OnOk(wxCommandEvent& event);
     void SetSpellColumns();
     void OnDoubleClick(wxDataViewEvent& event);

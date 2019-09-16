@@ -1583,7 +1583,7 @@ void SpellForm::LoadMasterSubSpells()
 
 void SpellForm::OnMasterClick(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, master_id);
     if (form.ShowModal() == wxID_OK)
     {
         master_id = form.GetSpellSelection();
@@ -1600,7 +1600,7 @@ void SpellForm::OnMasterClick(wxCommandEvent& event)
 
 void SpellForm::OnSubSpell1(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, sub_rad_spell_1_id);
     if (form.ShowModal() == wxID_OK)
     {
         sub_rad_spell_1_id = form.GetSpellSelection();
@@ -1617,7 +1617,7 @@ void SpellForm::OnSubSpell1(wxCommandEvent& event)
 
 void SpellForm::OnSubSpell2(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, sub_rad_spell_2_id);
     if (form.ShowModal() == wxID_OK)
     {
         sub_rad_spell_2_id = form.GetSpellSelection();
@@ -1634,7 +1634,7 @@ void SpellForm::OnSubSpell2(wxCommandEvent& event)
 
 void SpellForm::OnSubSpell3(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, sub_rad_spell_3_id);
     if (form.ShowModal() == wxID_OK)
     {
         sub_rad_spell_3_id = form.GetSpellSelection();
@@ -1651,7 +1651,7 @@ void SpellForm::OnSubSpell3(wxCommandEvent& event)
 
 void SpellForm::OnSubSpell4(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, sub_rad_spell_4_id);
     if (form.ShowModal() == wxID_OK)
     {
         sub_rad_spell_4_id = form.GetSpellSelection();
@@ -1668,7 +1668,7 @@ void SpellForm::OnSubSpell4(wxCommandEvent& event)
 
 void SpellForm::OnSubSpell5(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, sub_rad_spell_5_id);
     if (form.ShowModal() == wxID_OK)
     {
         sub_rad_spell_5_id = form.GetSpellSelection();
@@ -1702,7 +1702,7 @@ void SpellForm::OnFeatClick(wxCommandEvent& event)
 
 void SpellForm::OnCounterClick1(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, counter_1_id);
     if (form.ShowModal() == wxID_OK)
     {
         counter_1_id = form.GetSpellSelection();
@@ -1719,7 +1719,7 @@ void SpellForm::OnCounterClick1(wxCommandEvent& event)
 
 void SpellForm::OnCounterClick2(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration);
+    SpellSelectionForm form(panel, configuration, counter_2_id);
     if (form.ShowModal() == wxID_OK)
     {
         counter_2_id = form.GetSpellSelection();

@@ -7,13 +7,15 @@ enum
 
 wxBEGIN_EVENT_TABLE(SpellSelectionForm, wxDialog)
     EVT_MENU(wxID_OK, SpellSelectionForm::OnOk)
+    EVT_SHOW(SpellSelectionForm::OnShow)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, SpellSelectionForm::OnDoubleClick)
 wxEND_EVENT_TABLE()
 
-SpellSelectionForm::SpellSelectionForm(wxWindow* parent, ConfigurationManager* _configuration) :
+SpellSelectionForm::SpellSelectionForm(wxWindow* parent, ConfigurationManager* _configuration, const std::uint32_t& _selection) :
     wxDialog(parent, wxID_ANY, wxString("Spell selection form"), wxDefaultPosition, wxSize(480, 480))
 {
     configuration = _configuration;
+    selection = _selection;
 
     spells = new wxDataViewCtrl(this, SPELLS);
     TwoDA::Friendly::TwoDA* twoda = configuration->Get2da("spells");
@@ -105,4 +107,13 @@ void SpellSelectionForm::SetSpellColumns()
 std::uint32_t SpellSelectionForm::GetSpellSelection()
 {
     return selection;
+}
+
+void SpellSelectionForm::OnShow(wxShowEvent& event)
+{
+    if (event.IsShown())
+    {
+        spells->Select(sp_model->GetItem(selection));
+        spells->EnsureVisible(sp_model->GetItem(selection));
+    }
 }
