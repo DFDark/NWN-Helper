@@ -1375,36 +1375,78 @@ void SpellForm::OnWizSorcChange(wxCommandEvent& event)
 
 void SpellForm::OnInnateCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_innate->IsChecked())
+    {
+        spell_level_innate->SetValue(0);
+        spell_level_label_val_innate->SetLabel("0");
+    }
+
     spell_level_innate->Enable(spell_level_checkbox_innate->IsChecked());
 }
 
 void SpellForm::OnBardCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_bard->IsChecked())
+    {
+        spell_level_bard->SetValue(0);
+        spell_level_label_val_bard->SetLabel("0");
+    }
+
     spell_level_bard->Enable(spell_level_checkbox_bard->IsChecked());
 }
 
 void SpellForm::OnClericCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_cleric->IsChecked())
+    {
+        spell_level_cleric->SetValue(0);
+        spell_level_label_val_cleric->SetLabel("0");
+    }
+
     spell_level_cleric->Enable(spell_level_checkbox_cleric->IsChecked());
 }
 
 void SpellForm::OnDruidCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_druid->IsChecked())
+    {
+        spell_level_druid->SetValue(0);
+        spell_level_label_val_druid->SetLabel("0");
+    }
+
     spell_level_druid->Enable(spell_level_checkbox_druid->IsChecked());
 }
 
 void SpellForm::OnPaladinCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_paladin->IsChecked())
+    {
+        spell_level_paladin->SetValue(0);
+        spell_level_label_val_paladin->SetLabel("0");
+    }
+
     spell_level_paladin->Enable(spell_level_checkbox_paladin->IsChecked());
 }
 
 void SpellForm::OnRangerCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_ranger->IsChecked())
+    {
+        spell_level_ranger->SetValue(0);
+        spell_level_label_val_ranger->SetLabel("0");
+    }
+
     spell_level_ranger->Enable(spell_level_checkbox_ranger->IsChecked());
 }
 
 void SpellForm::OnWizSorcCheck(wxCommandEvent& event)
 {
+    if (!spell_level_checkbox_wiz_sorc->IsChecked())
+    {
+        spell_level_wiz_sorc->SetValue(0);
+        spell_level_label_val_wiz_sorc->SetLabel("0");
+    }
+
     spell_level_wiz_sorc->Enable(spell_level_checkbox_wiz_sorc->IsChecked());
 }
 
