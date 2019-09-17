@@ -3,16 +3,16 @@
 Cross-platform program for editing NWN-EE files outside of toolset. NWN-Helper is meant
 to make WB's life much easier by doing. So far It's mostly work in progress.
 
-Ever wanted added/modify spells/feats/skills and got discouraged by the ammount of details
+Ever wanted added/modify spells/feats/skills and got discouraged by the amount of details
 you need to go through to do it? Then NWN-Helper is meant for you. The goal is to make the
 process as easy as possible. So far it should work with NWN 1.69, but I will be following
 NWN-EE updates as they come out.
 
 ## Requirements
 
-`C++17 compatible compiler`
-`wxWidgets 3.1.2+`
-`CMake 3.0.2+`
+- `C++17 compatible compiler`
+- `wxWidgets 3.1.2+`
+- `CMake 3.0.2+`
 
 ## Future plans
 
