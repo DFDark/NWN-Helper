@@ -1,5 +1,6 @@
 #include "spell-form.hpp"
 #include "../constants.hpp"
+#include "../functions.hpp"
 #include "spell-selection-form.hpp"
 #include "feat-selection-form.hpp"
 
@@ -649,7 +650,7 @@ int SpellForm::GetSchoolSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::School)].m_IsEmpty)
     {
-        switch (Get2DAString(SPELL_2DA::School)[0])
+        switch (Get2DAString(spell, SPELL_2DA::School)[0])
         {
             case 'C': return 1; break;
             case 'D': return 2; break;
@@ -713,7 +714,7 @@ int SpellForm::GetConjAnimSelection()
 {
     // head = 0, hand = 1
     // if it's not hand, we can just fall back on default return
-    if (Get2DAString(SPELL_2DA::ConjAnim) == std::string("hand"))
+    if (Get2DAString(spell, SPELL_2DA::ConjAnim) == std::string("hand"))
         return 1;
 
     return 0;
@@ -724,7 +725,7 @@ int SpellForm::GetCastAnimSelection()
     if (!(*spell)[GETIDX(SPELL_2DA::CastAnim)].m_IsEmpty)
     {
         // area, attack, out, self, touch, and up.
-        std::string anim = Get2DAString(SPELL_2DA::CastAnim);
+        std::string anim = Get2DAString(spell, SPELL_2DA::CastAnim);
         if (anim == std::string("attack"))
             return 1;
         else if (anim == std::string("out"))
@@ -744,7 +745,7 @@ int SpellForm::GetProjTypeSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ProjType)].m_IsEmpty)
     {
-        std::string type = Get2DAString(SPELL_2DA::ProjType);
+        std::string type = Get2DAString(spell, SPELL_2DA::ProjType);
         if (type == std::string("accelerating"))
             return 1;
         else if (type == std::string("ballistic"))
@@ -772,7 +773,7 @@ int SpellForm::GetProjSpawnPointSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ProjSpwnPoint)].m_IsEmpty)
     {
-        std::string spawn = Get2DAString(SPELL_2DA::ProjSpwnPoint);
+        std::string spawn = Get2DAString(spell, SPELL_2DA::ProjSpwnPoint);
         if (spawn == std::string("hand"))
             return 1;
         else if (spawn == std::string("monster0"))
@@ -794,7 +795,7 @@ int SpellForm::GetProjOrientationSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ProjOrientation)].m_IsEmpty)
     {
-        std::string orientation = Get2DAString(SPELL_2DA::ProjOrientation);
+        std::string orientation = Get2DAString(spell, SPELL_2DA::ProjOrientation);
         if (orientation == std::string("path"))
             return 1;
         if (orientation == std::string("target"))
@@ -808,7 +809,7 @@ int SpellForm::GetImmunityTypeSelection()
 {
     if (!(*spell)[GETIDX(SPELL_2DA::ImmunityType)].m_IsEmpty)
     {
-        std::string immunity = Get2DAString(SPELL_2DA::ImmunityType);
+        std::string immunity = Get2DAString(spell, SPELL_2DA::ImmunityType);
         if (immunity == std::string("Acid"))
             return 1;
         else if (immunity == std::string("Cold"))
@@ -877,79 +878,9 @@ std::string SpellForm::GetSpellComponentsString()
     return result;
 }
 
-unsigned int SpellForm::GetUIntFromHex(const std::string& hex) const
-{
-    unsigned int result;
-    try
-    {
-        result = std::stoul(hex, nullptr, 16);
-    }
-    catch (std::exception& e)
-    {
-        result = 0;
-    }
-
-    return result;
-}
-
-int SpellForm::GetIntFromString(const std::string& num) const
-{
-    int result;
-    try
-    {
-        result = std::stoi(num);
-    }
-    catch(std::exception& e)
-    {
-        result = -1;
-    }
-
-    return result;
-}
-
-unsigned int SpellForm::GetUintFromString(const std::string& num, unsigned int err) const
-{
-    unsigned int result;
-    try
-    {
-        result = std::stoul(num);
-    }
-    catch (std::exception& e)
-    {
-        result = err;
-    }
-    return result;
-}
-
-std::string SpellForm::Get2DAString(const auto& column)
-{
-    std::string result = "";
-    if (!(*spell)[GETIDX(column)].m_IsEmpty)
-    {
-        result = (*spell)[GETIDX(column)].m_Data;
-        if (result == std::string("****"))
-            result = "";
-    }
-
-    return result;
-}
-
-std::string SpellForm::Get2DAString(TwoDA::Friendly::TwoDARow* row, const auto& column)
-{
-    std::string result = "";
-    if (!(*row)[GETIDX(column)].m_IsEmpty)
-    {
-        result = (*row)[GETIDX(column)].m_Data;
-        if (result == std::string("****"))
-            result = "";
-    }
-
-    return result;
-}
-
 void SpellForm::SetSpellMetamagic()
 {
-    unsigned int value = GetUIntFromHex(Get2DAString(SPELL_2DA::MetaMagic));
+    unsigned int value = GetUintFromHex(Get2DAString(spell, SPELL_2DA::MetaMagic));
 
     metamagic_empower->SetValue((value & METAMAGIC_EMPOWER) > 0);
     metamagic_extend->SetValue((value & METAMAGIC_EXTEND) > 0);
@@ -961,7 +892,7 @@ void SpellForm::SetSpellMetamagic()
 
 void SpellForm::SetSpellTargetType()
 {
-    unsigned int value = GetUIntFromHex(Get2DAString(SPELL_2DA::TargetType));
+    unsigned int value = GetUintFromHex(Get2DAString(spell, SPELL_2DA::TargetType));
 
     target_self->SetValue((value & TARGET_SELF) > 0);
     target_creature->SetValue((value & TARGET_CREATURE) > 0);
@@ -1129,7 +1060,7 @@ std::string SpellForm::GetUserTypeString()
 
 std::string SpellForm::GetNameStrRefString()
 {
-    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
+    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::Name));
 
     std::string aux = name->GetValue().ToStdString();
     std::string base_name = configuration->GetTlkString(strref);
@@ -1141,7 +1072,7 @@ std::string SpellForm::GetNameStrRefString()
 
 std::string SpellForm::GetDescriptionStrRefString()
 {
-    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
+    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::SpellDesc));
 
     std::string aux = description->GetValue().ToStdString();
     std::string base_desc = configuration->GetTlkString(strref);
@@ -1153,7 +1084,7 @@ std::string SpellForm::GetDescriptionStrRefString()
 
 std::string SpellForm::GetAltMessageStrRefString()
 {
-    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
+    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::AltMessage));
     if (alt_message->GetValue().IsEmpty())
         return "****";
 
@@ -1167,13 +1098,13 @@ std::string SpellForm::GetAltMessageStrRefString()
 
 void SpellForm::SetSpellLevels()
 {
-    int bard = GetIntFromString(Get2DAString(SPELL_2DA::Bard));
-    int cleric = GetIntFromString(Get2DAString(SPELL_2DA::Cleric));
-    int druid = GetIntFromString(Get2DAString(SPELL_2DA::Druid));
-    int paladin = GetIntFromString(Get2DAString(SPELL_2DA::Paladin));
-    int ranger = GetIntFromString(Get2DAString(SPELL_2DA::Ranger));
-    int wiz_sorc = GetIntFromString(Get2DAString(SPELL_2DA::Wiz_Sorc));
-    int innate = GetIntFromString(Get2DAString(SPELL_2DA::Innate));
+    int bard = GetIntFromString(Get2DAString(spell, SPELL_2DA::Bard));
+    int cleric = GetIntFromString(Get2DAString(spell, SPELL_2DA::Cleric));
+    int druid = GetIntFromString(Get2DAString(spell, SPELL_2DA::Druid));
+    int paladin = GetIntFromString(Get2DAString(spell, SPELL_2DA::Paladin));
+    int ranger = GetIntFromString(Get2DAString(spell, SPELL_2DA::Ranger));
+    int wiz_sorc = GetIntFromString(Get2DAString(spell, SPELL_2DA::Wiz_Sorc));
+    int innate = GetIntFromString(Get2DAString(spell, SPELL_2DA::Innate));
 
     spell_level_bard->Enable(bard >= 0);
     spell_level_cleric->Enable(cleric >= 0);
@@ -1194,43 +1125,43 @@ void SpellForm::SetSpellLevels()
     if (bard >= 0)
     {
         spell_level_bard->SetValue(bard);
-        spell_level_label_val_bard->SetLabel(Get2DAString(SPELL_2DA::Bard));
+        spell_level_label_val_bard->SetLabel(Get2DAString(spell, SPELL_2DA::Bard));
     }
     if (cleric >= 0)
     {
         spell_level_cleric->SetValue(cleric);
-        spell_level_label_val_cleric->SetLabel(Get2DAString(SPELL_2DA::Cleric));
+        spell_level_label_val_cleric->SetLabel(Get2DAString(spell, SPELL_2DA::Cleric));
     }
     if (druid >= 0)
     {
         spell_level_druid->SetValue(druid);
-        spell_level_label_val_druid->SetLabel(Get2DAString(SPELL_2DA::Druid));
+        spell_level_label_val_druid->SetLabel(Get2DAString(spell, SPELL_2DA::Druid));
     }
     if (paladin >= 0)
     {
         spell_level_paladin->SetValue(paladin);
-        spell_level_label_val_paladin->SetLabel(Get2DAString(SPELL_2DA::Paladin));
+        spell_level_label_val_paladin->SetLabel(Get2DAString(spell, SPELL_2DA::Paladin));
     }
     if (ranger >= 0)
     {
         spell_level_ranger->SetValue(ranger);
-        spell_level_label_val_ranger->SetLabel(Get2DAString(SPELL_2DA::Ranger));
+        spell_level_label_val_ranger->SetLabel(Get2DAString(spell, SPELL_2DA::Ranger));
     }
     if (wiz_sorc >= 0)
     {
         spell_level_wiz_sorc->SetValue(wiz_sorc);
-        spell_level_label_val_wiz_sorc->SetLabel(Get2DAString(SPELL_2DA::Wiz_Sorc));
+        spell_level_label_val_wiz_sorc->SetLabel(Get2DAString(spell, SPELL_2DA::Wiz_Sorc));
     }
     if (innate >= 0)
     {
         spell_level_innate->SetValue(innate);
-        spell_level_label_val_innate->SetLabel(Get2DAString(SPELL_2DA::Innate));
+        spell_level_label_val_innate->SetLabel(Get2DAString(spell, SPELL_2DA::Innate));
     }
 }
 
 void SpellForm::InitFormValues()
 {
-    this->SetTitle(wxString(Get2DAString(SPELL_2DA::Label)));
+    this->SetTitle(wxString(Get2DAString(spell, SPELL_2DA::Label)));
 
     spell_school->Append(std::string("Abjuration"));
     spell_school->Append(std::string("Conjuration"));
@@ -1321,14 +1252,14 @@ void SpellForm::InitFormValues()
     LoadCategoryValues();
     LoadMasterSubSpells();
 
-    label->SetValue(wxString(Get2DAString(SPELL_2DA::Label)));
+    label->SetValue(wxString(Get2DAString(spell, SPELL_2DA::Label)));
 
     // if strref > 0 we will output just empty name
-    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::Name));
+    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::Name));
     name->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
 
-    icon_resref->SetValue(wxString(Get2DAString(SPELL_2DA::IconResRef)));
-    impact_script->SetValue(wxString(Get2DAString(SPELL_2DA::ImpactScript)));
+    icon_resref->SetValue(wxString(Get2DAString(spell, SPELL_2DA::IconResRef)));
+    impact_script->SetValue(wxString(Get2DAString(spell, SPELL_2DA::ImpactScript)));
 }
 
 void SpellForm::OnInnateChange(wxCommandEvent& event)
@@ -1455,61 +1386,61 @@ void SpellForm::SetConjValues()
     // Since we're just adding only text values (for now)
     // We can simply ignore empty checks
     // TODO: remove asterisks
-    conj_time->SetValue(Get2DAString(SPELL_2DA::ConjTime));
-    conj_head_visual->SetValue(Get2DAString(SPELL_2DA::ConjHeadVisual));
-    conj_hand_visual->SetValue(Get2DAString(SPELL_2DA::ConjHandVisual));
-    conj_ground_visual->SetValue(Get2DAString(SPELL_2DA::ConjGrndVisual));
-    conj_sound_vfx->SetValue(Get2DAString(SPELL_2DA::ConjSoundVFX));
-    conj_sound_male->SetValue(Get2DAString(SPELL_2DA::ConjSoundMale));
-    conj_sound_female->SetValue(Get2DAString(SPELL_2DA::ConjSoundFemale));
+    conj_time->SetValue(Get2DAString(spell, SPELL_2DA::ConjTime));
+    conj_head_visual->SetValue(Get2DAString(spell, SPELL_2DA::ConjHeadVisual));
+    conj_hand_visual->SetValue(Get2DAString(spell, SPELL_2DA::ConjHandVisual));
+    conj_ground_visual->SetValue(Get2DAString(spell, SPELL_2DA::ConjGrndVisual));
+    conj_sound_vfx->SetValue(Get2DAString(spell, SPELL_2DA::ConjSoundVFX));
+    conj_sound_male->SetValue(Get2DAString(spell, SPELL_2DA::ConjSoundMale));
+    conj_sound_female->SetValue(Get2DAString(spell, SPELL_2DA::ConjSoundFemale));
 }
 
 void SpellForm::SetCastValues()
 {
     // Since we're just adding only text values (for now)
     // We can simply ignore empty checks
-    cast_time->SetValue(Get2DAString(SPELL_2DA::CastTime));
-    cast_head_visual->SetValue(Get2DAString(SPELL_2DA::CastHeadVisual));
-    cast_hand_visual->SetValue(Get2DAString(SPELL_2DA::CastHandVisual));
-    cast_ground_visual->SetValue(Get2DAString(SPELL_2DA::CastGrndVisual));
-    cast_sound->SetValue(Get2DAString(SPELL_2DA::CastSound));
+    cast_time->SetValue(Get2DAString(spell, SPELL_2DA::CastTime));
+    cast_head_visual->SetValue(Get2DAString(spell, SPELL_2DA::CastHeadVisual));
+    cast_hand_visual->SetValue(Get2DAString(spell, SPELL_2DA::CastHandVisual));
+    cast_ground_visual->SetValue(Get2DAString(spell, SPELL_2DA::CastGrndVisual));
+    cast_sound->SetValue(Get2DAString(spell, SPELL_2DA::CastSound));
 }
 
 void SpellForm::SetProjectionValues()
 {
-    int is_projectile = GetIntFromString(Get2DAString(SPELL_2DA::Proj));
+    int is_projectile = GetIntFromString(Get2DAString(spell, SPELL_2DA::Proj));
     projectile->SetValue(is_projectile > 0);
 
-    int _has_projectile = GetIntFromString(Get2DAString(SPELL_2DA::HasProjectile));
+    int _has_projectile = GetIntFromString(Get2DAString(spell, SPELL_2DA::HasProjectile));
     has_projectile->SetValue(_has_projectile > 0);
 
-    projectile_model->SetValue(Get2DAString(SPELL_2DA::ProjModel));
-    projectile_sound->SetValue(Get2DAString(SPELL_2DA::ProjSound));
+    projectile_model->SetValue(Get2DAString(spell, SPELL_2DA::ProjModel));
+    projectile_sound->SetValue(Get2DAString(spell, SPELL_2DA::ProjSound));
 }
 
 void SpellForm::SetMiscellaneousValues()
 {
-    int itm_immunity = GetIntFromString(Get2DAString(SPELL_2DA::ItemImmunity));
+    int itm_immunity = GetIntFromString(Get2DAString(spell, SPELL_2DA::ItemImmunity));
     item_immunity->SetValue(itm_immunity > 0);
 
-    int _use_concentration = GetIntFromString(Get2DAString(SPELL_2DA::UseConcentration));
-    int _spontaneous_cast = GetIntFromString(Get2DAString(SPELL_2DA::SpontaneouslyCast));
-    int _hostile_setting = GetIntFromString(Get2DAString(SPELL_2DA::HostileSetting));
+    int _use_concentration = GetIntFromString(Get2DAString(spell, SPELL_2DA::UseConcentration));
+    int _spontaneous_cast = GetIntFromString(Get2DAString(spell, SPELL_2DA::SpontaneouslyCast));
+    int _hostile_setting = GetIntFromString(Get2DAString(spell, SPELL_2DA::HostileSetting));
 
     use_concentration->SetValue(_use_concentration > 0);
     spontaneous_cast->SetValue(_spontaneous_cast > 0);
     hostile_setting->SetValue(_hostile_setting > 0);
 
-    std::uint32_t strref = GetUintFromString(Get2DAString(SPELL_2DA::SpellDesc));
+    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::SpellDesc));
     description->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
-    strref = GetUintFromString(Get2DAString(SPELL_2DA::AltMessage));
+    strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::AltMessage));
     alt_message->SetValue(wxString(strref > 0 ? configuration->GetTlkString(strref) : ""));
 
     feat_id = 0;
     counter_1_id = 0;
     counter_2_id = 0;
 
-    std::string aux = Get2DAString(SPELL_2DA::FeatID);
+    std::string aux = Get2DAString(spell, SPELL_2DA::FeatID);
     if (aux.size() > 0)
     {
         feat_id = GetUintFromString(aux) + 1;
@@ -1523,7 +1454,7 @@ void SpellForm::SetMiscellaneousValues()
         feat->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::Counter1);
+    aux = Get2DAString(spell, SPELL_2DA::Counter1);
     if (aux.size() > 0)
     {
         counter_1_id = GetUintFromString(aux) + 1;
@@ -1532,7 +1463,7 @@ void SpellForm::SetMiscellaneousValues()
         counter_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::Counter2);
+    aux = Get2DAString(spell, SPELL_2DA::Counter2);
     if (aux.size() > 0)
     {
         counter_2_id = GetUintFromString(aux) + 1;
@@ -1551,7 +1482,7 @@ void SpellForm::LoadCategoryValues()
         for (auto const& row : (*categories))
             category->Append(row["Category"].m_Data);
 
-        unsigned int row_id = GetUintFromString(Get2DAString(SPELL_2DA::Category));
+        unsigned int row_id = GetUintFromString(Get2DAString(spell, SPELL_2DA::Category));
         if (row_id > 0)
             category->SetSelection(row_id - 1);
     }
@@ -1568,7 +1499,7 @@ void SpellForm::LoadMasterSubSpells()
     sub_rad_spell_4_id = 0;
     sub_rad_spell_5_id = 0;
 
-    std::string aux = Get2DAString(SPELL_2DA::Master);
+    std::string aux = Get2DAString(spell, SPELL_2DA::Master);
     if (aux.size() > 0)
     {
         master_id = GetUintFromString(aux) + 1;
@@ -1577,7 +1508,7 @@ void SpellForm::LoadMasterSubSpells()
         master->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::SubRadSpell1);
+    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell1);
     if (aux.size() > 0)
     {
         sub_rad_spell_1_id = GetUintFromString(aux) + 1;
@@ -1586,7 +1517,7 @@ void SpellForm::LoadMasterSubSpells()
         sub_rad_spell_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::SubRadSpell2);
+    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell2);
     if (aux.size() > 0)
     {
         sub_rad_spell_2_id = GetUintFromString(aux) + 1;
@@ -1595,7 +1526,7 @@ void SpellForm::LoadMasterSubSpells()
         sub_rad_spell_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::SubRadSpell3);
+    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell3);
     if (aux.size() > 0)
     {
         sub_rad_spell_3_id = GetUintFromString(aux) + 1;
@@ -1604,7 +1535,7 @@ void SpellForm::LoadMasterSubSpells()
         sub_rad_spell_3->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::SubRadSpell4);
+    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell4);
     if (aux.size() > 0)
     {
         sub_rad_spell_4_id = GetUintFromString(aux) + 1;
@@ -1613,7 +1544,7 @@ void SpellForm::LoadMasterSubSpells()
         sub_rad_spell_4->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(SPELL_2DA::SubRadSpell5);
+    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell5);
     if (aux.size() > 0)
     {
         sub_rad_spell_5_id = GetUintFromString(aux) + 1;
@@ -1774,18 +1705,6 @@ void SpellForm::OnCounterClick2(wxCommandEvent& event)
         else
             counter_2->SetLabel("None");
     }
-}
-
-std::string SpellForm::GetStringFromTextCtrl(wxTextCtrl* component)
-{
-    if (component == NULL)
-        throw std::string("Unknown component for GetStringFromTextCtrl");
-
-    wxString value = component->GetValue();
-    if (value.IsEmpty())
-        return std::string("****");
-
-    return value.ToStdString();
 }
 
 std::string SpellForm::GetFeatId()

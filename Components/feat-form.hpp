@@ -13,7 +13,7 @@ using namespace FileFormats;
 class FeatForm : public wxDialog
 {
 public:
-    FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row);
+    FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id);
 
 private:
     void OnOk(wxCommandEvent& event);
@@ -21,6 +21,7 @@ private:
     
     void InitFormValues();
 
+    ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;
 
     wxPanel* panel;
@@ -33,9 +34,11 @@ private:
     */
     wxStaticText* label_label;
     wxStaticText* name_label;
+    wxStaticText* icon_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
+    wxTextCtrl* icon;
 
     wxDECLARE_EVENT_TABLE();
 };

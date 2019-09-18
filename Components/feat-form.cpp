@@ -1,16 +1,18 @@
 #include "feat-form.hpp"
 #include "../constants.hpp"
+#include "../functions.hpp"
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_MENU(wxID_OK, FeatForm::OnOk)
     EVT_MENU(wxID_CANCEL, FeatForm::OnCancel)
 wxEND_EVENT_TABLE()
 
-FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
-    : wxDialog(parent, wxID_ANY, wxString("Feat Form"))
+FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
+    : wxDialog(parent, wxID_ANY, wxString("Feat Form"), wxDefaultPosition, wxSize(1024, 768))
 {
     panel = new wxPanel(this, wxID_ANY);
-    feat = row;
+    configuration = _configuration;
+    feat = configuration->Get2daRow("feat", row_id);
 
     if (!(*feat)[GETIDX(FEAT_2DA::Label)].m_IsEmpty)
         this->SetTitle(wxString((*feat)[GETIDX(FEAT_2DA::Label)].m_Data));
@@ -19,12 +21,15 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
     */
     label_label = new wxStaticText(panel, wxID_ANY, wxString("Label:"));
     name_label = new wxStaticText(panel, wxID_ANY, wxString("Name:"));
+    // Description (Will be added later)
+    icon_label = new wxStaticText(panel, wxID_ANY, wxString("Icon:"));
 
     /*
     * FORM TEXT CONTROLS
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatForm::OnOk));
@@ -39,16 +44,23 @@ FeatForm::FeatForm(wxWindow* parent, TwoDA::Friendly::TwoDARow* row)
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* icon_sizer = new wxBoxSizer(wxVERTICAL);
 
     label_sizer->Add(label_label);
     label_sizer->Add(label, 1, wxEXPAND|wxALL);
     name_sizer->Add(name_label);
     name_sizer->Add(name, 1, wxEXPAND|wxALL);
+    icon_sizer->Add(icon_label);
+    icon_sizer->Add(icon);
 
     first_row->Add(label_sizer);
     first_row->Add(name_sizer);
+    first_row->Add(icon_sizer);
+
 
     main_sizer->Add(first_row);
+
+
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -73,7 +85,7 @@ void FeatForm::OnCancel(wxCommandEvent& event)
 
 void FeatForm::InitFormValues()
 {
-    label->SetValue(wxString((*feat)[GETIDX(FEAT_2DA::Label)].m_Data));
-    // TODO: Link up with TLK and load actual value from strref
-    name->SetValue(wxString((*feat)[GETIDX(FEAT_2DA::Feat)].m_Data));
+    label->SetValue(Get2DAString(feat, FEAT_2DA::Label));
+    name->SetValue(Get2DAString(feat, FEAT_2DA::Feat));
+    icon->SetValue(Get2DAString(feat, FEAT_2DA::Icon));
 }

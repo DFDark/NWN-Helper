@@ -63,13 +63,6 @@ private:
     std::string GetAltMessageStrRefString();
     std::string GetFeatId();
 
-    unsigned int GetUIntFromHex(const std::string& hex) const;
-    int GetIntFromString(const std::string& num) const;
-    unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) const;
-    std::string Get2DAString(const auto& column);
-    std::string Get2DAString(TwoDA::Friendly::TwoDARow* row, const auto& column);
-    std::string GetStringFromTextCtrl(wxTextCtrl* component);
-
     void OnInnateChange(wxCommandEvent& event);
     void OnBardChange(wxCommandEvent& event);
     void OnClericChange(wxCommandEvent& event);

@@ -114,7 +114,7 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
     unsigned int row = ft_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* feat = ft_model->Get2daRow(row);
 
-    FeatForm form(main_panel, feat);
+    FeatForm form(main_panel, configuration, feat->RowId());
     form.ShowModal();
 }
 
