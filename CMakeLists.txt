@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(NWNHelper)
 
 add_library(NWNHelper STATIC
+    functions.hpp
     configuration-manager.hpp
     configuration-manager.cpp
     nwnhelper.hpp

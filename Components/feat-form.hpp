@@ -6,6 +6,7 @@
     #include <wx/wx.h>
 #endif
 
+#include "configuration-manager.hpp"
 #include "FileFormats/2da.hpp"
 
 using namespace FileFormats;
@@ -18,7 +19,7 @@ public:
 private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
-    
+
     void InitFormValues();
 
     ConfigurationManager* configuration;

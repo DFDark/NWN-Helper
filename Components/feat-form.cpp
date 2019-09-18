@@ -1,6 +1,6 @@
 #include "feat-form.hpp"
-#include "../constants.hpp"
-#include "../functions.hpp"
+#include "constants.hpp"
+#include "functions.hpp"
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_MENU(wxID_OK, FeatForm::OnOk)
@@ -65,7 +65,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     description_sizer->Add(description_label);
     description_sizer->Add(description, 1, wxEXPAND);
-    
+
     second_row->Add(description_sizer, 1, wxEXPAND);
 
     main_sizer->Add(second_row, 1, wxEXPAND);

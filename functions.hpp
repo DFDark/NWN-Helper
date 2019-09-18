@@ -15,7 +15,7 @@
 #include "FileFormats/Tlk.hpp"
 
 
-unsigned int GetUintFromHex(const std::string& hex) const
+inline unsigned int GetUintFromHex(const std::string& hex)
 {
     unsigned int result;
     try
@@ -30,7 +30,7 @@ unsigned int GetUintFromHex(const std::string& hex) const
     return result;
 }
 
-int GetIntFromString(const std::string& num) const
+inline int GetIntFromString(const std::string& num)
 {
     int result;
     try
@@ -45,7 +45,7 @@ int GetIntFromString(const std::string& num) const
     return result;
 }
 
-unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) const
+inline unsigned int GetUintFromString(const std::string& num, unsigned int err = 0)
 {
     unsigned int result;
     try
@@ -59,7 +59,7 @@ unsigned int GetUintFromString(const std::string& num, unsigned int err = 0) con
     return result;
 }
 
-std::string Get2DAString(TwoDA::Friendly::TwoDARow* row, const auto& column)
+inline std::string Get2DAString(TwoDA::Friendly::TwoDARow* row, const auto& column)
 {
     std::string result = "";
     if (!(*row)[GETIDX(column)].m_IsEmpty)
@@ -72,7 +72,7 @@ std::string Get2DAString(TwoDA::Friendly::TwoDARow* row, const auto& column)
     return result;
 }
 
-std::string GetStringFromTextCtrl(wxTextCtrl* component)
+inline std::string GetStringFromTextCtrl(wxTextCtrl* component)
 {
     if (component == NULL)
         throw std::string("Unknown component for GetStringFromTextCtrl");
