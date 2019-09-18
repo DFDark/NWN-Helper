@@ -14,14 +14,14 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     configuration = _configuration;
     feat = configuration->Get2daRow("feat", row_id);
 
-    if (!(*feat)[GETIDX(FEAT_2DA::Label)].m_IsEmpty)
-        this->SetTitle(wxString((*feat)[GETIDX(FEAT_2DA::Label)].m_Data));
+    this->SetTitle(Get2DAString(feat, FEAT_2DA::Label));
+
     /*
     * FORM LABELS
     */
     label_label = new wxStaticText(panel, wxID_ANY, wxString("Label:"));
     name_label = new wxStaticText(panel, wxID_ANY, wxString("Name:"));
-    // Description (Will be added later)
+    description_label = new wxStaticText(panel, wxID_ANY, wxString("Description:"));
     icon_label = new wxStaticText(panel, wxID_ANY, wxString("Icon:"));
 
     /*
@@ -29,6 +29,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    description = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
@@ -41,6 +42,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* first_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* second_row = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
@@ -57,10 +59,16 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     first_row->Add(name_sizer);
     first_row->Add(icon_sizer);
 
-
     main_sizer->Add(first_row);
 
+    wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
 
+    description_sizer->Add(description_label);
+    description_sizer->Add(description, 1, wxEXPAND);
+    
+    second_row->Add(description_sizer, 1, wxEXPAND);
+
+    main_sizer->Add(second_row, 1, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -88,4 +96,5 @@ void FeatForm::InitFormValues()
     label->SetValue(Get2DAString(feat, FEAT_2DA::Label));
     name->SetValue(Get2DAString(feat, FEAT_2DA::Feat));
     icon->SetValue(Get2DAString(feat, FEAT_2DA::Icon));
+    description->SetValue(Get2DAString(feat, FEAT_2DA::Description));
 }

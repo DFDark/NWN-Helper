@@ -34,10 +34,12 @@ private:
     */
     wxStaticText* label_label;
     wxStaticText* name_label;
+    wxStaticText* description_label;
     wxStaticText* icon_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
+    wxTextCtrl* description;
     wxTextCtrl* icon;
 
     wxDECLARE_EVENT_TABLE();
