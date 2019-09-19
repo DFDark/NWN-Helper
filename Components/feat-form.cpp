@@ -184,6 +184,7 @@ void FeatForm::SetFeatRequirements()
     pre_req_feat_1_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::PreReqFeat1));
     if (pre_req_feat_1_id > 0)
     {
+        pre_req_feat_1_id++; // 0 is to denote "None"
         TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_1_id - 1);
         std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
         pre_req_feat_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
@@ -192,6 +193,7 @@ void FeatForm::SetFeatRequirements()
     pre_req_feat_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::PreReqFeat2));
     if (pre_req_feat_2_id > 0)
     {
+        pre_req_feat_2_id++; // 0 is to denote "None"
         TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_2_id - 1);
         std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
         pre_req_feat_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
