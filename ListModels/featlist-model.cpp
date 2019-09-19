@@ -106,6 +106,14 @@ std::size_t FeatListModel::GetColumnID(unsigned int col) const
         case FeatListModel::ID: return static_cast<std::size_t>(col);
         case FeatListModel::LABEL: return GETIDX(FEAT_2DA::Label);
         case FeatListModel::FEAT: return GETIDX(FEAT_2DA::Feat);
+        case FeatListModel::MIN_ATTACK_BONUS: return GETIDX(FEAT_2DA::MinAttackBonus);
+        case FeatListModel::MIN_STR: return GETIDX(FEAT_2DA::MinStr);
+        case FeatListModel::MIN_DEX: return GETIDX(FEAT_2DA::MinDex);
+        case FeatListModel::MIN_INT: return GETIDX(FEAT_2DA::MinInt);
+        case FeatListModel::MIN_WIS: return GETIDX(FEAT_2DA::MinWis);
+        case FeatListModel::MIN_CON: return GETIDX(FEAT_2DA::MinCon);
+        case FeatListModel::MIN_CHA: return GETIDX(FEAT_2DA::MinCha);
+        case FeatListModel::MIN_SPELL_LVL: return GETIDX(FEAT_2DA::MinSpellLvl);
     }
 
     //TODO: Some sort of error management

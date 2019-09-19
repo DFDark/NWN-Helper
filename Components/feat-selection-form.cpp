@@ -75,6 +75,22 @@ void FeatSelectionForm::SetFeatColumns()
             feats->AppendTextColumn("Label", FeatListModel::LABEL);
         else if (col == "feat")
             feats->AppendTextColumn("Feat", FeatListModel::FEAT);
+        else if (col == "min_attack_bonus")
+            feats->AppendTextColumn("Min. AB", FeatListModel::MIN_ATTACK_BONUS);
+        else if (col == "min_str")
+            feats->AppendTextColumn("Min. Str.", FeatListModel::MIN_STR);
+        else if (col == "min_dex")
+            feats->AppendTextColumn("Min. Dex", FeatListModel::MIN_DEX);
+        else if (col == "min_int")
+            feats->AppendTextColumn("Min. Int", FeatListModel::MIN_INT);
+        else if (col == "min_wiz")
+            feats->AppendTextColumn("Min. Wiz", FeatListModel::MIN_WIS);
+        else if (col == "min_con")
+            feats->AppendTextColumn("Min. Con", FeatListModel::MIN_CON);
+        else if (col == "min_cha")
+            feats->AppendTextColumn("Min. Cha", FeatListModel::MIN_CHA);
+        else if (col == "min_spell_level")
+            feats->AppendTextColumn("Min. Spell Lvl.", FeatListModel::MIN_SPELL_LVL);
     }
 }
 

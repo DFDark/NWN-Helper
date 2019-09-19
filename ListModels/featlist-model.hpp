@@ -18,7 +18,15 @@ public:
     {
         ID,
         LABEL,
-        FEAT
+        FEAT,
+        MIN_ATTACK_BONUS,
+        MIN_STR,
+        MIN_DEX,
+        MIN_INT,
+        MIN_WIS,
+        MIN_CON,
+        MIN_CHA,
+        MIN_SPELL_LVL
     };
 
     FeatListModel(TwoDA::Friendly::TwoDA* _file, ConfigurationManager* _configuration, const bool& _has_none = false);

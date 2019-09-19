@@ -77,6 +77,14 @@ void FeatColumnForm::SetInitialColumns()
     std::map<std::string, bool> columns;
     columns["label"] = false;
     columns["feat"] = false;
+    columns["min_attack_bonus"] = false;
+    columns["min_str"] = false;
+    columns["min_dex"] = false;
+    columns["min_int"] = false;
+    columns["min_wiz"] = false;
+    columns["min_con"] = false;
+    columns["min_cha"] = false;
+    columns["min_spell_level"] = false;
 
     for (auto const& column : configuration->GetFeatColumns())
     {
