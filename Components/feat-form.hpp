@@ -20,6 +20,7 @@ private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
 
+    void SetFeatRequirements();
     void InitFormValues();
 
     ConfigurationManager* configuration;
@@ -37,11 +38,28 @@ private:
     wxStaticText* name_label;
     wxStaticText* description_label;
     wxStaticText* icon_label;
+    wxStaticText* min_attack_label;
+    wxStaticText* min_str_label;
+    wxStaticText* min_dex_label;
+    wxStaticText* min_int_label;
+    wxStaticText* min_wis_label;
+    wxStaticText* min_con_label;
+    wxStaticText* min_cha_label;
+    wxStaticText* min_spell_lvl_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
     wxTextCtrl* description;
     wxTextCtrl* icon;
+
+    wxTextCtrl* min_attack;
+    wxTextCtrl* min_str;
+    wxTextCtrl* min_dex;
+    wxTextCtrl* min_int;
+    wxTextCtrl* min_wis;
+    wxTextCtrl* min_con;
+    wxTextCtrl* min_cha;
+    wxTextCtrl* min_spell_lvl;
 
     wxDECLARE_EVENT_TABLE();
 };
