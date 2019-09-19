@@ -71,6 +71,7 @@ private:
     wxButton* pre_req_feat_2;
 
     wxStaticBox* req_feat_staticbox;
+    wxStaticBox* min_req_staticbox;
 
     wxDECLARE_EVENT_TABLE();
 };

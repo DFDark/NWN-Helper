@@ -30,6 +30,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     pre_req_feat_2_id = 0;
 
     req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"));
+    min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Mininal Requirements"));
     /*
     * FORM LABELS
     */
@@ -38,14 +39,14 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     description_label = new wxStaticText(panel, wxID_ANY, wxString("Description:"));
     icon_label = new wxStaticText(panel, wxID_ANY, wxString("Icon:"));
 
-    min_attack_label = new wxStaticText(panel, wxID_ANY, wxString("Min. AB:"));
-    min_str_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Str.:"));
-    min_dex_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Dex.:"));
-    min_int_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Int.:"));
-    min_wis_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Wis.:"));
-    min_con_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Con.:"));
-    min_cha_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Cha.:"));
-    min_spell_lvl_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Sp. Lv.:"));
+    min_attack_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Attack Bonus:"));
+    min_str_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Strength:"));
+    min_dex_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Dexterity:"));
+    min_int_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Intelligence:"));
+    min_wis_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Wisdom:"));
+    min_con_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Constitution:"));
+    min_cha_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Charisma:"));
+    min_spell_lvl_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Spell Level:"));
 
     /*
     * FORM TEXT CONTROLS
@@ -55,14 +56,14 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(450, -1), wxTE_MULTILINE);
     icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
-    min_attack = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_str = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_dex = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_int = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_wis = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_con = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_cha = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    min_spell_lvl = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    min_attack = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_str = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_dex = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_int = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_wis = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_con = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_cha = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    min_spell_lvl = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
 
     pre_req_feat_1 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_1, wxString("None"));
     pre_req_feat_2 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_2, wxString("None"));
@@ -77,7 +78,6 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* first_row = new wxBoxSizer(wxHORIZONTAL);
-    wxBoxSizer* second_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* third_row = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
@@ -102,6 +102,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     /*
         Minimu requirements
     */
+    wxStaticBoxSizer* min_req_sizer = new wxStaticBoxSizer(min_req_staticbox, wxHORIZONTAL);
     wxBoxSizer* min_attack_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* min_str_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* min_dex_sizer = new wxBoxSizer(wxVERTICAL);
@@ -112,30 +113,30 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* min_spell_lvl_sizer = new wxBoxSizer(wxVERTICAL);
 
     min_attack_sizer->Add(min_attack_label);
-    min_attack_sizer->Add(min_attack);
+    min_attack_sizer->Add(min_attack, 0, wxEXPAND);
     min_str_sizer->Add(min_str_label);
-    min_str_sizer->Add(min_str);
+    min_str_sizer->Add(min_str, 0, wxEXPAND);
     min_dex_sizer->Add(min_dex_label);
-    min_dex_sizer->Add(min_dex);
+    min_dex_sizer->Add(min_dex, 0, wxEXPAND);
     min_int_sizer->Add(min_int_label);
-    min_int_sizer->Add(min_int);
+    min_int_sizer->Add(min_int, 0, wxEXPAND);
     min_wis_sizer->Add(min_wis_label);
-    min_wis_sizer->Add(min_wis);
+    min_wis_sizer->Add(min_wis, 0, wxEXPAND);
     min_con_sizer->Add(min_con_label);
-    min_con_sizer->Add(min_con);
+    min_con_sizer->Add(min_con, 0, wxEXPAND);
     min_cha_sizer->Add(min_cha_label);
-    min_cha_sizer->Add(min_cha);
+    min_cha_sizer->Add(min_cha, 0, wxEXPAND);
     min_spell_lvl_sizer->Add(min_spell_lvl_label);
-    min_spell_lvl_sizer->Add(min_spell_lvl);
+    min_spell_lvl_sizer->Add(min_spell_lvl, 0, wxEXPAND);
 
-    second_row->Add(min_attack_sizer);
-    second_row->Add(min_str_sizer);
-    second_row->Add(min_dex_sizer);
-    second_row->Add(min_int_sizer);
-    second_row->Add(min_wis_sizer);
-    second_row->Add(min_con_sizer);
-    second_row->Add(min_cha_sizer);
-    second_row->Add(min_spell_lvl_sizer);
+    min_req_sizer->Add(min_attack_sizer, 1);
+    min_req_sizer->Add(min_str_sizer, 1);
+    min_req_sizer->Add(min_dex_sizer, 1);
+    min_req_sizer->Add(min_int_sizer, 1);
+    min_req_sizer->Add(min_wis_sizer, 1);
+    min_req_sizer->Add(min_con_sizer, 1);
+    min_req_sizer->Add(min_cha_sizer, 1);
+    min_req_sizer->Add(min_spell_lvl_sizer, 1);
 
     wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -150,7 +151,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     control_button_sizer->Add(ok_button);
 
     main_sizer->Add(first_row, 0, wxEXPAND);
-    main_sizer->Add(second_row);
+    main_sizer->Add(min_req_sizer, 0, wxEXPAND);
     main_sizer->Add(third_row, 1, wxEXPAND);
     main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
