@@ -1,10 +1,20 @@
 #include "feat-form.hpp"
 #include "constants.hpp"
 #include "functions.hpp"
+#include "spell-selection-form.hpp"
+#include "feat-selection-form.hpp"
+
+enum
+{
+    FT_PREREQ_FEAT_1 = wxID_HIGHEST + 1,
+    FT_PREREQ_FEAT_2
+};
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_MENU(wxID_OK, FeatForm::OnOk)
     EVT_MENU(wxID_CANCEL, FeatForm::OnCancel)
+    EVT_BUTTON(FT_PREREQ_FEAT_1, FeatForm::OnPrereqFeat1)
+    EVT_BUTTON(FT_PREREQ_FEAT_2, FeatForm::OnPrereqFeat2)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -16,6 +26,10 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     this->SetTitle(Get2DAString(feat, FEAT_2DA::Label));
 
+    pre_req_feat_1_id = 0;
+    pre_req_feat_2_id = 0;
+
+    req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"));
     /*
     * FORM LABELS
     */
@@ -24,14 +38,14 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     description_label = new wxStaticText(panel, wxID_ANY, wxString("Description:"));
     icon_label = new wxStaticText(panel, wxID_ANY, wxString("Icon:"));
 
-    min_attack_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Attack Bonus:"));
+    min_attack_label = new wxStaticText(panel, wxID_ANY, wxString("Min. AB:"));
     min_str_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Str.:"));
     min_dex_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Dex.:"));
     min_int_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Int.:"));
     min_wis_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Wis.:"));
     min_con_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Con.:"));
     min_cha_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Cha.:"));
-    min_spell_lvl_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Spell Level:"));
+    min_spell_lvl_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Sp. Lv.:"));
 
     /*
     * FORM TEXT CONTROLS
@@ -50,6 +64,9 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     min_cha = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     min_spell_lvl = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
+    pre_req_feat_1 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_1, wxString("None"));
+    pre_req_feat_2 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_2, wxString("None"));
+
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatForm::OnOk));
 
@@ -66,17 +83,21 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* icon_sizer = new wxBoxSizer(wxVERTICAL);
+    wxStaticBoxSizer* prereq_sizer = new wxStaticBoxSizer(req_feat_staticbox, wxHORIZONTAL);
 
     label_sizer->Add(label_label);
-    label_sizer->Add(label, 1, wxEXPAND|wxALL);
+    label_sizer->Add(label, 0, wxEXPAND);
     name_sizer->Add(name_label);
-    name_sizer->Add(name, 1, wxEXPAND|wxALL);
+    name_sizer->Add(name, 0, wxEXPAND);
     icon_sizer->Add(icon_label);
-    icon_sizer->Add(icon);
+    icon_sizer->Add(icon, 0, wxEXPAND);
+    prereq_sizer->Add(pre_req_feat_1, 1);
+    prereq_sizer->Add(pre_req_feat_2, 1);
 
-    first_row->Add(label_sizer);
-    first_row->Add(name_sizer, 1, wxEXPAND);
-    first_row->Add(icon_sizer);
+    first_row->Add(label_sizer, 1);
+    first_row->Add(name_sizer, 1);
+    first_row->Add(icon_sizer, 1);
+    first_row->Add(prereq_sizer, 1);
 
     /*
         Minimu requirements
@@ -115,7 +136,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     second_row->Add(min_con_sizer);
     second_row->Add(min_cha_sizer);
     second_row->Add(min_spell_lvl_sizer);
-    
+
     wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
 
     description_sizer->Add(description_label);
@@ -127,8 +148,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     control_button_sizer->Add(cancel_button);
     control_button_sizer->Add(ok_button);
-    
-    main_sizer->Add(first_row);
+
+    main_sizer->Add(first_row, 0, wxEXPAND);
     main_sizer->Add(second_row);
     main_sizer->Add(third_row, 1, wxEXPAND);
     main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
@@ -158,6 +179,22 @@ void FeatForm::SetFeatRequirements()
     min_con->SetValue(Get2DAString(feat, FEAT_2DA::MinCon));
     min_cha->SetValue(Get2DAString(feat, FEAT_2DA::MinCha));
     min_spell_lvl->SetValue(Get2DAString(feat, FEAT_2DA::MinSpellLvl));
+
+    pre_req_feat_1_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::PreReqFeat1));
+    if (pre_req_feat_1_id > 0)
+    {
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_1_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        pre_req_feat_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+
+    pre_req_feat_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::PreReqFeat2));
+    if (pre_req_feat_2_id > 0)
+    {
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_2_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        pre_req_feat_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
 }
 
 void FeatForm::InitFormValues()
@@ -171,6 +208,40 @@ void FeatForm::InitFormValues()
 
     std::uint32_t desc_strref = GetUintFromString(Get2DAString(feat, FEAT_2DA::Description));
     description->SetValue(wxString(desc_strref > 0 ? configuration->GetTlkString(desc_strref) : ""));
-    
+
     SetFeatRequirements();
+}
+
+void FeatForm::OnPrereqFeat1(wxCommandEvent& event)
+{
+    FeatSelectionForm form(panel, configuration, pre_req_feat_1_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        pre_req_feat_1_id = form.GetFeatSelection();
+        if (pre_req_feat_1_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_1_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+            pre_req_feat_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            pre_req_feat_1->SetLabel("None");
+    }
+}
+
+void FeatForm::OnPrereqFeat2(wxCommandEvent& event)
+{
+    FeatSelectionForm form(panel, configuration, pre_req_feat_2_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        pre_req_feat_2_id = form.GetFeatSelection();
+        if (pre_req_feat_2_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_2_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+            pre_req_feat_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            pre_req_feat_2->SetLabel("None");
+    }
 }

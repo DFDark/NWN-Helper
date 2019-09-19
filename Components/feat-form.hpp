@@ -23,8 +23,14 @@ private:
     void SetFeatRequirements();
     void InitFormValues();
 
+    void OnPrereqFeat1(wxCommandEvent& event);
+    void OnPrereqFeat2(wxCommandEvent& event);
+
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;
+
+    std::uint32_t pre_req_feat_1_id;
+    std::uint32_t pre_req_feat_2_id;
 
     wxPanel* panel;
 
@@ -60,6 +66,11 @@ private:
     wxTextCtrl* min_con;
     wxTextCtrl* min_cha;
     wxTextCtrl* min_spell_lvl;
+
+    wxButton* pre_req_feat_1;
+    wxButton* pre_req_feat_2;
+
+    wxStaticBox* req_feat_staticbox;
 
     wxDECLARE_EVENT_TABLE();
 };
