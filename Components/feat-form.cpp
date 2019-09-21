@@ -8,7 +8,9 @@ enum
 {
     FT_PREREQ_FEAT_1 = wxID_HIGHEST + 1,
     FT_PREREQ_FEAT_2,
-    FT_SPELLID
+    FT_SPELLID,
+    FT_SUCCESSOR,
+    FT_MASTER_FEAT
 };
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
@@ -17,6 +19,8 @@ wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_BUTTON(FT_PREREQ_FEAT_1, FeatForm::OnPrereqFeat1)
     EVT_BUTTON(FT_PREREQ_FEAT_2, FeatForm::OnPrereqFeat2)
     EVT_BUTTON(FT_SPELLID, FeatForm::OnSpell)
+    EVT_BUTTON(FT_SUCCESSOR, FeatForm::OnSuccessor)
+    EVT_BUTTON(FT_MASTER_FEAT, FeatForm::OnMasterFeat)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -31,9 +35,10 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     pre_req_feat_1_id = 0;
     pre_req_feat_2_id = 0;
     spellid = 0;
+    successor_id = 0;
 
     req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"));
-    min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Mininal Requirements"));
+    min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Minimal Requirements"));
     /*
     * FORM LABELS
     */
@@ -53,6 +58,10 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     category_label = new wxStaticText(panel, wxID_ANY, wxString("Category:"));
     max_cr_label = new wxStaticText(panel, wxID_ANY, wxString("Max. CR:"));
     spell_label = new wxStaticText(panel, wxID_ANY, wxString("Spell:"));
+    successor_label = new wxStaticText(panel, wxID_ANY, wxString("Successor:"));
+    cr_value_label = new wxStaticText(panel, wxID_ANY, wxString("CR Value:"));
+    uses_per_day_label = new wxStaticText(panel, wxID_ANY, wxString("Uses per Day:"));
+    master_feat_label = new wxStaticText(panel, wxID_ANY, wxString("Master feat:"));
 
     /*
     * FORM TEXT CONTROLS
@@ -62,6 +71,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(450, -1), wxTE_MULTILINE);
     icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     max_cr = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    cr_value = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    uses_per_day = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     min_attack = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
     min_str = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
@@ -75,10 +86,13 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     pre_req_feat_1 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_1, wxString("None"));
     pre_req_feat_2 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_2, wxString("None"));
     spell = new wxButton(panel, FT_SPELLID, wxString("None"));
+    successor = new wxButton(panel, FT_SUCCESSOR, wxString("None"));
+    master_feat = new wxButton(panel, FT_MASTER_FEAT, wxString("None"));
 
     gain_multiple = new wxCheckBox(panel, wxID_ANY, wxString("Gain Multiple"));
     effects_stack = new wxCheckBox(panel, wxID_ANY, wxString("Effects Stack"));
     all_classes_can_use = new wxCheckBox(panel, wxID_ANY, wxString("All Classes can use"));
+    target_self = new wxCheckBox(panel, wxID_ANY, wxString("Target Self"));
 
     category = new wxComboBox(panel, wxID_ANY, wxString(""));
 
@@ -95,6 +109,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* first_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* second_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* third_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* forth_row = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
@@ -163,6 +178,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     checkbox_sizer_1->Add(gain_multiple);
     checkbox_sizer_1->Add(effects_stack);
     checkbox_sizer_2->Add(all_classes_can_use);
+    checkbox_sizer_2->Add(target_self);
     category_sizer->Add(category_label);
     category_sizer->Add(category);
     max_cr_sizer->Add(max_cr_label);
@@ -176,12 +192,31 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     second_row->Add(max_cr_sizer);
     second_row->Add(spell_id_sizer, 1);
 
+    wxBoxSizer* successor_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* cr_value_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* uses_per_day_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* master_feat_sizer = new wxBoxSizer(wxVERTICAL);
+
+    successor_sizer->Add(successor_label);
+    successor_sizer->Add(successor);
+    cr_value_sizer->Add(cr_value_label);
+    cr_value_sizer->Add(cr_value);
+    uses_per_day_sizer->Add(uses_per_day_label);
+    uses_per_day_sizer->Add(uses_per_day);
+    master_feat_sizer->Add(master_feat_label);
+    master_feat_sizer->Add(master_feat);
+
+    third_row->Add(successor_sizer);
+    third_row->Add(cr_value_sizer);
+    third_row->Add(uses_per_day_sizer);
+    third_row->Add(master_feat_sizer);
+
     wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
 
     description_sizer->Add(description_label);
     description_sizer->Add(description, 1, wxEXPAND);
 
-    third_row->Add(description_sizer, 1, wxEXPAND);
+    forth_row->Add(description_sizer, 1, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -191,7 +226,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     main_sizer->Add(first_row, 0, wxEXPAND);
     main_sizer->Add(min_req_sizer, 0, wxEXPAND);
     main_sizer->Add(second_row, 0, wxEXPAND);
-    main_sizer->Add(third_row, 1, wxEXPAND);
+    main_sizer->Add(third_row, 0, wxEXPAND);
+    main_sizer->Add(forth_row, 1, wxEXPAND);
     main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
     panel->SetSizer(main_sizer);
@@ -254,6 +290,8 @@ void FeatForm::InitFormValues()
     SetFeatRequirements();
     LoadCategoryValues();
     LoadSpellIdValue();
+    LoadSuccessorIdValue();
+    LoadMiscellaneousValues();
 }
 
 void FeatForm::OnPrereqFeat1(wxCommandEvent& event)
@@ -322,7 +360,6 @@ void FeatForm::OnSpell(wxCommandEvent& event)
     }
 }
 
-
 void FeatForm::LoadSpellIdValue()
 {
     std::string sp_id = Get2DAString(feat, FEAT_2DA::SpellID);
@@ -335,4 +372,55 @@ void FeatForm::LoadSpellIdValue()
     }
     else
         spell->SetLabel("None");
+}
+
+void FeatForm::OnSuccessor(wxCommandEvent& event)
+{
+    FeatSelectionForm form(panel, configuration, successor_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        successor_id = form.GetFeatSelection();
+        if (successor_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", successor_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+            successor->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            successor->SetLabel("None");
+    }
+}
+
+void FeatForm::OnMasterFeat(wxCommandEvent& event)
+{
+    wxMessageBox("Not implemented yet", "Warning", wxOK|wxICON_WARNING);
+}
+
+void FeatForm::LoadSuccessorIdValue()
+{
+    std::string aux = Get2DAString(feat, FEAT_2DA::Successor);
+    if (aux.size() > 0)
+    {
+        successor_id = GetUintFromString(aux) + 1;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", successor_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        successor->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+    else
+        successor->SetLabel("None");
+}
+
+void FeatForm::LoadMiscellaneousValues()
+{
+    cr_value->SetValue(Get2DAString(feat, FEAT_2DA::CRValue));
+    uses_per_day->SetValue(Get2DAString(feat, FEAT_2DA::UsesPerDay));
+
+    std::uint32_t aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::GainMultiple));
+    gain_multiple->SetValue(aux > 0);
+    aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::EffectsStack));
+    effects_stack->SetValue(aux > 0);
+    aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::AllClassesCanUse));
+    all_classes_can_use->SetValue(aux > 0);
+    aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::TargetSelf));
+    target_self->SetValue(aux > 0);
 }

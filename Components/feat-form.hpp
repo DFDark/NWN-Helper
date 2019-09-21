@@ -22,6 +22,8 @@ private:
 
     void LoadCategoryValues();
     void LoadSpellIdValue();
+    void LoadSuccessorIdValue();
+    void LoadMiscellaneousValues();
 
     void SetFeatRequirements();
     void InitFormValues();
@@ -29,6 +31,8 @@ private:
     void OnPrereqFeat1(wxCommandEvent& event);
     void OnPrereqFeat2(wxCommandEvent& event);
     void OnSpell(wxCommandEvent& event);
+    void OnSuccessor(wxCommandEvent& event);
+    void OnMasterFeat(wxCommandEvent& event);
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;
@@ -36,6 +40,7 @@ private:
     std::uint32_t pre_req_feat_1_id;
     std::uint32_t pre_req_feat_2_id;
     std::uint32_t spellid;
+    std::uint32_t successor_id;
 
     wxPanel* panel;
 
@@ -60,6 +65,10 @@ private:
     wxStaticText* category_label;
     wxStaticText* max_cr_label;
     wxStaticText* spell_label;
+    wxStaticText* successor_label;
+    wxStaticText* cr_value_label;
+    wxStaticText* uses_per_day_label;
+    wxStaticText* master_feat_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -75,10 +84,14 @@ private:
     wxTextCtrl* min_cha;
     wxTextCtrl* min_spell_lvl;
     wxTextCtrl* max_cr;
+    wxTextCtrl* cr_value;
+    wxTextCtrl* uses_per_day;
 
     wxButton* pre_req_feat_1;
     wxButton* pre_req_feat_2;
     wxButton* spell;
+    wxButton* successor;
+    wxButton* master_feat;
 
     wxStaticBox* req_feat_staticbox;
     wxStaticBox* min_req_staticbox;
@@ -86,6 +99,7 @@ private:
     wxCheckBox* gain_multiple;
     wxCheckBox* effects_stack;
     wxCheckBox* all_classes_can_use;
+    wxCheckBox* target_self;
 
     wxComboBox* category;
 
