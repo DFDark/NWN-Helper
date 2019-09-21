@@ -7,7 +7,8 @@
 enum
 {
     FT_PREREQ_FEAT_1 = wxID_HIGHEST + 1,
-    FT_PREREQ_FEAT_2
+    FT_PREREQ_FEAT_2,
+    FT_SPELLID
 };
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
@@ -15,6 +16,7 @@ wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_MENU(wxID_CANCEL, FeatForm::OnCancel)
     EVT_BUTTON(FT_PREREQ_FEAT_1, FeatForm::OnPrereqFeat1)
     EVT_BUTTON(FT_PREREQ_FEAT_2, FeatForm::OnPrereqFeat2)
+    EVT_BUTTON(FT_SPELLID, FeatForm::OnSpell)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -28,6 +30,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     pre_req_feat_1_id = 0;
     pre_req_feat_2_id = 0;
+    spellid = 0;
 
     req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"));
     min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Mininal Requirements"));
@@ -47,6 +50,9 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     min_con_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Constitution:"));
     min_cha_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Charisma:"));
     min_spell_lvl_label = new wxStaticText(min_req_staticbox, wxID_ANY, wxString("Spell Level:"));
+    category_label = new wxStaticText(panel, wxID_ANY, wxString("Category:"));
+    max_cr_label = new wxStaticText(panel, wxID_ANY, wxString("Max. CR:"));
+    spell_label = new wxStaticText(panel, wxID_ANY, wxString("Spell:"));
 
     /*
     * FORM TEXT CONTROLS
@@ -55,6 +61,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(450, -1), wxTE_MULTILINE);
     icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    max_cr = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     min_attack = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
     min_str = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
@@ -67,6 +74,14 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     pre_req_feat_1 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_1, wxString("None"));
     pre_req_feat_2 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_2, wxString("None"));
+    spell = new wxButton(panel, FT_SPELLID, wxString("None"));
+
+    gain_multiple = new wxCheckBox(panel, wxID_ANY, wxString("Gain Multiple"));
+    effects_stack = new wxCheckBox(panel, wxID_ANY, wxString("Effects Stack"));
+    all_classes_can_use = new wxCheckBox(panel, wxID_ANY, wxString("All Classes can use"));
+
+    category = new wxComboBox(panel, wxID_ANY, wxString(""));
+
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatForm::OnOk));
@@ -78,6 +93,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* first_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* second_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* third_row = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
@@ -90,13 +106,13 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     name_sizer->Add(name_label);
     name_sizer->Add(name, 0, wxEXPAND);
     icon_sizer->Add(icon_label);
-    icon_sizer->Add(icon, 0, wxEXPAND);
+    icon_sizer->Add(icon, 0);
     prereq_sizer->Add(pre_req_feat_1, 1);
     prereq_sizer->Add(pre_req_feat_2, 1);
 
     first_row->Add(label_sizer, 1);
     first_row->Add(name_sizer, 1);
-    first_row->Add(icon_sizer, 1);
+    first_row->Add(icon_sizer, 0);
     first_row->Add(prereq_sizer, 1);
 
     /*
@@ -138,6 +154,28 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     min_req_sizer->Add(min_cha_sizer, 1);
     min_req_sizer->Add(min_spell_lvl_sizer, 1);
 
+    wxBoxSizer* checkbox_sizer_1 = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* checkbox_sizer_2 = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* max_cr_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* spell_id_sizer = new wxBoxSizer(wxVERTICAL);
+
+    checkbox_sizer_1->Add(gain_multiple);
+    checkbox_sizer_1->Add(effects_stack);
+    checkbox_sizer_2->Add(all_classes_can_use);
+    category_sizer->Add(category_label);
+    category_sizer->Add(category);
+    max_cr_sizer->Add(max_cr_label);
+    max_cr_sizer->Add(max_cr);
+    spell_id_sizer->Add(spell_label);
+    spell_id_sizer->Add(spell, 0, wxEXPAND);
+
+    second_row->Add(checkbox_sizer_1);
+    second_row->Add(checkbox_sizer_2);
+    second_row->Add(category_sizer);
+    second_row->Add(max_cr_sizer);
+    second_row->Add(spell_id_sizer, 1);
+
     wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
 
     description_sizer->Add(description_label);
@@ -152,6 +190,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     main_sizer->Add(first_row, 0, wxEXPAND);
     main_sizer->Add(min_req_sizer, 0, wxEXPAND);
+    main_sizer->Add(second_row, 0, wxEXPAND);
     main_sizer->Add(third_row, 1, wxEXPAND);
     main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
@@ -213,6 +252,8 @@ void FeatForm::InitFormValues()
     description->SetValue(wxString(desc_strref > 0 ? configuration->GetTlkString(desc_strref) : ""));
 
     SetFeatRequirements();
+    LoadCategoryValues();
+    LoadSpellIdValue();
 }
 
 void FeatForm::OnPrereqFeat1(wxCommandEvent& event)
@@ -247,4 +288,51 @@ void FeatForm::OnPrereqFeat2(wxCommandEvent& event)
         else
             pre_req_feat_2->SetLabel("None");
     }
+}
+
+void FeatForm::LoadCategoryValues()
+{
+    TwoDA::Friendly::TwoDA* categories = configuration->Get2da("categories");
+
+    if (categories != NULL)
+    {
+        for (auto const& row : (*categories))
+            category->Append(row["Category"].m_Data);
+
+        unsigned int row_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::Category));
+        if (row_id > 0)
+            category->SetSelection(row_id - 1);
+    }
+}
+
+void FeatForm::OnSpell(wxCommandEvent& event)
+{
+    SpellSelectionForm form(panel, configuration, spellid);
+    if (form.ShowModal() == wxID_OK)
+    {
+        spellid = form.GetSpellSelection();
+        if (spellid > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", spellid - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
+            spell->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            spell->SetLabel("None");
+    }
+}
+
+
+void FeatForm::LoadSpellIdValue()
+{
+    std::string sp_id = Get2DAString(feat, FEAT_2DA::SpellID);
+    if (sp_id.size() > 0)
+    {
+        spellid = GetUintFromString(sp_id) + 1;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", spellid - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
+        spell->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+    else
+        spell->SetLabel("None");
 }

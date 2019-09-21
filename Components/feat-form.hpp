@@ -20,17 +20,22 @@ private:
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
 
+    void LoadCategoryValues();
+    void LoadSpellIdValue();
+
     void SetFeatRequirements();
     void InitFormValues();
 
     void OnPrereqFeat1(wxCommandEvent& event);
     void OnPrereqFeat2(wxCommandEvent& event);
+    void OnSpell(wxCommandEvent& event);
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;
 
     std::uint32_t pre_req_feat_1_id;
     std::uint32_t pre_req_feat_2_id;
+    std::uint32_t spellid;
 
     wxPanel* panel;
 
@@ -52,6 +57,9 @@ private:
     wxStaticText* min_con_label;
     wxStaticText* min_cha_label;
     wxStaticText* min_spell_lvl_label;
+    wxStaticText* category_label;
+    wxStaticText* max_cr_label;
+    wxStaticText* spell_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -66,12 +74,20 @@ private:
     wxTextCtrl* min_con;
     wxTextCtrl* min_cha;
     wxTextCtrl* min_spell_lvl;
+    wxTextCtrl* max_cr;
 
     wxButton* pre_req_feat_1;
     wxButton* pre_req_feat_2;
+    wxButton* spell;
 
     wxStaticBox* req_feat_staticbox;
     wxStaticBox* min_req_staticbox;
+
+    wxCheckBox* gain_multiple;
+    wxCheckBox* effects_stack;
+    wxCheckBox* all_classes_can_use;
+
+    wxComboBox* category;
 
     wxDECLARE_EVENT_TABLE();
 };
