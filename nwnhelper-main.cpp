@@ -1,8 +1,9 @@
 #include "nwnhelper-main.hpp"
 #include "Components/spell-form.hpp"
 #include "Components/feat-form.hpp"
-#include "Components/spell-column-form.hpp"
-#include "Components/feat-column-form.hpp"
+#include "Components/ColumnForms/spell-column-form.hpp"
+#include "Components/ColumnForms/feat-column-form.hpp"
+#include "Components/ColumnForms/master-feat-column-form.hpp"
 #include "Components/export-form.hpp"
 
 enum
@@ -12,6 +13,7 @@ enum
     MASTER_FEATS,
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
+    MASTER_FEAT_COLUMNS_MENU,
     SPELL_POPUP_ADD,
     SPELL_POPUP_EDIT,
     SPELL_POPUP_COPY,
@@ -26,6 +28,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(wxID_EXIT,  NWNHelperMain::OnExit)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
+    EVT_MENU(MASTER_FEAT_COLUMNS_MENU, NWNHelperMain::OnMasterFeatColumnMenu)
     EVT_MENU(SPELL_POPUP_ADD, NWNHelperMain::OnSpellPopupAdd)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_MENU(SPELL_POPUP_COPY, NWNHelperMain::OnSpellPopupCopy)
@@ -54,6 +57,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_columns = new wxMenu;
     menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
     menu_columns->Append(FEAT_COLUMNS_MENU, "Feats", "Sets up visible columns for feats!");
+    menu_columns->Append(MASTER_FEAT_COLUMNS_MENU, "Master Feats", "Sets up visible columns for master feats!");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
     menu_bar->Append(menu_columns, "&Columns");
@@ -199,13 +203,17 @@ void NWNHelperMain::SetMasterFeatColumns()
 {
     master_feats->ClearColumns();
     master_feats->AppendTextColumn("ID", MasterFeatListModel::ID);
-    master_feats->AppendTextColumn("Label", MasterFeatListModel::LABEL);
-    master_feats->AppendTextColumn("Master Feat", MasterFeatListModel::STRREF);
-    master_feats->AppendTextColumn("Icon", MasterFeatListModel::ICON);
-    // master_feats->AppendTextColumn("Description", MasterFeatListModel::DESCRIPTION);
-
-    // TODO: Columns
-
+    for (auto const& col : configuration->GetMasterFeatColumns())
+    {
+        if (col == "label")
+            master_feats->AppendTextColumn("Label", MasterFeatListModel::LABEL);
+        else if (col == "master_feat")
+            master_feats->AppendTextColumn("Master Feat", MasterFeatListModel::STRREF);
+        else if (col == "icon")
+            master_feats->AppendTextColumn("Icon", MasterFeatListModel::ICON);
+        else if (col == "description")
+            master_feats->AppendTextColumn("Description", MasterFeatListModel::DESCRIPTION);
+    }
 }
 
 void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
@@ -224,6 +232,16 @@ void NWNHelperMain::OnFeatColumnMenu(wxCommandEvent& event)
     if (form.ShowModal() == wxID_OK)
     {
         SetFeatColumns();
+        configuration->SaveCurrentSettings();
+    }
+}
+
+void NWNHelperMain::OnMasterFeatColumnMenu(wxCommandEvent& event)
+{
+    MasterFeatColumnForm form(main_panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        SetMasterFeatColumns();
         configuration->SaveCurrentSettings();
     }
 }

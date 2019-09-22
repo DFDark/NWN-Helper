@@ -69,7 +69,7 @@ void MasterFeatSelectionForm::SetMasterFeatColumns()
 {
     master_feats->ClearColumns();
     master_feats->AppendTextColumn("ID", MasterFeatListModel::ID);
-    for (auto const& col : configuration->GetFeatColumns())
+    for (auto const& col : configuration->GetMasterFeatColumns())
     {
         if (col == "label")
             master_feats->AppendTextColumn("Label", MasterFeatListModel::LABEL);

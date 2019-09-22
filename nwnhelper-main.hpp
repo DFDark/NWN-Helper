@@ -25,6 +25,7 @@ public:
     virtual void OnExit(wxCommandEvent& event);
     void OnSpellColumnMenu(wxCommandEvent& event);
     void OnFeatColumnMenu(wxCommandEvent& event);
+    void OnMasterFeatColumnMenu(wxCommandEvent& event);
 
     void OnSpellRightClick(wxDataViewEvent& event);
 private:

@@ -17,12 +17,14 @@ add_library(NWNHelper STATIC
     Components/feat-form.cpp
     Components/first-time-configuration.hpp
     Components/first-time-configuration.cpp
-    Components/spell-column-form.hpp
-    Components/spell-column-form.cpp
-    Components/feat-column-form.hpp
-    Components/feat-column-form.cpp
     Components/export-form.hpp
     Components/export-form.cpp
+    Components/ColumnForms/spell-column-form.hpp
+    Components/ColumnForms/spell-column-form.cpp
+    Components/ColumnForms/feat-column-form.hpp
+    Components/ColumnForms/feat-column-form.cpp
+    Components/ColumnForms/master-feat-column-form.hpp
+    Components/ColumnForms/master-feat-column-form.cpp
     SelectionForms/spell-selection-form.hpp
     SelectionForms/spell-selection-form.cpp
     SelectionForms/feat-selection-form.hpp
