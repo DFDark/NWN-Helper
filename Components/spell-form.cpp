@@ -1,8 +1,8 @@
 #include "spell-form.hpp"
 #include "constants.hpp"
 #include "functions.hpp"
-#include "spell-selection-form.hpp"
-#include "feat-selection-form.hpp"
+#include "SelectionForms/spell-selection-form.hpp"
+#include "SelectionForms/feat-selection-form.hpp"
 
 enum
 {

@@ -23,10 +23,12 @@ add_library(NWNHelper STATIC
     Components/feat-column-form.cpp
     Components/export-form.hpp
     Components/export-form.cpp
-    Components/spell-selection-form.hpp
-    Components/spell-selection-form.cpp
-    Components/feat-selection-form.hpp
-    Components/feat-selection-form.cpp
+    SelectionForms/spell-selection-form.hpp
+    SelectionForms/spell-selection-form.cpp
+    SelectionForms/feat-selection-form.hpp
+    SelectionForms/feat-selection-form.cpp
+    SelectionForms/master-feat-selection-form.hpp
+    SelectionForms/master-feat-selection-form.cpp
     ListModels/spelllist-model.hpp
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp

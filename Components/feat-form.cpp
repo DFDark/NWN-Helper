@@ -1,8 +1,9 @@
 #include "feat-form.hpp"
 #include "constants.hpp"
 #include "functions.hpp"
-#include "spell-selection-form.hpp"
-#include "feat-selection-form.hpp"
+#include "SelectionForms/spell-selection-form.hpp"
+#include "SelectionForms/feat-selection-form.hpp"
+#include "SelectionForms/master-feat-selection-form.hpp"
 
 enum
 {
@@ -393,7 +394,19 @@ void FeatForm::OnSuccessor(wxCommandEvent& event)
 
 void FeatForm::OnMasterFeat(wxCommandEvent& event)
 {
-    wxMessageBox("Not implemented yet", "Warning", wxOK|wxICON_WARNING);
+    MasterFeatSelectionForm form(panel, configuration, master_feat_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        master_feat_id = form.GetMasterFeatSelection();
+        if (master_feat_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("masterfeats", master_feat_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, MASTERFEAT_2DA::Strref));
+            master_feat->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            master_feat->SetLabel("None");
+    }
 }
 
 void FeatForm::LoadSuccessorIdValue()

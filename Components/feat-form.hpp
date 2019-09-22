@@ -41,6 +41,7 @@ private:
     std::uint32_t pre_req_feat_2_id;
     std::uint32_t spellid;
     std::uint32_t successor_id;
+    std::uint32_t master_feat_id;
 
     wxPanel* panel;
 
