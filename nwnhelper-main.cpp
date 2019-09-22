@@ -9,6 +9,7 @@ enum
 {
     SPELLS = wxID_HIGHEST + 1,
     FEATS,
+    MASTER_FEATS,
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
     SPELL_POPUP_ADD,
@@ -71,12 +72,15 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     spells = new wxDataViewCtrl(tabs, SPELLS);
     feats = new wxDataViewCtrl(tabs, FEATS);
+    master_feats = new wxDataViewCtrl(tabs, MASTER_FEATS);
 
     tabs->AddPage(spells, wxString("Spells"));
     tabs->AddPage(feats, wxString("Feats"));
+    tabs->AddPage(master_feats, wxString("Master Feats"));
 
     TwoDA::Friendly::TwoDA* _2da = configuration->Get2da("spells");
     TwoDA::Friendly::TwoDA* _feats = configuration->Get2da("feat");
+    TwoDA::Friendly::TwoDA* _master_feats = configuration->Get2da("masterfeats");
 
     sp_model = new SpellListModel(_2da, configuration);
     spells->AssociateModel(sp_model);
@@ -84,8 +88,12 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     ft_model = new FeatListModel(_feats, configuration);
     feats->AssociateModel(ft_model);
 
+    master_ft_model = new MasterFeatListModel(_master_feats, configuration);
+    master_feats->AssociateModel(master_ft_model);
+
     SetSpellColumns();
     SetFeatColumns();
+    SetMasterFeatColumns();
 
     wxBoxSizer* tab_sizer = new wxBoxSizer(wxHORIZONTAL);
     tab_sizer->Add(tabs, 2, wxEXPAND|wxALL);
@@ -184,6 +192,20 @@ void NWNHelperMain::SetFeatColumns()
         else if (col == "min_spell_level")
             feats->AppendTextColumn("Min. Spell Lvl.", FeatListModel::MIN_SPELL_LVL);
     }
+}
+
+
+void NWNHelperMain::SetMasterFeatColumns()
+{
+    master_feats->ClearColumns();
+    master_feats->AppendTextColumn("ID", MasterFeatListModel::ID);
+    master_feats->AppendTextColumn("Label", MasterFeatListModel::LABEL);
+    master_feats->AppendTextColumn("Master Feat", MasterFeatListModel::STRREF);
+    master_feats->AppendTextColumn("Icon", MasterFeatListModel::ICON);
+    // master_feats->AppendTextColumn("Description", MasterFeatListModel::DESCRIPTION);
+
+    // TODO: Columns
+
 }
 
 void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)

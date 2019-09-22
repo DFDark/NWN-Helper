@@ -11,7 +11,7 @@
 #include "configuration-manager.hpp"
 #include "ListModels/spelllist-model.hpp"
 #include "ListModels/featlist-model.hpp"
-#include "Components/spell-selection-form.hpp"
+#include "ListModels/masterfeatlist-model.hpp"
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
@@ -43,6 +43,7 @@ private:
 
     void SetSpellColumns();
     void SetFeatColumns();
+    void SetMasterFeatColumns();
 
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
@@ -51,12 +52,14 @@ private:
 
     wxDataViewCtrl* spells;
     wxDataViewCtrl* feats;
+    wxDataViewCtrl* master_feats;
 
     wxNotebook* tabs;
 
     ConfigurationManager* configuration;
     SpellListModel* sp_model;
     FeatListModel* ft_model;
+    MasterFeatListModel* master_ft_model;
 
     wxDECLARE_EVENT_TABLE();
 };

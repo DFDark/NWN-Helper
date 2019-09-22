@@ -31,6 +31,8 @@ add_library(NWNHelper STATIC
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp
     ListModels/featlist-model.cpp
+    ListModels/masterfeatlist-model.hpp
+    ListModels/masterfeatlist-model.cpp
 )
 
 add_library(SimpleIni STATIC

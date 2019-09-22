@@ -107,6 +107,14 @@ enum class FEAT_2DA
     ReqAction
 };
 
+enum class MASTERFEAT_2DA
+{
+    Label,
+    Strref,
+    Description,
+    Icon
+};
+
 #define GETIDX(x) (static_cast<std::size_t>(x))
 
 #define METAMAGIC_EMPOWER 0x01
