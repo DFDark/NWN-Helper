@@ -42,6 +42,14 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_MENU(SPELL_POPUP_COPY, NWNHelperMain::OnSpellPopupCopy)
     EVT_MENU(SPELL_POPUP_DELETE, NWNHelperMain::OnSpellPopupDelete)
+    EVT_MENU(FEAT_POPUP_ADD, NWNHelperMain::OnFeatPopupAdd)
+    EVT_MENU(FEAT_POPUP_EDIT, NWNHelperMain::OnFeatPopupEdit)
+    EVT_MENU(FEAT_POPUP_COPY, NWNHelperMain::OnFeatPopupCopy)
+    EVT_MENU(FEAT_POPUP_DELETE, NWNHelperMain::OnFeatPopupDelete)
+    EVT_MENU(MASTER_FEAT_POPUP_ADD, NWNHelperMain::OnMasterFeatPopupAdd)
+    EVT_MENU(MASTER_FEAT_POPUP_EDIT, NWNHelperMain::OnMasterFeatPopupEdit)
+    EVT_MENU(MASTER_FEAT_POPUP_COPY, NWNHelperMain::OnMasterFeatPopupCopy)
+    EVT_MENU(MASTER_FEAT_POPUP_DELETE, NWNHelperMain::OnMasterFeatPopupDelete)
     EVT_MENU(NEW_PROJECT, NWNHelperMain::OnNewProject)
     EVT_MENU(LOAD_PROJECT, NWNHelperMain::OnLoadProject)
     EVT_MENU(SAVE_PROJECT, NWNHelperMain::OnSaveProject)
@@ -359,6 +367,110 @@ void NWNHelperMain::OnSpellPopupCopy(wxCommandEvent& event)
 }
 
 void NWNHelperMain::OnSpellPopupDelete(wxCommandEvent& event)
+{
+    // Will be implemented later
+    // We will need to make sure we replace all row ids which are used as
+    // a reference to the deleted row
+    wxMessageBox("Not yet implemented",
+        "Warning", wxOK | wxICON_WARNING );
+}
+
+void NWNHelperMain::OnFeatPopupAdd(wxCommandEvent& event)
+{
+    std::uint32_t feat_count = configuration->Get2da("feat")->Size();
+    TwoDA::Friendly::TwoDARow* feat = configuration->Get2daRow("feat", feat_count);
+
+    FeatForm form(main_panel, configuration, feat->RowId());
+    form.ShowModal();
+    // Reread 2da file, since we're adding row outside of wxDataViewModel
+    ft_model->Reset(feat_count + 1);
+    // Select new row
+    feats->Select(ft_model->GetItem(feat_count));
+    feats->EnsureVisible(ft_model->GetItem(feat_count));
+}
+
+void NWNHelperMain::OnFeatPopupEdit(wxCommandEvent& event)
+{
+    unsigned int row = ft_model->GetRow(feats->GetCurrentItem());
+    TwoDA::Friendly::TwoDARow* feat = ft_model->Get2daRow(row);
+
+    FeatForm form(main_panel, configuration, feat->RowId());
+    form.ShowModal();
+}
+
+void NWNHelperMain::OnFeatPopupCopy(wxCommandEvent& event)
+{
+    unsigned int row = ft_model->GetRow(feats->GetCurrentItem());
+    TwoDA::Friendly::TwoDARow* feat_origin = ft_model->Get2daRow(row);
+
+    std::uint32_t feat_count = configuration->Get2da("feat")->Size();
+    TwoDA::Friendly::TwoDARow* feat_target = configuration->Get2daRow("feat", feat_count);
+
+    for (std::size_t i = 0; i < feat_origin->Size(); i++)
+        (*feat_target)[i] = (*feat_origin)[i];
+
+    FeatForm form(main_panel, configuration, feat_target->RowId());
+    form.ShowModal();
+    // Reread 2da file, since we're adding row outside of wxDataViewModel
+    ft_model->Reset(feat_count + 1);
+    // Select new row
+    feats->Select(ft_model->GetItem(feat_count));
+    feats->EnsureVisible(ft_model->GetItem(feat_count));
+}
+
+void NWNHelperMain::OnFeatPopupDelete(wxCommandEvent& event)
+{
+    // Will be implemented later
+    // We will need to make sure we replace all row ids which are used as
+    // a reference to the deleted row
+    wxMessageBox("Not yet implemented",
+        "Warning", wxOK | wxICON_WARNING );
+}
+
+void NWNHelperMain::OnMasterFeatPopupAdd(wxCommandEvent& event)
+{
+    std::uint32_t master_feat_count = configuration->Get2da("masterfeats")->Size();
+    TwoDA::Friendly::TwoDARow* master_feat = configuration->Get2daRow("masterfeats", feat_count);
+
+    MasterFeatForm form(main_panel, configuration, master_feat->RowId());
+    form.ShowModal();
+    // Reread 2da file, since we're adding row outside of wxDataViewModel
+    master_ft_model->Reset(master_feat_count + 1);
+    // Select new row
+    master_feats->Select(master_ft_model->GetItem(master_feat_count));
+    master_feats->EnsureVisible(master_ft_model->GetItem(master_feat_count));
+}
+
+void NWNHelperMain::OnMasterFeatPopupEdit(wxCommandEvent& event)
+{
+    unsigned int row = master_ft_model->GetRow(master_feats->GetCurrentItem());
+    TwoDA::Friendly::TwoDARow* master_feat = master_ft_model->Get2daRow(row);
+
+    MasterFeatForm form(main_panel, configuration, master_feat->RowId());
+    form.ShowModal();
+}
+
+void NWNHelperMain::OnMasterFeatPopupCopy(wxCommandEvent& event)
+{
+    unsigned int row = master_ft_model->GetRow(master_feats->GetCurrentItem());
+    TwoDA::Friendly::TwoDARow* master_feat_origin = master_ft_model->Get2daRow(row);
+
+    std::uint32_t master_feat_count = configuration->Get2da("masterfeats")->Size();
+    TwoDA::Friendly::TwoDARow* master_feat_target = configuration->Get2daRow("masterfeats", feat_count);
+
+    for (std::size_t i = 0; i < master_feat_origin->Size(); i++)
+        (*master_feat_target)[i] = (*master_feat_origin)[i];
+
+    MasterFeatForm form(main_panel, configuration, master_feat_target->RowId());
+    form.ShowModal();
+    // Reread 2da file, since we're adding row outside of wxDataViewModel
+    master_ft_model->Reset(master_feat_count + 1);
+    // Select new row
+    master_feats->Select(master_ft_model->GetItem(master_feat_count));
+    master_feats->EnsureVisible(master_ft_model->GetItem(master_feat_count));
+}
+
+void NWNHelperMain::OnMasterFeatPopupDelete(wxCommandEvent& event)
 {
     // Will be implemented later
     // We will need to make sure we replace all row ids which are used as

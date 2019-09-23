@@ -40,6 +40,16 @@ private:
     void OnSpellPopupCopy(wxCommandEvent& event);
     void OnSpellPopupDelete(wxCommandEvent& event);
 
+    void OnFeatPopupAdd(wxCommandEvent& event);
+    void OnFeatPopupEdit(wxCommandEvent& event);
+    void OnFeatPopupCopy(wxCommandEvent& event);
+    void OnFeatPopupDelete(wxCommandEvent& event);
+
+    void OnMasterFeatPopupAdd(wxCommandEvent& event);
+    void OnMasterFeatPopupEdit(wxCommandEvent& event);
+    void OnMasterFeatPopupCopy(wxCommandEvent& event);
+    void OnMasterFeatPopupDelete(wxCommandEvent& event);
+
     void OnNewProject(wxCommandEvent& event);
     void OnLoadProject(wxCommandEvent& event);
     void OnSaveProject(wxCommandEvent& event);
