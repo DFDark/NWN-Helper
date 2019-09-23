@@ -28,6 +28,8 @@ public:
     void OnMasterFeatColumnMenu(wxCommandEvent& event);
 
     void OnSpellRightClick(wxDataViewEvent& event);
+    void OnFeatRightClick(wxDataViewEvent& event);
+    void OnMasterFeatRightClick(wxDataViewEvent& event);
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);

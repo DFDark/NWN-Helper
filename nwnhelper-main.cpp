@@ -19,6 +19,14 @@ enum
     SPELL_POPUP_EDIT,
     SPELL_POPUP_COPY,
     SPELL_POPUP_DELETE,
+    FEAT_POPUP_ADD,
+    FEAT_POPUP_EDIT,
+    FEAT_POPUP_COPY,
+    FEAT_POPUP_DELETE,
+    MASTER_FEAT_POPUP_ADD,
+    MASTER_FEAT_POPUP_EDIT,
+    MASTER_FEAT_POPUP_COPY,
+    MASTER_FEAT_POPUP_DELETE,
     NEW_PROJECT,
     LOAD_PROJECT,
     SAVE_PROJECT,
@@ -42,6 +50,8 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(MASTER_FEATS, NWNHelperMain::OnMasterFeatActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
+    EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnFeatRightClick)
+    EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnMasterFeatRightClick)
 wxEND_EVENT_TABLE()
 
 NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _configuration) :
@@ -273,6 +283,38 @@ void NWNHelperMain::OnSpellRightClick(wxDataViewEvent& event)
     }
 }
 
+void NWNHelperMain::OnFeatRightClick(wxDataViewEvent& event)
+{
+    wxDataViewItem item = event.GetItem();
+    if (item.IsOk())
+    {
+        wxMenu popup_menu;
+
+        popup_menu.Append(FEAT_POPUP_ADD, "Add Feat");
+        popup_menu.Append(FEAT_POPUP_EDIT, "Edit Feat");
+        popup_menu.Append(FEAT_POPUP_COPY, "Copy Feat");
+        popup_menu.Append(FEAT_POPUP_DELETE, "Delete Feat");
+
+        PopupMenu(&popup_menu);
+    }
+}
+
+void NWNHelperMain::OnMasterFeatRightClick(wxDataViewEvent& event)
+{
+    wxDataViewItem item = event.GetItem();
+    if (item.IsOk())
+    {
+        wxMenu popup_menu;
+
+        popup_menu.Append(MASTER_FEAT_POPUP_ADD, "Add Master Feat");
+        popup_menu.Append(MASTER_FEAT_POPUP_EDIT, "Edit Master Feat");
+        popup_menu.Append(MASTER_FEAT_POPUP_COPY, "Copy Master Feat");
+        popup_menu.Append(MASTER_FEAT_POPUP_DELETE, "Delete Master Feat");
+
+        PopupMenu(&popup_menu);
+    }
+}
+
 void NWNHelperMain::OnSpellPopupAdd(wxCommandEvent& event)
 {
     std::uint32_t spell_count = configuration->Get2da("spells")->Size();
@@ -329,12 +371,14 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
 {
     sp_model->SetFile(NULL);
     ft_model->SetFile(NULL);
+    master_ft_model->SetFile(NULL);
 
     // Todo: Check where is the memory leak from
     configuration->NewProject();
 
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
+    master_ft_model->SetFile(configuration->Get2da("masterfeats"));
 
 }
 
@@ -350,11 +394,13 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
 
     sp_model->SetFile(NULL);
     ft_model->SetFile(NULL);
+    master_ft_model->SetFile(NULL);
 
     configuration->LoadProjectData(path);
 
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
+    master_ft_model->SetFile(configuration->Get2da("masterfeats"));
 }
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
