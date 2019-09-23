@@ -4,7 +4,7 @@
 
 wxBEGIN_EVENT_TABLE(MasterFeatForm, wxDialog)
     EVT_MENU(wxID_OK, MasterFeatForm::OnOk)
-    EVT_MENU(wxID_CANCEL, MasterFeatForm::OnCancel)
+    // EVT_MENU(wxID_CANCEL, MasterFeatForm::OnCancel)
 wxEND_EVENT_TABLE()
 
 MasterFeatForm::MasterFeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -12,7 +12,7 @@ MasterFeatForm::MasterFeatForm(wxWindow* parent, ConfigurationManager* _configur
 {
     panel = new wxPanel(this, wxID_ANY);
     configuration = _configuration;
-    feat = configuration->Get2daRow("masterfeats", row_id);
+    master_feat = configuration->Get2daRow("masterfeats", row_id);
 
     this->SetTitle(Get2DAString(master_feat, MASTERFEAT_2DA::Label));
 
@@ -27,7 +27,7 @@ MasterFeatForm::MasterFeatForm(wxWindow* parent, ConfigurationManager* _configur
     icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
-    Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatForm::OnOk));
+    Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MasterFeatForm::OnOk));
 
     cancel_button = new wxButton(panel, wxID_CANCEL, wxString("Cancel"));
 
@@ -89,10 +89,10 @@ void MasterFeatForm::InitFormValues()
 void MasterFeatForm::OnOk(wxCommandEvent& event)
 {
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Label)].m_Data = GetStringFromTextCtrl(label);
-    (*master_feat)[GETIDX(MASTERFEAT_2DA::Icon)].m_Data = GetStringFromTextCtrl(Icon);
+    (*master_feat)[GETIDX(MASTERFEAT_2DA::Icon)].m_Data = GetStringFromTextCtrl(icon);
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Strref)].m_Data = GetNameStrref();
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Description)].m_Data = GetDescriptionStrref();
-    
+
     this->EndModal(wxID_OK);
 }
 

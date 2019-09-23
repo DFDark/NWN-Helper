@@ -20,9 +20,9 @@ private:
     void OnOk(wxCommandEvent& event);
 
     void InitFormValues();
-    
+
     std::string GetNameStrref();
-    std::string GetDescriptionStrref()
+    std::string GetDescriptionStrref();
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* master_feat;
@@ -41,6 +41,8 @@ private:
     wxTextCtrl* name;
     wxTextCtrl* description;
     wxTextCtrl* icon;
+
+    wxDECLARE_EVENT_TABLE();
 };
 
 #endif

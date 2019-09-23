@@ -1,7 +1,7 @@
 #include "nwnhelper-main.hpp"
 #include "Components/spell-form.hpp"
 #include "Components/feat-form.hpp"
-#include "Components/ColumnForms/master-feat-column-form"
+#include "Components/master-feat-form.hpp"
 #include "Components/ColumnForms/spell-column-form.hpp"
 #include "Components/ColumnForms/feat-column-form.hpp"
 #include "Components/ColumnForms/master-feat-column-form.hpp"
@@ -58,8 +58,8 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(MASTER_FEATS, NWNHelperMain::OnMasterFeatActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
-    EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnFeatRightClick)
-    EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnMasterFeatRightClick)
+    EVT_DATAVIEW_ITEM_CONTEXT_MENU(FEATS, NWNHelperMain::OnFeatRightClick)
+    EVT_DATAVIEW_ITEM_CONTEXT_MENU(MASTER_FEATS, NWNHelperMain::OnMasterFeatRightClick)
 wxEND_EVENT_TABLE()
 
 NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _configuration) :
@@ -150,7 +150,7 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
     form.ShowModal();
 }
 
-void OnMasterFeatActivated(wxDataViewEvent& event)
+void NWNHelperMain::OnMasterFeatActivated(wxDataViewEvent& event)
 {
     unsigned int row = master_ft_model->GetRow(event.GetItem());
     TwoDA::Friendly::TwoDARow* master_feat = master_ft_model->Get2daRow(row);
@@ -430,7 +430,7 @@ void NWNHelperMain::OnFeatPopupDelete(wxCommandEvent& event)
 void NWNHelperMain::OnMasterFeatPopupAdd(wxCommandEvent& event)
 {
     std::uint32_t master_feat_count = configuration->Get2da("masterfeats")->Size();
-    TwoDA::Friendly::TwoDARow* master_feat = configuration->Get2daRow("masterfeats", feat_count);
+    TwoDA::Friendly::TwoDARow* master_feat = configuration->Get2daRow("masterfeats", master_feat_count);
 
     MasterFeatForm form(main_panel, configuration, master_feat->RowId());
     form.ShowModal();
@@ -456,7 +456,7 @@ void NWNHelperMain::OnMasterFeatPopupCopy(wxCommandEvent& event)
     TwoDA::Friendly::TwoDARow* master_feat_origin = master_ft_model->Get2daRow(row);
 
     std::uint32_t master_feat_count = configuration->Get2da("masterfeats")->Size();
-    TwoDA::Friendly::TwoDARow* master_feat_target = configuration->Get2daRow("masterfeats", feat_count);
+    TwoDA::Friendly::TwoDARow* master_feat_target = configuration->Get2daRow("masterfeats", master_feat_count);
 
     for (std::size_t i = 0; i < master_feat_origin->Size(); i++)
         (*master_feat_target)[i] = (*master_feat_origin)[i];
