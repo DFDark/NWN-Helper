@@ -1,6 +1,7 @@
 #include "nwnhelper-main.hpp"
 #include "Components/spell-form.hpp"
 #include "Components/feat-form.hpp"
+#include "Components/ColumnForms/master-feat-column-form"
 #include "Components/ColumnForms/spell-column-form.hpp"
 #include "Components/ColumnForms/feat-column-form.hpp"
 #include "Components/ColumnForms/master-feat-column-form.hpp"
@@ -39,6 +40,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SAVE_PROJECT_AS, NWNHelperMain::OnSaveProjectAs)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
+    EVT_DATAVIEW_ITEM_ACTIVATED(MASTER_FEATS, NWNHelperMain::OnMasterFeatActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
 wxEND_EVENT_TABLE()
 
@@ -127,6 +129,15 @@ void NWNHelperMain::OnFeatActivated(wxDataViewEvent& event)
     TwoDA::Friendly::TwoDARow* feat = ft_model->Get2daRow(row);
 
     FeatForm form(main_panel, configuration, feat->RowId());
+    form.ShowModal();
+}
+
+void OnMasterFeatActivated(wxDataViewEvent& event)
+{
+    unsigned int row = master_ft_model->GetRow(event.GetItem());
+    TwoDA::Friendly::TwoDARow* master_feat = master_ft_model->Get2daRow(row);
+
+    MasterFeatForm form(main_panel, configuration, master_feat->RowId());
     form.ShowModal();
 }
 

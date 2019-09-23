@@ -31,6 +31,7 @@ public:
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);
+    void OnMasterFeatActivated(wxDataViewEvent& event);
 
     void OnSpellPopupAdd(wxCommandEvent& event);
     void OnSpellPopupEdit(wxCommandEvent& event);
