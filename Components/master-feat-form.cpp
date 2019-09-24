@@ -90,29 +90,19 @@ void MasterFeatForm::OnOk(wxCommandEvent& event)
 {
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Label)].m_Data = GetStringFromTextCtrl(label);
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Icon)].m_Data = GetStringFromTextCtrl(icon);
-    (*master_feat)[GETIDX(MASTERFEAT_2DA::Strref)].m_Data = GetNameStrref();
-    (*master_feat)[GETIDX(MASTERFEAT_2DA::Description)].m_Data = GetDescriptionStrref();
+    (*master_feat)[GETIDX(MASTERFEAT_2DA::Strref)].m_Data = GetStrref(name, MASTERFEAT_2DA::Strref);
+    (*master_feat)[GETIDX(MASTERFEAT_2DA::Description)].m_Data = GetStrref(description, MASTERFEAT_2DA::Description);
 
     this->EndModal(wxID_OK);
 }
 
-std::string MasterFeatForm::GetNameStrref()
+std::string MasterFeatForm::GetStrref(wxTextCtrl* component, const auto& column)
 {
-    std::uint32_t strref = GetUintFromString(Get2DAString(master_feat, MASTERFEAT_2DA::Strref));
+    std::uint32_t strref = GetUintFromString(Get2DAString(master_feat, column));
+    if (component->GetValue().IsEmpty())
+        return std::string("****");
 
-    std::string aux = name->GetValue().ToStdString();
-    std::string base_name = configuration->GetTlkString(strref);
-    if (base_name != aux)
-        strref = configuration->SetTlkString(aux, strref);
-
-    return std::to_string(strref);
-}
-
-std::string MasterFeatForm::GetDescriptionStrref()
-{
-    std::uint32_t strref = GetUintFromString(Get2DAString(master_feat, MASTERFEAT_2DA::Description));
-
-    std::string aux = name->GetValue().ToStdString();
+    std::string aux = component->GetValue().ToStdString();
     std::string base_name = configuration->GetTlkString(strref);
     if (base_name != aux)
         strref = configuration->SetTlkString(aux, strref);

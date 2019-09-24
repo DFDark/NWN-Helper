@@ -572,7 +572,7 @@ void SpellForm::OnOk(wxCommandEvent& event)
 {
     // TODO: Add validation
     (*spell)[GETIDX(SPELL_2DA::Label)].m_Data = GetStringFromTextCtrl(label);
-    (*spell)[GETIDX(SPELL_2DA::Name)].m_Data = GetNameStrRefString();
+    (*spell)[GETIDX(SPELL_2DA::Name)].m_Data = GetStrref(name, SPELL_2DA::Name);
     (*spell)[GETIDX(SPELL_2DA::IconResRef)].m_Data = GetStringFromTextCtrl(icon_resref);
     (*spell)[GETIDX(SPELL_2DA::School)].m_Data = GetSchoolSelectionString();
     (*spell)[GETIDX(SPELL_2DA::Range)].m_Data = GetRangeSelectionString();
@@ -626,10 +626,10 @@ void SpellForm::OnOk(wxCommandEvent& event)
 
     (*spell)[GETIDX(SPELL_2DA::Category)].m_Data = std::to_string(category->GetSelection());
     (*spell)[GETIDX(SPELL_2DA::UserType)].m_Data = GetUserTypeString();
-    (*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data = GetDescriptionStrRefString();
+    (*spell)[GETIDX(SPELL_2DA::SpellDesc)].m_Data = GetStrref(description, SPELL_2DA::SpellDesc);
     (*spell)[GETIDX(SPELL_2DA::UseConcentration)].m_Data = std::string(use_concentration->GetValue() ? "1" : "0");
     (*spell)[GETIDX(SPELL_2DA::SpontaneouslyCast)].m_Data = std::string(spontaneous_cast->GetValue() ? "1" : "0");
-    (*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data = GetAltMessageStrRefString();
+    (*spell)[GETIDX(SPELL_2DA::AltMessage)].m_Data = GetStrref(alt_message, SPELL_2DA::AltMessage);
     (*spell)[GETIDX(SPELL_2DA::HostileSetting)].m_Data = std::string(hostile_setting->GetValue() ? "1" : "0");
     (*spell)[GETIDX(SPELL_2DA::FeatID)].m_Data = GetFeatId();
     (*spell)[GETIDX(SPELL_2DA::Counter1)].m_Data = counter_1_id > 0 ? std::to_string(counter_1_id - 1) : std::string("****");
@@ -1058,39 +1058,15 @@ std::string SpellForm::GetUserTypeString()
     return std::to_string(user_type->GetSelection());
 }
 
-std::string SpellForm::GetNameStrRefString()
+std::string SpellForm::GetStrref(wxTextCtrl* component, const auto& column)
 {
-    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::Name));
+    std::uint32_t strref = GetUintFromString(Get2DAString(spell, column));
+    if (component->GetValue().IsEmpty())
+        return std::string("****");
 
-    std::string aux = name->GetValue().ToStdString();
-    std::string base_name = configuration->GetTlkString(strref);
-    if (base_name != aux)
-        strref = configuration->SetTlkString(aux, strref);
-
-    return std::to_string(strref);
-}
-
-std::string SpellForm::GetDescriptionStrRefString()
-{
-    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::SpellDesc));
-
-    std::string aux = description->GetValue().ToStdString();
+    std::string aux = component->GetValue().ToStdString();
     std::string base_desc = configuration->GetTlkString(strref);
     if (base_desc != aux)
-        strref = configuration->SetTlkString(aux, strref);
-
-    return std::to_string(strref);
-}
-
-std::string SpellForm::GetAltMessageStrRefString()
-{
-    std::uint32_t strref = GetUintFromString(Get2DAString(spell, SPELL_2DA::AltMessage));
-    if (alt_message->GetValue().IsEmpty())
-        return "****";
-
-    std::string aux = alt_message->GetValue().ToStdString();
-    std::string base_altmsg = configuration->GetTlkString(strref);
-    if (base_altmsg != aux)
         strref = configuration->SetTlkString(aux, strref);
 
     return std::to_string(strref);

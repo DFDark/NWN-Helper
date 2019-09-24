@@ -58,9 +58,7 @@ private:
     std::string GetProjectileOrientationString();
     std::string GetImmunityTypeString();
     std::string GetUserTypeString();
-    std::string GetNameStrRefString();
-    std::string GetDescriptionStrRefString();
-    std::string GetAltMessageStrRefString();
+    std::string GetStrref(wxTextCtrl* component, const auto& column);
     std::string GetFeatId();
 
     void OnInnateChange(wxCommandEvent& event);

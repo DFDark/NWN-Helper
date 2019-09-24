@@ -21,8 +21,7 @@ private:
 
     void InitFormValues();
 
-    std::string GetNameStrref();
-    std::string GetDescriptionStrref();
+    std::string GetStrref(wxTextCtrl* component, const auto& column);
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* master_feat;
