@@ -150,6 +150,10 @@ enum class SKILL_2DA
 
 #define BASE_TLK_LIMIT 16777216
 
+#define SPELL_COLUMNS "SpellList"
+#define FEAT_COLUMNS "FeatList"
+#define MASTER_FEAT_COLUMNS "MasterFeatList"
+#define SKILL_COLUMNS "SkillList"
 
 #if defined _WIN32 || _WIN64
 #define SEPARATOR "\\"

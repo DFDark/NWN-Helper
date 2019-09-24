@@ -104,7 +104,7 @@ wxSize ConfigurationManager::GetWindowResolution()
     return wxSize(width, height);
 }
 
-std::vector<std::string> ConfigurationManager::GetSpellColumns()
+std::vector<std::string> ConfigurationManager::GetColumns(const std::string& section)
 {
     std::vector<std::string> result;
     try
@@ -113,7 +113,7 @@ std::vector<std::string> ConfigurationManager::GetSpellColumns()
         {
             std::string index = std::to_string(i);
             std::string key = std::string("COLUMN") + index;
-            std::string aux = std::string(config->GetValue("SpellList", key.c_str(), ""));
+            std::string aux = std::string(config->GetValue(section.c_str(), key.c_str(), ""));
             if (aux.size() > 0)
                 result.emplace_back(aux);
         }
@@ -121,86 +121,25 @@ std::vector<std::string> ConfigurationManager::GetSpellColumns()
     catch (std::exception& e)
     {
         result.clear();
-        wxMessageBox("Unable to load SpellList columns from ini file! Columns will be set to default.",
-            "Warning", wxOK | wxICON_WARNING );
+        std::string error = "Unable to load " + section + " columns from ini file! Columns will be set to default.";
+        wxMessageBox(error, "Warning", wxOK | wxICON_WARNING );
     }
 
     if (result.size() < 1)
     {
         result.emplace_back(std::string("label"));
-        result.emplace_back(std::string("spell"));
     }
 
     return result;
 }
 
-std::vector<std::string> ConfigurationManager::GetFeatColumns()
-{
-    std::vector<std::string> result;
-    try
-    {
-        for (unsigned int i = 0; i < 10; i++)
-        {
-            std::string index = std::to_string(i);
-            std::string key = std::string("COLUMN") + index;
-            std::string aux = std::string(config->GetValue("FeatList", key.c_str(), ""));
-            if (aux.size() > 0)
-                result.emplace_back(aux);
-        }
-    }
-    catch (std::exception& e)
-    {
-        result.clear();
-        wxMessageBox("Unable to load FeatList columns from ini file! Columns will be set to default.",
-            "Warning", wxOK | wxICON_WARNING );
-    }
-
-    if (result.size() < 1)
-    {
-        result.emplace_back(std::string("label"));
-        result.emplace_back(std::string("feat"));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ConfigurationManager::GetMasterFeatColumns()
-{
-    std::vector<std::string> result;
-    try
-    {
-        for (unsigned int i = 0; i < 10; i++)
-        {
-            std::string index = std::to_string(i);
-            std::string key = std::string("COLUMN") + index;
-            std::string aux = std::string(config->GetValue("MasterFeatList", key.c_str(), ""));
-            if (aux.size() > 0)
-                result.emplace_back(aux);
-        }
-    }
-    catch (std::exception& e)
-    {
-        result.clear();
-        wxMessageBox("Unable to load MasterFeatList columns from ini file! Columns will be set to default.",
-            "Warning", wxOK | wxICON_WARNING );
-    }
-
-    if (result.size() < 1)
-    {
-        result.emplace_back(std::string("label"));
-        result.emplace_back(std::string("master_feat"));
-    }
-
-    return result;
-}
-
-void ConfigurationManager::SetSpellColumns(const std::vector<std::string>& columns)
+void ConfigurationManager::SetColumns(const std::string& section, const std::vector<std::string>& columns)
 {
     for (unsigned int i = 0; i < 10; i++)
     {
         std::string index = std::to_string(i);
         std::string key = std::string("COLUMN") + index;
-        config->Delete("SpellList", key.c_str());
+        config->Delete(section.c_str(), key.c_str());
     }
 
     unsigned int counter = 0;
@@ -208,43 +147,7 @@ void ConfigurationManager::SetSpellColumns(const std::vector<std::string>& colum
     {
         std::string index = std::to_string(counter++);
         std::string key = std::string("COLUMN") + index;
-        config->SetValue("SpellList", key.c_str(), column.c_str());
-    }
-}
-
-void ConfigurationManager::SetFeatColumns(const std::vector<std::string>& columns)
-{
-    for (unsigned int i = 0; i < 10; i++)
-    {
-        std::string index = std::to_string(i);
-        std::string key = std::string("COLUMN") + index;
-        config->Delete("FeatList", key.c_str());
-    }
-
-    unsigned int counter = 0;
-    for (auto const& column : columns)
-    {
-        std::string index = std::to_string(counter++);
-        std::string key = std::string("COLUMN") + index;
-        config->SetValue("FeatList", key.c_str(), column.c_str());
-    }
-}
-
-void ConfigurationManager::SetMasterFeatColumns(const std::vector<std::string>& columns)
-{
-    for (unsigned int i = 0; i < 10; i++)
-    {
-        std::string index = std::to_string(i);
-        std::string key = std::string("COLUMN") + index;
-        config->Delete("MasterFeatList", key.c_str());
-    }
-
-    unsigned int counter = 0;
-    for (auto const& column : columns)
-    {
-        std::string index = std::to_string(counter++);
-        std::string key = std::string("COLUMN") + index;
-        config->SetValue("MasterFeatList", key.c_str(), column.c_str());
+        config->SetValue(section.c_str(), key.c_str(), column.c_str());
     }
 }
 

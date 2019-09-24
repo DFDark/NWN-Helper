@@ -118,7 +118,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     master_ft_model = new MasterFeatListModel(_master_feats, configuration);
     master_feats->AssociateModel(master_ft_model);
-    
+
     sk_model = new SkillListModel(_skills, configuration);
     skills->AssociateModel(sk_model);
 
@@ -171,7 +171,7 @@ void NWNHelperMain::SetSpellColumns()
 {
     spells->ClearColumns();
     spells->AppendTextColumn("ID", SpellListModel::ID);
-    for (auto const& col : configuration->GetSpellColumns())
+    for (auto const& col : configuration->GetColumns(SPELL_COLUMNS))
     {
         if (col == "label")
             spells->AppendTextColumn("Label", SpellListModel::LABEL);
@@ -210,7 +210,7 @@ void NWNHelperMain::SetFeatColumns()
 {
     feats->ClearColumns();
     feats->AppendTextColumn("ID", FeatListModel::ID);
-    for (auto const& col : configuration->GetFeatColumns())
+    for (auto const& col : configuration->GetColumns(FEAT_COLUMNS))
     {
         if (col == "label")
             feats->AppendTextColumn("Label", FeatListModel::LABEL);
@@ -240,7 +240,7 @@ void NWNHelperMain::SetMasterFeatColumns()
 {
     master_feats->ClearColumns();
     master_feats->AppendTextColumn("ID", MasterFeatListModel::ID);
-    for (auto const& col : configuration->GetMasterFeatColumns())
+    for (auto const& col : configuration->GetColumns(MASTER_FEAT_COLUMNS))
     {
         if (col == "label")
             master_feats->AppendTextColumn("Label", MasterFeatListModel::LABEL);
@@ -256,8 +256,12 @@ void NWNHelperMain::SetMasterFeatColumns()
 void NWNHelperMain::SetSkillColumns()
 {
     skills->ClearColumns();
-    master_feats->AppendTextColumn("ID", SkillListModel::ID);
-    master_feats->AppendTextColumn("Label", SkillListModel::LABEL);
+    skills->AppendTextColumn("ID", SkillListModel::ID);
+    for (auto const& col : configuration->GetColumns(SKILL_COLUMNS))
+    {
+        if (col == "label")
+            skills->AppendTextColumn("Label", SkillListModel::LABEL);
+    }
 }
 
 void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
@@ -499,6 +503,7 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
     sp_model->SetFile(NULL);
     ft_model->SetFile(NULL);
     master_ft_model->SetFile(NULL);
+    sk_model->SetFile(NULL);
 
     // Todo: Check where is the memory leak from
     configuration->NewProject();
@@ -506,7 +511,7 @@ void NWNHelperMain::OnNewProject(wxCommandEvent& event)
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
     master_ft_model->SetFile(configuration->Get2da("masterfeats"));
-
+    sk_model->SetFile(configuration->Get2da("skills"));
 }
 
 void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
@@ -522,12 +527,14 @@ void NWNHelperMain::OnLoadProject(wxCommandEvent& event)
     sp_model->SetFile(NULL);
     ft_model->SetFile(NULL);
     master_ft_model->SetFile(NULL);
+    sk_model->SetFile(NULL);
 
     configuration->LoadProjectData(path);
 
     sp_model->SetFile(configuration->Get2da("spells"));
     ft_model->SetFile(configuration->Get2da("feat"));
     master_ft_model->SetFile(configuration->Get2da("masterfeats"));
+    sk_model->SetFile(configuration->Get2da("skills"));
 }
 
 void NWNHelperMain::OnSaveProject(wxCommandEvent& event)

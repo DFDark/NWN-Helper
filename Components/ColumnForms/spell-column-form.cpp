@@ -64,7 +64,7 @@ void SpellColumnForm::OnOk(wxCommandEvent& event)
     for (auto const& col : enabled->GetStrings())
         cols.emplace_back(col.ToStdString());
 
-    configuration->SetSpellColumns(cols);
+    configuration->SetColumns(SPELL_COLUMNS, cols);
     this->EndModal(wxID_OK);
 }
 
@@ -92,7 +92,7 @@ void SpellColumnForm::SetInitialColumns()
     columns["wiz_sorc"] = false;
     columns["innate"] = false;
 
-    for (auto const& column : configuration->GetSpellColumns())
+    for (auto const& column : configuration->GetColumns(SPELL_COLUMNS))
     {
         columns[column] = true;
         enabled->Append(wxString(column));

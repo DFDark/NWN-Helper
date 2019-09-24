@@ -69,7 +69,7 @@ void SpellSelectionForm::SetSpellColumns()
 {
     spells->ClearColumns();
     spells->AppendTextColumn("ID", SpellListModel::ID);
-    for (auto const& col : configuration->GetSpellColumns())
+    for (auto const& col : configuration->GetColumns(SPELL_COLUMNS))
     {
         if (col == "label")
             spells->AppendTextColumn("Label", SpellListModel::LABEL);

@@ -98,7 +98,7 @@ TwoDA::Friendly::TwoDARow* SkillListModel::Get2daRow(unsigned int row)
     return &((*file)[row]);
 }
 
-unsigned int SpellListModel::GetUIntFromHex(const std::string& hex) const
+unsigned int SkillListModel::GetUIntFromHex(const std::string& hex) const
 {
     unsigned int result;
     try
@@ -113,7 +113,7 @@ unsigned int SpellListModel::GetUIntFromHex(const std::string& hex) const
     return result;
 }
 
-std::size_t SpellListModel::GetColumnID(unsigned int col) const
+std::size_t SkillListModel::GetColumnID(unsigned int col) const
 {
     switch (col)
     {

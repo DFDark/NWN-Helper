@@ -69,7 +69,7 @@ void FeatSelectionForm::SetFeatColumns()
 {
     feats->ClearColumns();
     feats->AppendTextColumn("ID", FeatListModel::ID);
-    for (auto const& col : configuration->GetFeatColumns())
+    for (auto const& col : configuration->GetColumns(FEAT_COLUMNS))
     {
         if (col == "label")
             feats->AppendTextColumn("Label", FeatListModel::LABEL);

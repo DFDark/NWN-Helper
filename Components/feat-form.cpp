@@ -99,6 +99,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     min_con = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
     min_cha = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
     min_spell_lvl = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
+    req_skill_min_rank_1 = new wxTextCtrl(req_skill_staticbox, wxID_ANY, wxString(""));
+    req_skill_min_rank_2 = new wxTextCtrl(req_skill_staticbox, wxID_ANY, wxString(""));
 
     pre_req_feat_1 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_1, wxString("None"));
     pre_req_feat_2 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_2, wxString("None"));
@@ -112,7 +114,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     or_req_feat_4 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_4, wxString("None"));
     req_skill_1 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_1, wxString("None"));
     req_skill_2 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_2, wxString("None"));
-    
+
 
     gain_multiple = new wxCheckBox(panel, wxID_ANY, wxString("Gain Multiple"));
     effects_stack = new wxCheckBox(panel, wxID_ANY, wxString("Effects Stack"));
@@ -248,20 +250,20 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     req_oneof_sizer->Add(or_req_feat_2, 0, wxEXPAND);
     req_oneof_sizer->Add(or_req_feat_3, 0, wxEXPAND);
     req_oneof_sizer->Add(or_req_feat_4, 0, wxEXPAND);
-    
+
     skill_sizer_1->Add(req_skill_1, 1, wxEXPAND);
     skill_sizer_1->Add(req_skill_min_rank_1);
     skill_sizer_2->Add(req_skill_2, 1, wxEXPAND);
     skill_sizer_2->Add(req_skill_min_rank_2);
-    
-    req_skill_staticbox->Add(skill_sizer_1, 1, wxEXPAND);
-    req_skill_staticbox->Add(skill_sizer_2, 1, wxEXPAND);
-    
+
+    req_skill_sizer->Add(skill_sizer_1, 0, wxEXPAND);
+    req_skill_sizer->Add(skill_sizer_2, 0, wxEXPAND);
+
     description_sizer->Add(description_label);
     description_sizer->Add(description, 1, wxEXPAND);
-    
+
     description_row->Add(req_oneof_sizer, 1, wxEXPAND);
-    description_row->Add(req_skill_staticbox, 1, wxEXPAND);
+    description_row->Add(req_skill_sizer, 1);
     description_row->Add(description_sizer, 1, wxEXPAND);
 
     forth_row->Add(description_row);
@@ -543,10 +545,9 @@ void FeatForm::LoadSkillValues()
         successor->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
         */
     }
-    
+
     req_skill_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqSkill2));
     {
         req_skill_2_id++;
     }
 }
-

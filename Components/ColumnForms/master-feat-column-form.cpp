@@ -63,7 +63,7 @@ void MasterFeatColumnForm::OnOk(wxCommandEvent& event)
     for (auto const& col : enabled->GetStrings())
         cols.emplace_back(col.ToStdString());
 
-    configuration->SetMasterFeatColumns(cols);
+    configuration->SetColumns(MASTER_FEAT_COLUMNS, cols);
     this->EndModal(wxID_OK);
 }
 
@@ -80,7 +80,7 @@ void MasterFeatColumnForm::SetInitialColumns()
     columns["icon"] = false;
     columns["description"] = false;
 
-    for (auto const& column : configuration->GetMasterFeatColumns())
+    for (auto const& column : configuration->GetColumns(MASTER_FEAT_COLUMNS))
     {
         columns[column] = true;
         enabled->Append(wxString(column));

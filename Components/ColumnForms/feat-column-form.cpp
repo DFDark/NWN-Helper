@@ -63,7 +63,7 @@ void FeatColumnForm::OnOk(wxCommandEvent& event)
     for (auto const& col : enabled->GetStrings())
         cols.emplace_back(col.ToStdString());
 
-    configuration->SetFeatColumns(cols);
+    configuration->SetColumns(FEAT_COLUMNS, cols);
     this->EndModal(wxID_OK);
 }
 
@@ -86,7 +86,7 @@ void FeatColumnForm::SetInitialColumns()
     columns["min_cha"] = false;
     columns["min_spell_level"] = false;
 
-    for (auto const& column : configuration->GetFeatColumns())
+    for (auto const& column : configuration->GetColumns(FEAT_COLUMNS))
     {
         columns[column] = true;
         enabled->Append(wxString(column));

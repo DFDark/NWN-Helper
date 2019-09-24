@@ -30,9 +30,7 @@ public:
     bool LoadProjectData(const std::string& _path);
     bool SaveCurrentSettings();
     void ClearProjectData();
-    void SetSpellColumns(const std::vector<std::string>& columns);
-    void SetFeatColumns(const std::vector<std::string>& columns);
-    void SetMasterFeatColumns(const std::vector<std::string>& columns);
+    void SetColumns(const std::string& section, const std::vector<std::string>& columns);
     void AddOrEdit2DARow(const std::string& twoda, const TwoDA::Friendly::TwoDARow& row);
     void Set2daModified(const std::string& twoda, const bool& modified = false);
     void SaveProject(const bool& force_prompt = false);
@@ -40,9 +38,7 @@ public:
 
     TwoDA::Friendly::TwoDA* Get2da(std::string name);
     wxSize GetWindowResolution();
-    std::vector<std::string> GetSpellColumns();
-    std::vector<std::string> GetFeatColumns();
-    std::vector<std::string> GetMasterFeatColumns();
+    std::vector<std::string> GetColumns(const std::string& section);
     std::string GetTlkString(const std::uint32_t& strref);
 
     TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
