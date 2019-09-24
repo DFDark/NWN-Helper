@@ -115,6 +115,22 @@ enum class MASTERFEAT_2DA
     Icon
 };
 
+enum class SKILL_2DA
+{
+    Label,
+    Name,
+    Description,
+    Icon,
+    Untrained,
+    KeyAbility,
+    ArmorCheckPenalty,
+    AllClassesCanUse,
+    Category,
+    MaxCR,
+    Constant,
+    HostileSkill
+};
+
 #define GETIDX(x) (static_cast<std::size_t>(x))
 
 #define METAMAGIC_EMPOWER 0x01

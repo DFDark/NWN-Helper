@@ -12,6 +12,7 @@
 #include "ListModels/spelllist-model.hpp"
 #include "ListModels/featlist-model.hpp"
 #include "ListModels/masterfeatlist-model.hpp"
+#include "ListModels/skilllist-model.hpp"
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
@@ -58,6 +59,7 @@ private:
     void SetSpellColumns();
     void SetFeatColumns();
     void SetMasterFeatColumns();
+    void SetSkillColumns();
 
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
@@ -67,6 +69,7 @@ private:
     wxDataViewCtrl* spells;
     wxDataViewCtrl* feats;
     wxDataViewCtrl* master_feats;
+    wxDataViewCtrl* skills;
 
     wxNotebook* tabs;
 
@@ -74,6 +77,7 @@ private:
     SpellListModel* sp_model;
     FeatListModel* ft_model;
     MasterFeatListModel* master_ft_model;
+    SkillListModel* sk_model;
 
     wxDECLARE_EVENT_TABLE();
 };

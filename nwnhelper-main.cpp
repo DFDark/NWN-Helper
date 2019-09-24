@@ -12,6 +12,7 @@ enum
     SPELLS = wxID_HIGHEST + 1,
     FEATS,
     MASTER_FEATS,
+    SKILLS,
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
     MASTER_FEAT_COLUMNS_MENU,
@@ -97,14 +98,17 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     spells = new wxDataViewCtrl(tabs, SPELLS);
     feats = new wxDataViewCtrl(tabs, FEATS);
     master_feats = new wxDataViewCtrl(tabs, MASTER_FEATS);
+    skills = new wxDataViewCtrl(tabs, SKILLS);
 
     tabs->AddPage(spells, wxString("Spells"));
     tabs->AddPage(feats, wxString("Feats"));
+    tabs->AddPage(skills, wxString("Skills"));
     tabs->AddPage(master_feats, wxString("Master Feats"));
 
     TwoDA::Friendly::TwoDA* _2da = configuration->Get2da("spells");
     TwoDA::Friendly::TwoDA* _feats = configuration->Get2da("feat");
     TwoDA::Friendly::TwoDA* _master_feats = configuration->Get2da("masterfeats");
+    TwoDA::Friendly::TwoDA* _skills = configuration->Get2da("skills");
 
     sp_model = new SpellListModel(_2da, configuration);
     spells->AssociateModel(sp_model);
@@ -114,10 +118,14 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
 
     master_ft_model = new MasterFeatListModel(_master_feats, configuration);
     master_feats->AssociateModel(master_ft_model);
+    
+    sk_model = new SkillListModel(_skills, configuration);
+    skills->AssociateModel(sk_model);
 
     SetSpellColumns();
     SetFeatColumns();
     SetMasterFeatColumns();
+    SetSkillColumns();
 
     wxBoxSizer* tab_sizer = new wxBoxSizer(wxHORIZONTAL);
     tab_sizer->Add(tabs, 2, wxEXPAND|wxALL);
@@ -243,6 +251,13 @@ void NWNHelperMain::SetMasterFeatColumns()
         else if (col == "description")
             master_feats->AppendTextColumn("Description", MasterFeatListModel::DESCRIPTION);
     }
+}
+
+void NWNHelperMain::SetSkillColumns()
+{
+    skills->ClearColumns();
+    master_feats->AppendTextColumn("ID", SkillListModel::ID);
+    master_feats->AppendTextColumn("Label", SkillListModel::LABEL);
 }
 
 void NWNHelperMain::OnSpellColumnMenu(wxCommandEvent& event)
