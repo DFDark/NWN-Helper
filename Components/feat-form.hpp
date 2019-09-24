@@ -24,6 +24,7 @@ private:
     void LoadSpellIdValue();
     void LoadSuccessorIdValue();
     void LoadMiscellaneousValues();
+    void LoadSkillValues();
 
     void SetFeatRequirements();
     void InitFormValues();
@@ -42,6 +43,13 @@ private:
     std::uint32_t spellid;
     std::uint32_t successor_id;
     std::uint32_t master_feat_id;
+    std::uint32_t or_req_feat_0_id;
+    std::uint32_t or_req_feat_1_id;
+    std::uint32_t or_req_feat_2_id;
+    std::uint32_t or_req_feat_3_id;
+    std::uint32_t or_req_feat_4_id;
+    std::uint32_t req_skill_1_id;
+    std::uint32_t req_skill_2_id;
 
     wxPanel* panel;
 
@@ -87,15 +95,26 @@ private:
     wxTextCtrl* max_cr;
     wxTextCtrl* cr_value;
     wxTextCtrl* uses_per_day;
+    wxTextCtrl* req_skill_min_rank_1;
+    wxTextCtrl* req_skill_min_rank_2;
 
     wxButton* pre_req_feat_1;
     wxButton* pre_req_feat_2;
     wxButton* spell;
     wxButton* successor;
     wxButton* master_feat;
+    wxButton* or_req_feat_0;
+    wxButton* or_req_feat_1;
+    wxButton* or_req_feat_2;
+    wxButton* or_req_feat_3;
+    wxButton* or_req_feat_4;
+    wxButton* req_skill_1;
+    wxButton* req_skill_2;
 
     wxStaticBox* req_feat_staticbox;
     wxStaticBox* min_req_staticbox;
+    wxStaticBox* req_oneof_feat_staticbox;
+    wxStaticBox* req_skill_staticbox;
 
     wxCheckBox* gain_multiple;
     wxCheckBox* effects_stack;

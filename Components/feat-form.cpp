@@ -11,7 +11,14 @@ enum
     FT_PREREQ_FEAT_2,
     FT_SPELLID,
     FT_SUCCESSOR,
-    FT_MASTER_FEAT
+    FT_MASTER_FEAT,
+    FT_REQ_ONEOF_0,
+    FT_REQ_ONEOF_1,
+    FT_REQ_ONEOF_2,
+    FT_REQ_ONEOF_3,
+    FT_REQ_ONEOF_4,
+    FT_REQ_SKILL_1,
+    FT_REQ_SKILL_2
 };
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
@@ -37,9 +44,18 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     pre_req_feat_2_id = 0;
     spellid = 0;
     successor_id = 0;
+    or_req_feat_0_id = 0;
+    or_req_feat_1_id = 0;
+    or_req_feat_2_id = 0;
+    or_req_feat_3_id = 0;
+    or_req_feat_4_id = 0;
+    req_skill_1_id = 0;
+    req_skill_2_id = 0;
 
     req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"));
     min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Minimal Requirements"));
+    req_oneof_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Required one of"));
+    req_skill_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Required skills"));
     /*
     * FORM LABELS
     */
@@ -89,6 +105,14 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     spell = new wxButton(panel, FT_SPELLID, wxString("None"));
     successor = new wxButton(panel, FT_SUCCESSOR, wxString("None"));
     master_feat = new wxButton(panel, FT_MASTER_FEAT, wxString("None"));
+    or_req_feat_0 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_0, wxString("None"));
+    or_req_feat_1 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_1, wxString("None"));
+    or_req_feat_2 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_2, wxString("None"));
+    or_req_feat_3 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_3, wxString("None"));
+    or_req_feat_4 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_4, wxString("None"));
+    req_skill_1 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_1, wxString("None"));
+    req_skill_2 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_2, wxString("None"));
+    
 
     gain_multiple = new wxCheckBox(panel, wxID_ANY, wxString("Gain Multiple"));
     effects_stack = new wxCheckBox(panel, wxID_ANY, wxString("Effects Stack"));
@@ -212,12 +236,35 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     third_row->Add(uses_per_day_sizer);
     third_row->Add(master_feat_sizer);
 
+    wxBoxSizer* description_row = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticBoxSizer* req_oneof_sizer = new wxStaticBoxSizer(req_oneof_feat_staticbox, wxVERTICAL);
+    wxStaticBoxSizer* req_skill_sizer = new wxStaticBoxSizer(req_skill_staticbox, wxVERTICAL);
     wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* skill_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* skill_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
 
+    req_oneof_sizer->Add(or_req_feat_0, 0, wxEXPAND);
+    req_oneof_sizer->Add(or_req_feat_1, 0, wxEXPAND);
+    req_oneof_sizer->Add(or_req_feat_2, 0, wxEXPAND);
+    req_oneof_sizer->Add(or_req_feat_3, 0, wxEXPAND);
+    req_oneof_sizer->Add(or_req_feat_4, 0, wxEXPAND);
+    
+    skill_sizer_1->Add(req_skill_1, 1, wxEXPAND);
+    skill_sizer_1->Add(req_skill_min_rank_1);
+    skill_sizer_2->Add(req_skill_2, 1, wxEXPAND);
+    skill_sizer_2->Add(req_skill_min_rank_2);
+    
+    req_skill_staticbox->Add(skill_sizer_1, 1, wxEXPAND);
+    req_skill_staticbox->Add(skill_sizer_2, 1, wxEXPAND);
+    
     description_sizer->Add(description_label);
     description_sizer->Add(description, 1, wxEXPAND);
+    
+    description_row->Add(req_oneof_sizer, 1, wxEXPAND);
+    description_row->Add(req_skill_staticbox, 1, wxEXPAND);
+    description_row->Add(description_sizer, 1, wxEXPAND);
 
-    forth_row->Add(description_sizer, 1, wxEXPAND);
+    forth_row->Add(description_row);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -273,6 +320,52 @@ void FeatForm::SetFeatRequirements()
         TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_2_id - 1);
         std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
         pre_req_feat_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+
+    // "One of" Section
+    or_req_feat_0_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::OrReqFeat0));
+    if (or_req_feat_0_id > 0)
+    {
+        or_req_feat_0_id++;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", or_req_feat_0_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        or_req_feat_0->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+
+    or_req_feat_1_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::OrReqFeat1));
+    if (or_req_feat_1_id > 0)
+    {
+        or_req_feat_1_id++;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", or_req_feat_1_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        or_req_feat_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+
+    or_req_feat_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::OrReqFeat2));
+    if (or_req_feat_2_id > 0)
+    {
+        or_req_feat_2_id++;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", or_req_feat_2_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        or_req_feat_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+
+    or_req_feat_3_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::OrReqFeat3));
+    if (or_req_feat_3_id > 0)
+    {
+        or_req_feat_0_id++;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", or_req_feat_3_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        or_req_feat_3->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+
+    or_req_feat_4_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::OrReqFeat4));
+    if (or_req_feat_4_id > 0)
+    {
+        or_req_feat_4_id++;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", or_req_feat_4_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        or_req_feat_4->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 }
 
@@ -437,3 +530,23 @@ void FeatForm::LoadMiscellaneousValues()
     aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::TargetSelf));
     target_self->SetValue(aux > 0);
 }
+
+void FeatForm::LoadSkillValues()
+{
+    req_skill_1_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqSkill));
+    if (req_skill_1_id > 0)
+    {
+        req_skill_1_id++;
+        /* TODO: implement skills
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", successor_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+        successor->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        */
+    }
+    
+    req_skill_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqSkill2));
+    {
+        req_skill_2_id++;
+    }
+}
+
