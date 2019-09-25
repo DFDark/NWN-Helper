@@ -1,14 +1,6 @@
 #include "skill-form.hpp"
 #include "constants.hpp"
 #include "functions.hpp"
-#include "SelectionForms/spell-selection-form.hpp"
-#include "SelectionForms/feat-selection-form.hpp"
-#include "SelectionForms/master-feat-selection-form.hpp"
-
-enum
-{
-    SK_ = wxID_HIGHEST + 1,
-};
 
 wxBEGIN_EVENT_TABLE(SkillForm, wxDialog)
     EVT_MENU(wxID_OK, SkillForm::OnOk)
@@ -129,6 +121,26 @@ SkillForm::SkillForm(wxWindow* parent, ConfigurationManager* _configuration, std
 
 void SkillForm::OnOk(wxCommandEvent& event)
 {
+    if (!IsFloat(max_cr))
+    {
+        wxMessageBox("MaxCR must be floating point or empty!", "Error", wxOK | wxICON_ERROR);
+        return;
+    }
+
+    (*skill)[GETIDX(SKILL_2DA::Label)].m_Data = GetStringFromTextCtrl(label);
+    (*skill)[GETIDX(SKILL_2DA::Name)].m_Data = GetStrref(name, SKILL_2DA::Name);
+    (*skill)[GETIDX(SKILL_2DA::Description)].m_Data = GetStrref(description, SKILL_2DA::Description);
+    (*skill)[GETIDX(SKILL_2DA::Icon)].m_Data = GetStringFromTextCtrl(icon);
+
+    (*skill)[GETIDX(SKILL_2DA::Untrained)].m_Data = std::string(untrained->GetValue() ? "1" : "0");
+    (*skill)[GETIDX(SKILL_2DA::KeyAbility)].m_Data = GetKeyAbility();
+    (*skill)[GETIDX(SKILL_2DA::ArmorCheckPenalty)].m_Data = std::string(armor_check_penalty->GetValue() ? "1" : "0");
+    (*skill)[GETIDX(SKILL_2DA::AllClassesCanUse)].m_Data = std::string(all_classes_can_use->GetValue() ? "1" : "0");
+    (*skill)[GETIDX(SKILL_2DA::Category)].m_Data = category->GetSelection() > 0 ? std::to_string(category->GetSelection()) : std::string("****");
+    (*skill)[GETIDX(SKILL_2DA::MaxCR)].m_Data =
+    (*skill)[GETIDX(SKILL_2DA::Constant)].m_Data = GetStringFromTextCtrl(constant);
+    (*skill)[GETIDX(SKILL_2DA::HostileSkill)].m_Data = std::string(hostile_skill->GetValue() ? "1" : "0");
+
     this->EndModal(wxID_OK);
 }
 
@@ -206,4 +218,31 @@ void SkillForm::LoadCategoryValues()
         unsigned int row_id = GetUintFromString(Get2DAString(skill, SKILL_2DA::Category));
         category->SetSelection(row_id);
     }
+}
+
+std::string SkillForm::GetKeyAbility()
+{
+    switch (key_ability->GetSelection())
+    {
+        case 1: return std::string("DEX");
+        case 2: return std::string("CON");
+        case 3: return std::string("WIS");
+        case 4: return std::string("INT");
+        case 5: return std::string("CHA");
+        default: return std::string("STR");
+    }
+}
+
+std::string SkillForm::GetStrref(wxTextCtrl* component, const auto& column)
+{
+    std::uint32_t strref = GetUintFromString(Get2DAString(skill, column));
+    if (component->GetValue().IsEmpty())
+        return std::string("****");
+
+    std::string aux = component->GetValue().ToStdString();
+    std::string base_desc = configuration->GetTlkString(strref);
+    if (base_desc != aux)
+        strref = configuration->SetTlkString(aux, strref);
+
+    return std::to_string(strref);
 }

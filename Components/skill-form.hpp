@@ -24,6 +24,9 @@ private:
     void LoadMiscellaneousValues();
     void InitFormValues();
 
+    std::string GetKeyAbility();
+    std::string GetStrref(wxTextCtrl* component, const auto& column);
+
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* skill;
 

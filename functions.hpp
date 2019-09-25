@@ -84,4 +84,24 @@ inline std::string GetStringFromTextCtrl(wxTextCtrl* component)
     return value.ToStdString();
 }
 
+inline bool IsFloat(wxTextCtrl* component, const bool& can_be_empty = true)
+{
+    if (component == NULL)
+        throw std::string("Unknown component for IsFloat");
+
+    wxString value = component->GetValue();
+    if (can_be_empty && value.IsEmpty())
+        return true;
+
+    try
+    {
+        float aux = std::stof(value.ToStdString());
+    }
+    catch (std::exception& e)
+    {
+        return false;
+    }
+
+    return true;
+}
 #endif
