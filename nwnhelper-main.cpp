@@ -5,6 +5,7 @@
 #include "Components/ColumnForms/spell-column-form.hpp"
 #include "Components/ColumnForms/feat-column-form.hpp"
 #include "Components/ColumnForms/master-feat-column-form.hpp"
+#include "Components/ColumnForms/skill-column-form.hpp"
 #include "Components/export-form.hpp"
 
 enum
@@ -16,6 +17,7 @@ enum
     SPELL_COLUMNS_MENU,
     FEAT_COLUMNS_MENU,
     MASTER_FEAT_COLUMNS_MENU,
+    SKILL_COLUMNS_MENU,
     SPELL_POPUP_ADD,
     SPELL_POPUP_EDIT,
     SPELL_POPUP_COPY,
@@ -39,6 +41,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SPELL_COLUMNS_MENU, NWNHelperMain::OnSpellColumnMenu)
     EVT_MENU(FEAT_COLUMNS_MENU, NWNHelperMain::OnFeatColumnMenu)
     EVT_MENU(MASTER_FEAT_COLUMNS_MENU, NWNHelperMain::OnMasterFeatColumnMenu)
+    EVT_MENU(SKILL_COLUMNS_MENU, NWNHelperMain::OnSkillColumnMenu)
     EVT_MENU(SPELL_POPUP_ADD, NWNHelperMain::OnSpellPopupAdd)
     EVT_MENU(SPELL_POPUP_EDIT, NWNHelperMain::OnSpellPopupEdit)
     EVT_MENU(SPELL_POPUP_COPY, NWNHelperMain::OnSpellPopupCopy)
@@ -261,6 +264,8 @@ void NWNHelperMain::SetSkillColumns()
     {
         if (col == "label")
             skills->AppendTextColumn("Label", SkillListModel::LABEL);
+        else if (col == "skill")
+            skills->AppendTextColumn("Skill", SkillListModel::SKILL);
     }
 }
 
@@ -290,6 +295,17 @@ void NWNHelperMain::OnMasterFeatColumnMenu(wxCommandEvent& event)
     if (form.ShowModal() == wxID_OK)
     {
         SetMasterFeatColumns();
+        configuration->SaveCurrentSettings();
+    }
+}
+
+
+void NWNHelperMain::OnSkillColumnMenu(wxCommandEvent& event)
+{
+    SkillColumnForm form(main_panel, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+        SetSkillColumns();
         configuration->SaveCurrentSettings();
     }
 }

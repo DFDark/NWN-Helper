@@ -27,6 +27,8 @@ add_library(NWNHelper STATIC
     Components/ColumnForms/feat-column-form.cpp
     Components/ColumnForms/master-feat-column-form.hpp
     Components/ColumnForms/master-feat-column-form.cpp
+    Components/ColumnForms/skill-column-form.hpp
+    Components/ColumnForms/skill-column-form.cpp
     SelectionForms/spell-selection-form.hpp
     SelectionForms/spell-selection-form.cpp
     SelectionForms/feat-selection-form.hpp

@@ -27,6 +27,7 @@ public:
     void OnSpellColumnMenu(wxCommandEvent& event);
     void OnFeatColumnMenu(wxCommandEvent& event);
     void OnMasterFeatColumnMenu(wxCommandEvent& event);
+    void OnSkillColumnMenu(wxCommandEvent& event);
 
     void OnSpellRightClick(wxDataViewEvent& event);
     void OnFeatRightClick(wxDataViewEvent& event);
