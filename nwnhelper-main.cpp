@@ -2,6 +2,7 @@
 #include "Components/spell-form.hpp"
 #include "Components/feat-form.hpp"
 #include "Components/master-feat-form.hpp"
+#include "Components/skill-form.hpp"
 #include "Components/ColumnForms/spell-column-form.hpp"
 #include "Components/ColumnForms/feat-column-form.hpp"
 #include "Components/ColumnForms/master-feat-column-form.hpp"
@@ -61,9 +62,11 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(MASTER_FEATS, NWNHelperMain::OnMasterFeatActivated)
+    EVT_DATAVIEW_ITEM_ACTIVATED(SKILLS, NWNHelperMain::OnSkillActivated)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(SPELLS, NWNHelperMain::OnSpellRightClick)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(FEATS, NWNHelperMain::OnFeatRightClick)
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(MASTER_FEATS, NWNHelperMain::OnMasterFeatRightClick)
+    EVT_DATAVIEW_ITEM_CONTEXT_MENU(SKILLS, NWNHelperMain::OnSkillRightClick)
 wxEND_EVENT_TABLE()
 
 NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _configuration) :
@@ -82,6 +85,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_columns->Append(SPELL_COLUMNS_MENU, "Spells", "Sets up visible columns for spells!");
     menu_columns->Append(FEAT_COLUMNS_MENU, "Feats", "Sets up visible columns for feats!");
     menu_columns->Append(MASTER_FEAT_COLUMNS_MENU, "Master Feats", "Sets up visible columns for master feats!");
+    menu_columns->Append(SKILL_COLUMNS_MENU, "Skills", "Sets up visible columns for skills!");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
     menu_bar->Append(menu_columns, "&Columns");
@@ -167,6 +171,15 @@ void NWNHelperMain::OnMasterFeatActivated(wxDataViewEvent& event)
     TwoDA::Friendly::TwoDARow* master_feat = master_ft_model->Get2daRow(row);
 
     MasterFeatForm form(main_panel, configuration, master_feat->RowId());
+    form.ShowModal();
+}
+
+void NWNHelperMain::OnSkillActivated(wxDataViewEvent& event)
+{
+    unsigned int row = sk_model->GetRow(event.GetItem());
+    TwoDA::Friendly::TwoDARow* skill = sk_model->Get2daRow(row);
+
+    SkillForm form(main_panel, configuration, skill->RowId());
     form.ShowModal();
 }
 
@@ -356,6 +369,11 @@ void NWNHelperMain::OnMasterFeatRightClick(wxDataViewEvent& event)
 
         PopupMenu(&popup_menu);
     }
+}
+
+void NWNHelperMain::OnSkillRightClick(wxDataViewEvent& event)
+{
+
 }
 
 void NWNHelperMain::OnSpellPopupAdd(wxCommandEvent& event)

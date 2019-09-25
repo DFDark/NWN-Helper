@@ -32,10 +32,12 @@ public:
     void OnSpellRightClick(wxDataViewEvent& event);
     void OnFeatRightClick(wxDataViewEvent& event);
     void OnMasterFeatRightClick(wxDataViewEvent& event);
+    void OnSkillRightClick(wxDataViewEvent& event);
 private:
     void OnSpellActivated(wxDataViewEvent& event);
     void OnFeatActivated(wxDataViewEvent& event);
     void OnMasterFeatActivated(wxDataViewEvent& event);
+    void OnSkillActivated(wxDataViewEvent& event);
 
     void OnSpellPopupAdd(wxCommandEvent& event);
     void OnSpellPopupEdit(wxCommandEvent& event);
