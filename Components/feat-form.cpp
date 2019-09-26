@@ -391,6 +391,7 @@ void FeatForm::InitFormValues()
     LoadSpellIdValue();
     LoadSuccessorIdValue();
     LoadMiscellaneousValues();
+    LoadSkillValues();
 }
 
 void FeatForm::OnPrereqFeat1(wxCommandEvent& event)
@@ -538,20 +539,24 @@ void FeatForm::LoadMiscellaneousValues()
 
 void FeatForm::LoadSkillValues()
 {
+    req_skill_min_rank_1->SetValue(Get2DAString(feat, FEAT_2DA::ReqSkillMinRanks));
     req_skill_1_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqSkill));
     if (req_skill_1_id > 0)
     {
         req_skill_1_id++;
-        /* TODO: implement skills
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", successor_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
-        successor->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        */
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("skills", req_skill_1_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, SKILL_2DA::Name));
+        req_skill_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
+    req_skill_min_rank_2->SetValue(Get2DAString(feat, FEAT_2DA::ReqSkillMinRanks2));
     req_skill_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqSkill2));
+    if (req_skill_2_id > 0)
     {
         req_skill_2_id++;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("skills", req_skill_2_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, SKILL_2DA::Name));
+        req_skill_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 }
 
