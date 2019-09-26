@@ -17,7 +17,7 @@ SkillSelectionForm::SkillSelectionForm(wxWindow* parent, ConfigurationManager* _
     configuration = _configuration;
     selection = _selection;
 
-    skills = new wxDataViewCtrl(this, skills);
+    skills = new wxDataViewCtrl(this, SKILLS);
     TwoDA::Friendly::TwoDA* twoda = configuration->Get2da("skills");
 
     sk_model = new SkillListModel(twoda, configuration, true);
@@ -51,7 +51,7 @@ void SkillSelectionForm::OnOk(wxCommandEvent& event)
         return;
     }
 
-    TwoDA::Friendly::TwoDARow* row = ft_model->Get2daRow(ft_model->GetRow(skills->GetSelection()));
+    TwoDA::Friendly::TwoDARow* row = sk_model->Get2daRow(sk_model->GetRow(skills->GetSelection()));
     selection = row->RowId();
 
     this->EndModal(wxID_OK);
@@ -59,7 +59,7 @@ void SkillSelectionForm::OnOk(wxCommandEvent& event)
 
 void SkillSelectionForm::OnDoubleClick(wxDataViewEvent& event)
 {
-    TwoDA::Friendly::TwoDARow* row = ft_model->Get2daRow(ft_model->GetRow(event.GetItem()));
+    TwoDA::Friendly::TwoDARow* row = sk_model->Get2daRow(sk_model->GetRow(event.GetItem()));
     selection = row->RowId();
 
     this->EndModal(wxID_OK);
@@ -75,6 +75,7 @@ void SkillSelectionForm::SetSkillColumns()
             skills->AppendTextColumn("Label", SkillListModel::LABEL);
         else if (col == "skill")
             skills->AppendTextColumn("Skill", SkillListModel::SKILL);
+    }
 }
 
 std::uint32_t SkillSelectionForm::GetSkillSelection()
@@ -86,7 +87,7 @@ void SkillSelectionForm::OnShow(wxShowEvent& event)
 {
     if (event.IsShown())
     {
-        skills->Select(ft_model->GetItem(selection));
-        skills->EnsureVisible(ft_model->GetItem(selection));
+        skills->Select(sk_model->GetItem(selection));
+        skills->EnsureVisible(sk_model->GetItem(selection));
     }
 }

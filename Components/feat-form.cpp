@@ -582,9 +582,9 @@ void FeatForm::OnRequiredSkill2(wxCommandEvent& event)
         {
             TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("skills", req_skill_2_id - 1);
             std::uint32_t strref = GetUintFromString(Get2DAString(row, SKILL_2DA::Name));
-            req_skill_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+            req_skill_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
         }
         else
-            req_skill_1->SetLabel("None");
+            req_skill_2->SetLabel("None");
     }
 }
