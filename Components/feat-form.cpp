@@ -4,6 +4,7 @@
 #include "SelectionForms/spell-selection-form.hpp"
 #include "SelectionForms/feat-selection-form.hpp"
 #include "SelectionForms/master-feat-selection-form.hpp"
+#include "SelectionForms/skill-selection-form.hpp"
 
 enum
 {
@@ -29,6 +30,8 @@ wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_BUTTON(FT_SPELLID, FeatForm::OnSpell)
     EVT_BUTTON(FT_SUCCESSOR, FeatForm::OnSuccessor)
     EVT_BUTTON(FT_MASTER_FEAT, FeatForm::OnMasterFeat)
+    EVT_BUTTON(FT_REQ_SKILL_1, FeatForm::OnRequiredSkill1)
+    EVT_BUTTON(FT_REQ_SKILL_2, FeatForm::OnRequiredSkill2)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -549,5 +552,39 @@ void FeatForm::LoadSkillValues()
     req_skill_2_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqSkill2));
     {
         req_skill_2_id++;
+    }
+}
+
+void FeatForm::OnRequiredSkill1(wxCommandEvent& event)
+{
+    SkillSelectionForm form(panel, configuration, req_skill_1_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        req_skill_1_id = form.GetSkillSelection();
+        if (req_skill_1_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("skills", req_skill_1_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, SKILL_2DA::Name));
+            req_skill_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            req_skill_1->SetLabel("None");
+    }
+}
+
+void FeatForm::OnRequiredSkill2(wxCommandEvent& event)
+{
+    SkillSelectionForm form(panel, configuration, req_skill_2_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        req_skill_2_id = form.GetSkillSelection();
+        if (req_skill_2_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("skills", req_skill_2_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, SKILL_2DA::Name));
+            req_skill_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            req_skill_1->SetLabel("None");
     }
 }

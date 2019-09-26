@@ -34,6 +34,8 @@ private:
     void OnSpell(wxCommandEvent& event);
     void OnSuccessor(wxCommandEvent& event);
     void OnMasterFeat(wxCommandEvent& event);
+    void OnRequiredSkill1(wxCommandEvent& event);
+    void OnRequiredSkill2(wxCommandEvent& event);
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;

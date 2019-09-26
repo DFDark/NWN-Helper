@@ -37,6 +37,8 @@ add_library(NWNHelper STATIC
     SelectionForms/feat-selection-form.cpp
     SelectionForms/master-feat-selection-form.hpp
     SelectionForms/master-feat-selection-form.cpp
+    SelectionForms/skill-selection-form.hpp
+    SelectionForms/skill-selection-form.cpp
     ListModels/spelllist-model.hpp
     ListModels/spelllist-model.cpp
     ListModels/featlist-model.hpp
