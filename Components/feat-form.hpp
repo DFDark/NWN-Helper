@@ -22,7 +22,6 @@ private:
 
     void LoadCategoryValues();
     void LoadSpellIdValue();
-    void LoadSuccessorIdValue();
     void LoadMiscellaneousValues();
     void LoadSkillValues();
 
@@ -43,6 +42,9 @@ private:
     void OnRequiredOneOf4(wxCommandEvent& event);
 
     void InvokeFeatSelection(wxButton* button, std::uint32_t& variable);
+    void InvokeSkillSelection(wxButton* button, std::uint32_t& variable);
+    void SetFeatValue(wxButton* button, std::uint32_t& variable, const std::string& value);
+    void SetSkillValue(wxButton* button, std::uint32_t& variable, const std::string& value);
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;
