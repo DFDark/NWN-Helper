@@ -32,6 +32,11 @@ wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_BUTTON(FT_MASTER_FEAT, FeatForm::OnMasterFeat)
     EVT_BUTTON(FT_REQ_SKILL_1, FeatForm::OnRequiredSkill1)
     EVT_BUTTON(FT_REQ_SKILL_2, FeatForm::OnRequiredSkill2)
+    EVT_BUTTON(FT_REQ_ONEOF_0, FeatForm::OnRequiredOneOf0)
+    EVT_BUTTON(FT_REQ_ONEOF_1, FeatForm::OnRequiredOneOf1)
+    EVT_BUTTON(FT_REQ_ONEOF_2, FeatForm::OnRequiredOneOf2)
+    EVT_BUTTON(FT_REQ_ONEOF_3, FeatForm::OnRequiredOneOf3)
+    EVT_BUTTON(FT_REQ_ONEOF_4, FeatForm::OnRequiredOneOf4)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -398,36 +403,12 @@ void FeatForm::InitFormValues()
 
 void FeatForm::OnPrereqFeat1(wxCommandEvent& event)
 {
-    FeatSelectionForm form(panel, configuration, pre_req_feat_1_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        pre_req_feat_1_id = form.GetFeatSelection();
-        if (pre_req_feat_1_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_1_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
-            pre_req_feat_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            pre_req_feat_1->SetLabel("None");
-    }
+    InvokeFeatSelection(pre_req_feat_1, pre_req_feat_1_id);
 }
 
 void FeatForm::OnPrereqFeat2(wxCommandEvent& event)
 {
-    FeatSelectionForm form(panel, configuration, pre_req_feat_2_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        pre_req_feat_2_id = form.GetFeatSelection();
-        if (pre_req_feat_2_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", pre_req_feat_2_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
-            pre_req_feat_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            pre_req_feat_2->SetLabel("None");
-    }
+    InvokeFeatSelection(pre_req_feat_2, pre_req_feat_2_id);
 }
 
 void FeatForm::LoadCategoryValues()
@@ -478,19 +459,7 @@ void FeatForm::LoadSpellIdValue()
 
 void FeatForm::OnSuccessor(wxCommandEvent& event)
 {
-    FeatSelectionForm form(panel, configuration, successor_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        successor_id = form.GetFeatSelection();
-        if (successor_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", successor_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
-            successor->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            successor->SetLabel("None");
-    }
+    InvokeFeatSelection(successor, successor_id);
 }
 
 void FeatForm::OnMasterFeat(wxCommandEvent& event)
@@ -593,5 +562,48 @@ void FeatForm::OnRequiredSkill2(wxCommandEvent& event)
         }
         else
             req_skill_2->SetLabel("None");
+    }
+}
+
+void FeatForm::OnRequiredOneOf0(wxCommandEvent& event)
+{
+    InvokeFeatSelection(or_req_feat_0, or_req_feat_0_id);
+}
+
+void FeatForm::OnRequiredOneOf1(wxCommandEvent& event)
+{
+    InvokeFeatSelection(or_req_feat_1, or_req_feat_1_id);
+}
+
+void FeatForm::OnRequiredOneOf2(wxCommandEvent& event)
+{
+    InvokeFeatSelection(or_req_feat_2, or_req_feat_2_id);
+}
+
+void FeatForm::OnRequiredOneOf3(wxCommandEvent& event)
+{
+    InvokeFeatSelection(or_req_feat_3, or_req_feat_3_id);
+}
+
+void FeatForm::OnRequiredOneOf4(wxCommandEvent& event)
+{
+    InvokeFeatSelection(or_req_feat_4, or_req_feat_4_id);
+}
+
+
+void FeatForm::InvokeFeatSelection(wxButton* button, std::uint32_t& variable)
+{
+    FeatSelectionForm form(panel, configuration, variable);
+    if (form.ShowModal() == wxID_OK)
+    {
+        variable = form.GetFeatSelection();
+        if (variable > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("feat", variable - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, FEAT_2DA::Feat));
+            button->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            button->SetLabel("None");
     }
 }

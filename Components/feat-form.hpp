@@ -36,6 +36,13 @@ private:
     void OnMasterFeat(wxCommandEvent& event);
     void OnRequiredSkill1(wxCommandEvent& event);
     void OnRequiredSkill2(wxCommandEvent& event);
+    void OnRequiredOneOf0(wxCommandEvent& event);
+    void OnRequiredOneOf1(wxCommandEvent& event);
+    void OnRequiredOneOf2(wxCommandEvent& event);
+    void OnRequiredOneOf3(wxCommandEvent& event);
+    void OnRequiredOneOf4(wxCommandEvent& event);
+
+    void InvokeFeatSelection(wxButton* button, std::uint32_t& variable);
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;
