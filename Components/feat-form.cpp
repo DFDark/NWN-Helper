@@ -35,7 +35,7 @@ wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
-    : wxDialog(parent, wxID_ANY, wxString("Feat Form"), wxDefaultPosition, wxSize(1024, 768))
+    : wxDialog(parent, wxID_ANY, wxString("Feat Form"), wxDefaultPosition, wxSize(800, 600))
 {
     panel = new wxPanel(this, wxID_ANY);
     configuration = _configuration;
@@ -88,7 +88,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     */
     label = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     name = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(450, -1), wxTE_MULTILINE);
+    description = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxDefaultPosition, wxSize(500, -1), wxTE_MULTILINE);
     icon = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     max_cr = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     cr_value = new wxTextCtrl(panel, wxID_ANY, wxString(""));
@@ -144,7 +144,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* icon_sizer = new wxBoxSizer(wxVERTICAL);
-    wxStaticBoxSizer* prereq_sizer = new wxStaticBoxSizer(req_feat_staticbox, wxHORIZONTAL);
+    wxBoxSizer* cr_value_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* max_cr_sizer = new wxBoxSizer(wxVERTICAL);
 
     label_sizer->Add(label_label);
     label_sizer->Add(label, 0, wxEXPAND);
@@ -152,13 +153,16 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     name_sizer->Add(name, 0, wxEXPAND);
     icon_sizer->Add(icon_label);
     icon_sizer->Add(icon, 0);
-    prereq_sizer->Add(pre_req_feat_1, 1);
-    prereq_sizer->Add(pre_req_feat_2, 1);
+    cr_value_sizer->Add(cr_value_label);
+    cr_value_sizer->Add(cr_value);
+    max_cr_sizer->Add(max_cr_label);
+    max_cr_sizer->Add(max_cr);
 
     first_row->Add(label_sizer, 1);
     first_row->Add(name_sizer, 1);
     first_row->Add(icon_sizer, 0);
-    first_row->Add(prereq_sizer, 1);
+    first_row->Add(cr_value_sizer);
+    first_row->Add(max_cr_sizer);
 
     /*
         Minimu requirements
@@ -202,7 +206,6 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* checkbox_sizer_1 = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* checkbox_sizer_2 = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* max_cr_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* spell_id_sizer = new wxBoxSizer(wxVERTICAL);
 
     checkbox_sizer_1->Add(gain_multiple);
@@ -211,37 +214,35 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     checkbox_sizer_2->Add(target_self);
     category_sizer->Add(category_label);
     category_sizer->Add(category);
-    max_cr_sizer->Add(max_cr_label);
-    max_cr_sizer->Add(max_cr);
     spell_id_sizer->Add(spell_label);
     spell_id_sizer->Add(spell, 0, wxEXPAND);
 
     second_row->Add(checkbox_sizer_1);
     second_row->Add(checkbox_sizer_2);
     second_row->Add(category_sizer);
-    second_row->Add(max_cr_sizer);
     second_row->Add(spell_id_sizer, 1);
 
     wxBoxSizer* successor_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* cr_value_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* uses_per_day_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* master_feat_sizer = new wxBoxSizer(wxVERTICAL);
+    wxStaticBoxSizer* prereq_sizer = new wxStaticBoxSizer(req_feat_staticbox, wxHORIZONTAL);
 
+    prereq_sizer->Add(pre_req_feat_1, 1);
+    prereq_sizer->Add(pre_req_feat_2, 1);
     successor_sizer->Add(successor_label);
-    successor_sizer->Add(successor);
-    cr_value_sizer->Add(cr_value_label);
-    cr_value_sizer->Add(cr_value);
+    successor_sizer->Add(successor, 0, wxEXPAND);
     uses_per_day_sizer->Add(uses_per_day_label);
     uses_per_day_sizer->Add(uses_per_day);
     master_feat_sizer->Add(master_feat_label);
-    master_feat_sizer->Add(master_feat);
+    master_feat_sizer->Add(master_feat, 0, wxEXPAND);
 
-    third_row->Add(successor_sizer);
-    third_row->Add(cr_value_sizer);
+    third_row->Add(prereq_sizer, 1, wxEXPAND);
+    third_row->Add(successor_sizer, 1, wxEXPAND);
     third_row->Add(uses_per_day_sizer);
-    third_row->Add(master_feat_sizer);
+    third_row->Add(master_feat_sizer, 1, wxEXPAND);
 
     wxBoxSizer* description_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* forth_row_column_1 = new wxBoxSizer(wxVERTICAL);
     wxStaticBoxSizer* req_oneof_sizer = new wxStaticBoxSizer(req_oneof_feat_staticbox, wxVERTICAL);
     wxStaticBoxSizer* req_skill_sizer = new wxStaticBoxSizer(req_skill_staticbox, wxVERTICAL);
     wxBoxSizer* description_sizer = new wxBoxSizer(wxVERTICAL);
@@ -265,8 +266,9 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     description_sizer->Add(description_label);
     description_sizer->Add(description, 1, wxEXPAND);
 
-    description_row->Add(req_oneof_sizer, 1, wxEXPAND);
-    description_row->Add(req_skill_sizer, 1);
+    forth_row_column_1->Add(req_oneof_sizer, 0, wxEXPAND);
+    forth_row_column_1->Add(req_skill_sizer, 0, wxEXPAND);
+    description_row->Add(forth_row_column_1, 1, wxEXPAND);
     description_row->Add(description_sizer, 1, wxEXPAND);
 
     forth_row->Add(description_row);
