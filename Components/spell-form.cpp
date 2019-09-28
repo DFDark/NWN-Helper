@@ -1430,23 +1430,8 @@ void SpellForm::SetMiscellaneousValues()
         feat->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
     }
 
-    aux = Get2DAString(spell, SPELL_2DA::Counter1);
-    if (aux.size() > 0)
-    {
-        counter_1_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", counter_1_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        counter_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
-
-    aux = Get2DAString(spell, SPELL_2DA::Counter2);
-    if (aux.size() > 0)
-    {
-        counter_2_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", counter_2_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        counter_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
+    SetSpellValue(counter_1, counter_1_id, Get2DAString(spell, SPELL_2DA::Counter1));
+    SetSpellValue(counter_2, counter_2_id, Get2DAString(spell, SPELL_2DA::Counter2));
 }
 
 void SpellForm::LoadCategoryValues()
@@ -1475,161 +1460,42 @@ void SpellForm::LoadMasterSubSpells()
     sub_rad_spell_4_id = 0;
     sub_rad_spell_5_id = 0;
 
-    std::string aux = Get2DAString(spell, SPELL_2DA::Master);
-    if (aux.size() > 0)
-    {
-        master_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", master_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        master->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
-
-    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell1);
-    if (aux.size() > 0)
-    {
-        sub_rad_spell_1_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_1_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        sub_rad_spell_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
-
-    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell2);
-    if (aux.size() > 0)
-    {
-        sub_rad_spell_2_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_2_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        sub_rad_spell_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
-
-    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell3);
-    if (aux.size() > 0)
-    {
-        sub_rad_spell_3_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_3_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        sub_rad_spell_3->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
-
-    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell4);
-    if (aux.size() > 0)
-    {
-        sub_rad_spell_4_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_4_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        sub_rad_spell_4->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
-
-    aux = Get2DAString(spell, SPELL_2DA::SubRadSpell5);
-    if (aux.size() > 0)
-    {
-        sub_rad_spell_5_id = GetUintFromString(aux) + 1;
-        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_5_id - 1);
-        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-        sub_rad_spell_5->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-    }
+    SetSpellValue(master, master_id, Get2DAString(spell, SPELL_2DA::Master));
+    SetSpellValue(sub_rad_spell_1, sub_rad_spell_1_id, Get2DAString(spell, SPELL_2DA::SubRadSpell1));
+    SetSpellValue(sub_rad_spell_2, sub_rad_spell_2_id, Get2DAString(spell, SPELL_2DA::SubRadSpell2));
+    SetSpellValue(sub_rad_spell_3, sub_rad_spell_3_id, Get2DAString(spell, SPELL_2DA::SubRadSpell3));
+    SetSpellValue(sub_rad_spell_4, sub_rad_spell_4_id, Get2DAString(spell, SPELL_2DA::SubRadSpell4));
+    SetSpellValue(sub_rad_spell_5, sub_rad_spell_5_id, Get2DAString(spell, SPELL_2DA::SubRadSpell5));
 }
 
 void SpellForm::OnMasterClick(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, master_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        master_id = form.GetSpellSelection();
-        if (master_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", master_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            master->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            master->SetLabel("None");
-    }
+    InvokeSpellSelection(master, master_id);
 }
 
 void SpellForm::OnSubSpell1(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, sub_rad_spell_1_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        sub_rad_spell_1_id = form.GetSpellSelection();
-        if (sub_rad_spell_1_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_1_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            sub_rad_spell_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            sub_rad_spell_1->SetLabel("None");
-    }
+    InvokeSpellSelection(sub_rad_spell_1, sub_rad_spell_1_id);
 }
 
 void SpellForm::OnSubSpell2(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, sub_rad_spell_2_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        sub_rad_spell_2_id = form.GetSpellSelection();
-        if (sub_rad_spell_2_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_2_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            sub_rad_spell_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            sub_rad_spell_2->SetLabel("None");
-    }
+    InvokeSpellSelection(sub_rad_spell_2, sub_rad_spell_2_id);
 }
 
 void SpellForm::OnSubSpell3(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, sub_rad_spell_3_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        sub_rad_spell_3_id = form.GetSpellSelection();
-        if (sub_rad_spell_3_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_3_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            sub_rad_spell_3->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            sub_rad_spell_3->SetLabel("None");
-    }
+    InvokeSpellSelection(sub_rad_spell_3, sub_rad_spell_3_id);
 }
 
 void SpellForm::OnSubSpell4(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, sub_rad_spell_4_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        sub_rad_spell_4_id = form.GetSpellSelection();
-        if (sub_rad_spell_4_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_4_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            sub_rad_spell_4->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            sub_rad_spell_4->SetLabel("None");
-    }
+    InvokeSpellSelection(sub_rad_spell_4, sub_rad_spell_4_id);
 }
 
 void SpellForm::OnSubSpell5(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, sub_rad_spell_5_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        sub_rad_spell_5_id = form.GetSpellSelection();
-        if (sub_rad_spell_5_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", sub_rad_spell_5_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            sub_rad_spell_5->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            sub_rad_spell_5->SetLabel("None");
-    }
+    InvokeSpellSelection(sub_rad_spell_5, sub_rad_spell_5_id);
 }
 
 void SpellForm::OnFeatClick(wxCommandEvent& event)
@@ -1651,36 +1517,12 @@ void SpellForm::OnFeatClick(wxCommandEvent& event)
 
 void SpellForm::OnCounterClick1(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, counter_1_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        counter_1_id = form.GetSpellSelection();
-        if (counter_1_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", counter_1_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            counter_1->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            counter_1->SetLabel("None");
-    }
+    InvokeSpellSelection(counter_1, counter_1_id);
 }
 
 void SpellForm::OnCounterClick2(wxCommandEvent& event)
 {
-    SpellSelectionForm form(panel, configuration, counter_2_id);
-    if (form.ShowModal() == wxID_OK)
-    {
-        counter_2_id = form.GetSpellSelection();
-        if (counter_2_id > 0)
-        {
-            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", counter_2_id - 1);
-            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
-            counter_2->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
-        }
-        else
-            counter_2->SetLabel("None");
-    }
+    InvokeSpellSelection(counter_2, counter_2_id);
 }
 
 std::string SpellForm::GetFeatId()
@@ -1736,4 +1578,34 @@ std::string SpellForm::GetFeatId()
 
 
     return std::to_string(feat_id - 1);
+}
+
+void SpellForm::InvokeSpellSelection(wxButton* button, std::uint32_t& variable)
+{
+    SpellSelectionForm form(panel, configuration, variable);
+    if (form.ShowModal() == wxID_OK)
+    {
+        variable = form.GetSpellSelection();
+        if (variable > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", variable - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
+            button->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            button->SetLabel("None");
+    }
+}
+
+void SpellForm::SetSpellValue(wxButton* button, std::uint32_t& variable, const std::string& value)
+{
+    if (value.size() > 0)
+    {
+        variable = GetUintFromString(value) + 1;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("spells", variable - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, SPELL_2DA::Name));
+        button->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
+    else
+        button->SetLabel("None");
 }

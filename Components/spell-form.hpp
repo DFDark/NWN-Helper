@@ -88,6 +88,9 @@ private:
     void OnCounterClick1(wxCommandEvent& event);
     void OnCounterClick2(wxCommandEvent& event);
 
+    void InvokeSpellSelection(wxButton* button, std::uint32_t& variable);
+    void SetSpellValue(wxButton* button, std::uint32_t& variable, const std::string& value);
+
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* spell;
 
