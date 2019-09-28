@@ -488,7 +488,10 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     proj_settings_sizer->Add(projectile_sound_sizer, 1, wxEXPAND|wxALL);
     proj_settings_sizer->Add(projectile_orientation_sizer, 1, wxEXPAND|wxALL);
 
-    wxStaticBoxSizer* master_sub_spells_sizer = new wxStaticBoxSizer(master_sub_spells, wxHORIZONTAL);
+    wxStaticBoxSizer* master_sub_spells_sizer = new wxStaticBoxSizer(master_sub_spells, wxVERTICAL);
+
+    wxBoxSizer* subspells_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* subspells_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* master_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* sub_rad_spell_1_sizer = new wxBoxSizer(wxVERTICAL);
@@ -510,12 +513,15 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     sub_rad_spell_5_sizer->Add(sub_rad_spell_5_label);
     sub_rad_spell_5_sizer->Add(sub_rad_spell_5, 1, wxEXPAND|wxALL);
 
-    master_sub_spells_sizer->Add(master_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer->Add(sub_rad_spell_1_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer->Add(sub_rad_spell_2_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer->Add(sub_rad_spell_3_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer->Add(sub_rad_spell_4_sizer, 1, wxEXPAND|wxALL);
-    master_sub_spells_sizer->Add(sub_rad_spell_5_sizer, 1, wxEXPAND|wxALL);
+    subspells_sizer_1->Add(master_sizer, 1, wxEXPAND|wxALL);
+    subspells_sizer_1->Add(sub_rad_spell_1_sizer, 1, wxEXPAND|wxALL);
+    subspells_sizer_1->Add(sub_rad_spell_2_sizer, 1, wxEXPAND|wxALL);
+    subspells_sizer_2->Add(sub_rad_spell_3_sizer, 1, wxEXPAND|wxALL);
+    subspells_sizer_2->Add(sub_rad_spell_4_sizer, 1, wxEXPAND|wxALL);
+    subspells_sizer_2->Add(sub_rad_spell_5_sizer, 1, wxEXPAND|wxALL);
+
+    master_sub_spells_sizer->Add(subspells_sizer_1, 1, wxEXPAND);
+    master_sub_spells_sizer->Add(subspells_sizer_2, 1, wxEXPAND);
 
     wxBoxSizer* alt_message_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* category_sizer = new wxBoxSizer(wxVERTICAL);
@@ -543,9 +549,9 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     counter_2_sizer->Add(counter_2_label);
     counter_2_sizer->Add(counter_2, 1, wxEXPAND|wxALL);
 
-    fifth_row_sizer->Add(feat_sizer, 1, wxEXPAND|wxALL);
-    fifth_row_sizer->Add(counter_1_sizer, 1, wxEXPAND|wxALL);
-    fifth_row_sizer->Add(counter_2_sizer, 1, wxEXPAND|wxALL);
+    fifth_row_sizer->Add(feat_sizer, 1);
+    fifth_row_sizer->Add(counter_1_sizer, 1);
+    fifth_row_sizer->Add(counter_2_sizer, 1);
 
     main_sizer->Add(first_row_sizer, 0, wxEXPAND);
     main_sizer->Add(fourth_row_sizer, 0, wxEXPAND);
@@ -554,7 +560,7 @@ SpellForm::SpellForm(wxWindow* parent, ConfigurationManager* _configuration, std
     main_sizer->Add(third_row_sizer, 0, wxEXPAND);
     main_sizer->Add(proj_settings_sizer, 0, wxEXPAND);
     main_sizer->Add(master_sub_spells_sizer, 0, wxEXPAND);
-    main_sizer->Add(fifth_row_sizer, 0, wxEXPAND);
+    main_sizer->Add(fifth_row_sizer, 1, wxEXPAND);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
