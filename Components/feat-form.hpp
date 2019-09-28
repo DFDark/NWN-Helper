@@ -24,6 +24,7 @@ private:
     void LoadSpellIdValue();
     void LoadMiscellaneousValues();
     void LoadSkillValues();
+    void GetToolsSelection();
 
     void SetFeatRequirements();
     void InitFormValues();
@@ -89,6 +90,8 @@ private:
     wxStaticText* cr_value_label;
     wxStaticText* uses_per_day_label;
     wxStaticText* master_feat_label;
+    wxStaticText* constant_label;
+    wxStaticText* tools_categories_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -108,6 +111,7 @@ private:
     wxTextCtrl* uses_per_day;
     wxTextCtrl* req_skill_min_rank_1;
     wxTextCtrl* req_skill_min_rank_2;
+    wxTextCtrl* constant;
 
     wxButton* pre_req_feat_1;
     wxButton* pre_req_feat_2;
@@ -131,8 +135,11 @@ private:
     wxCheckBox* effects_stack;
     wxCheckBox* all_classes_can_use;
     wxCheckBox* target_self;
+    wxCheckBox* hostile_feat;
+    wxCheckBox* req_action;
 
     wxComboBox* category;
+    wxComboBox* tools_categories;
 
     wxDECLARE_EVENT_TABLE();
 };

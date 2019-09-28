@@ -60,7 +60,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     req_skill_1_id = 0;
     req_skill_2_id = 0;
 
-    req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"));
+    req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"), wxDefaultPosition, wxSize(400, -1));
     min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Minimal Requirements"));
     req_oneof_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Required one of"));
     req_skill_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Required skills"));
@@ -87,6 +87,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     cr_value_label = new wxStaticText(panel, wxID_ANY, wxString("CR Value:"));
     uses_per_day_label = new wxStaticText(panel, wxID_ANY, wxString("Uses per Day:"));
     master_feat_label = new wxStaticText(panel, wxID_ANY, wxString("Master feat:"));
+    constant_label = new wxStaticText(panel, wxID_ANY, wxString("Constant:"));
+    tools_categories_label = new wxStaticText(panel, wxID_ANY, wxString("Tools Categories:"));
 
     /*
     * FORM TEXT CONTROLS
@@ -98,6 +100,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     max_cr = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     cr_value = new wxTextCtrl(panel, wxID_ANY, wxString(""));
     uses_per_day = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    constant = new wxTextCtrl(panel, wxID_ANY, wxString(""));
 
     min_attack = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
     min_str = new wxTextCtrl(min_req_staticbox, wxID_ANY, wxString(""));
@@ -128,9 +131,11 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     effects_stack = new wxCheckBox(panel, wxID_ANY, wxString("Effects Stack"));
     all_classes_can_use = new wxCheckBox(panel, wxID_ANY, wxString("All Classes can use"));
     target_self = new wxCheckBox(panel, wxID_ANY, wxString("Target Self"));
+    hostile_feat = new wxCheckBox(panel, wxID_ANY, wxString("Hostile Feat"));
+    req_action = new wxCheckBox(panel, wxID_ANY, wxString("Requires action"));
 
     category = new wxComboBox(panel, wxID_ANY, wxString(""));
-
+    tools_categories = new wxComboBox(panel, wxID_ANY, wxString(""));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
     Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(FeatForm::OnOk));
@@ -145,6 +150,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* second_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* third_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* forth_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* fifth_row = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
@@ -227,8 +233,26 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     second_row->Add(category_sizer);
     second_row->Add(spell_id_sizer, 1);
 
-    wxBoxSizer* successor_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* third_row_checkbox_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* constant_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* uses_per_day_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* tools_categories_sizer = new wxBoxSizer(wxVERTICAL);
+
+    third_row_checkbox_sizer->Add(hostile_feat, 0, wxEXPAND);
+    third_row_checkbox_sizer->Add(req_action, 0, wxEXPAND);
+    constant_sizer->Add(constant_label);
+    constant_sizer->Add(constant, 0, wxEXPAND);
+    uses_per_day_sizer->Add(uses_per_day_label);
+    uses_per_day_sizer->Add(uses_per_day);
+    tools_categories_sizer->Add(tools_categories_label);
+    tools_categories_sizer->Add(tools_categories, 0, wxEXPAND);
+
+    third_row->Add(third_row_checkbox_sizer);
+    third_row->Add(constant_sizer, 1);
+    third_row->Add(uses_per_day_sizer);
+    third_row->Add(tools_categories_sizer, 1);
+
+    wxBoxSizer* successor_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* master_feat_sizer = new wxBoxSizer(wxVERTICAL);
     wxStaticBoxSizer* prereq_sizer = new wxStaticBoxSizer(req_feat_staticbox, wxHORIZONTAL);
 
@@ -236,15 +260,12 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     prereq_sizer->Add(pre_req_feat_2, 1);
     successor_sizer->Add(successor_label);
     successor_sizer->Add(successor, 0, wxEXPAND);
-    uses_per_day_sizer->Add(uses_per_day_label);
-    uses_per_day_sizer->Add(uses_per_day);
     master_feat_sizer->Add(master_feat_label);
     master_feat_sizer->Add(master_feat, 0, wxEXPAND);
 
-    third_row->Add(prereq_sizer, 1, wxEXPAND);
-    third_row->Add(successor_sizer, 1, wxEXPAND);
-    third_row->Add(uses_per_day_sizer);
-    third_row->Add(master_feat_sizer, 1, wxEXPAND);
+    forth_row->Add(prereq_sizer, 1, wxEXPAND);
+    forth_row->Add(successor_sizer, 1, wxEXPAND);
+    forth_row->Add(master_feat_sizer, 1, wxEXPAND);
 
     wxBoxSizer* description_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* forth_row_column_1 = new wxBoxSizer(wxVERTICAL);
@@ -276,7 +297,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     description_row->Add(forth_row_column_1, 1, wxEXPAND);
     description_row->Add(description_sizer, 1, wxEXPAND);
 
-    forth_row->Add(description_row);
+    fifth_row->Add(description_row);
 
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -287,7 +308,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     main_sizer->Add(min_req_sizer, 0, wxEXPAND);
     main_sizer->Add(second_row, 0, wxEXPAND);
     main_sizer->Add(third_row, 0, wxEXPAND);
-    main_sizer->Add(forth_row, 1, wxEXPAND);
+    main_sizer->Add(forth_row, 0, wxEXPAND);
+    main_sizer->Add(fifth_row, 1, wxEXPAND);
     main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
     panel->SetSizer(main_sizer);
@@ -338,6 +360,7 @@ void FeatForm::InitFormValues()
     std::uint32_t desc_strref = GetUintFromString(Get2DAString(feat, FEAT_2DA::Description));
     description->SetValue(wxString(desc_strref > 0 ? configuration->GetTlkString(desc_strref) : ""));
 
+    GetToolsSelection();
     SetFeatRequirements();
     LoadCategoryValues();
     LoadSpellIdValue();
@@ -429,6 +452,7 @@ void FeatForm::LoadMiscellaneousValues()
 {
     cr_value->SetValue(Get2DAString(feat, FEAT_2DA::CRValue));
     uses_per_day->SetValue(Get2DAString(feat, FEAT_2DA::UsesPerDay));
+    constant->SetValue(Get2DAString(feat, FEAT_2DA::Constant));
 
     std::uint32_t aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::GainMultiple));
     gain_multiple->SetValue(aux > 0);
@@ -438,6 +462,13 @@ void FeatForm::LoadMiscellaneousValues()
     all_classes_can_use->SetValue(aux > 0);
     aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::TargetSelf));
     target_self->SetValue(aux > 0);
+    aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::HostileFeat));
+    hostile_feat->SetValue(aux > 0);
+    aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::ReqAction));
+    req_action->SetValue(aux > 0);
+
+    aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::ToolsCategories));
+    tools_categories->SetSelection(aux);
 }
 
 void FeatForm::LoadSkillValues()
@@ -543,4 +574,15 @@ void FeatForm::SetSkillValue(wxButton* button, std::uint32_t& variable, const st
     }
     else
         button->SetLabel("None");
+}
+
+void FeatForm::GetToolsSelection()
+{
+    tools_categories->Append(wxString("None"));
+    tools_categories->Append(wxString("Combat Feat"));
+    tools_categories->Append(wxString("Active Combat Feat"));
+    tools_categories->Append(wxString("Defensive Feat"));
+    tools_categories->Append(wxString("Magical Feat"));
+    tools_categories->Append(wxString("Class/Racial Feat"));
+    tools_categories->Append(wxString("Other Feat"));
 }
