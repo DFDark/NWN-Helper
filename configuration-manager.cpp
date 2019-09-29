@@ -50,14 +50,20 @@ bool ConfigurationManager::InitialConfiguration()
             config->SetValue("Display", "WIDTH", "1024");
             config->SetValue("Display", "HEIGHT", "768");
 
-            config->SetValue("SpellList", "COLUMN0", "label");
-            config->SetValue("SpellList", "COLUMN1", "spell");
+            config->SetValue(SPELL_COLUMNS, "COLUMN0", "label");
+            config->SetValue(SPELL_COLUMNS, "COLUMN1", "spell");
 
-            config->SetValue("FeatList", "COLUMN0", "label");
-            config->SetValue("FeatList", "COLUMN1", "feat");
+            config->SetValue(FEAT_COLUMNS, "COLUMN0", "label");
+            config->SetValue(FEAT_COLUMNS, "COLUMN1", "feat");
 
-            config->SetValue("MasterFeatList", "COLUMN0", "label");
-            config->SetValue("MasterFeatList", "COLUMN1", "master_feat");
+            config->SetValue(MASTER_FEAT_COLUMNS, "COLUMN0", "label");
+            config->SetValue(MASTER_FEAT_COLUMNS, "COLUMN1", "master_feat");
+
+            config->SetValue(SKILL_COLUMNS, "COLUMN0", "label");
+            config->SetValue(SKILL_COLUMNS, "COLUMN1", "skill");
+
+            config->SetValue(CLASS_COLUMNS, "COLUMN0", "label");
+            config->SetValue(CLASS_COLUMNS, "COLUMN1", "class");
 
             if (config->SaveFile("nwnhelper.ini") >= 0)
                 result = true;

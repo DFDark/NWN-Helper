@@ -131,6 +131,65 @@ enum class SKILL_2DA
     HostileSkill
 };
 
+enum class CLASS_2DA
+{
+    Label,
+    Name,
+    Plural,
+    Lower,
+    Description,
+    Icon,
+    HitDie,
+    AttackBonusTable,
+    FeatsTable,
+    SavingThrowTable,
+    SkillsTable,
+    BonusFeatsTable,
+    SkillPointBase,
+    SpellGainTable,
+    SpellKnownTable,
+    PlayerClass,
+    SpellCaster,
+    Str,
+    Dex,
+    Con,
+    Wis,
+    Int,
+    Cha,
+    PrimaryAbil,
+    AlignRestrict,
+    AlignRstrctType,
+    InvertRestrict,
+    Constant,
+    EffCRLvl01,
+    EffCRLvl02,
+    EffCRLvl03,
+    EffCRLvl04,
+    EffCRLvl05,
+    EffCRLvl06,
+    EffCRLvl07,
+    EffCRLvl08,
+    EffCRLvl09,
+    EffCRLvl10,
+    EffCRLvl11,
+    EffCRLvl12,
+    EffCRLvl13,
+    EffCRLvl14,
+    EffCRLvl15,
+    EffCRLvl16,
+    EffCRLvl17,
+    EffCRLvl18,
+    EffCRLvl19,
+    EffCRLvl20,
+    PreReqTable,
+    MaxLevel,
+    XPPenalty,
+    ArcSpellLvlMod,
+    DivSpellLvlMod,
+    EpicLevel,
+    Package
+};
+
 #define GETIDX(x) (static_cast<std::size_t>(x))
 
 #define METAMAGIC_EMPOWER 0x01
@@ -154,6 +213,7 @@ enum class SKILL_2DA
 #define FEAT_COLUMNS "FeatList"
 #define MASTER_FEAT_COLUMNS "MasterFeatList"
 #define SKILL_COLUMNS "SkillList"
+#define CLASS_COLUMNS "ClassList"
 
 #if defined _WIN32 || _WIN64
 #define SEPARATOR "\\"
