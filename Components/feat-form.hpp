@@ -23,7 +23,6 @@ private:
     void LoadCategoryValues();
     void LoadSpellIdValue();
     void LoadMiscellaneousValues();
-    void LoadSkillValues();
     void GetToolsSelection();
 
     void SetFeatRequirements();
@@ -62,6 +61,7 @@ private:
     std::uint32_t or_req_feat_4_id;
     std::uint32_t req_skill_1_id;
     std::uint32_t req_skill_2_id;
+    std::uint32_t min_level_class_id;
 
     wxPanel* panel;
 
@@ -92,6 +92,11 @@ private:
     wxStaticText* master_feat_label;
     wxStaticText* constant_label;
     wxStaticText* tools_categories_label;
+    wxStaticText* min_level_label;
+    wxStaticText* min_level_class_label;
+    wxStaticText* max_level_label;
+    wxStaticText* min_fort_save_label;
+    wxStaticText* pre_req_epic_label;
 
     wxTextCtrl* label;
     wxTextCtrl* name;
@@ -112,6 +117,9 @@ private:
     wxTextCtrl* req_skill_min_rank_1;
     wxTextCtrl* req_skill_min_rank_2;
     wxTextCtrl* constant;
+    wxTextCtrl* min_level;
+    wxTextCtrl* max_level;
+    wxTextCtrl* min_fort_save;
 
     wxButton* pre_req_feat_1;
     wxButton* pre_req_feat_2;
@@ -125,6 +133,7 @@ private:
     wxButton* or_req_feat_4;
     wxButton* req_skill_1;
     wxButton* req_skill_2;
+    wxButton* min_level_class;
 
     wxStaticBox* req_feat_staticbox;
     wxStaticBox* min_req_staticbox;
@@ -137,6 +146,7 @@ private:
     wxCheckBox* target_self;
     wxCheckBox* hostile_feat;
     wxCheckBox* req_action;
+    wxCheckBox* pre_req_epic;
 
     wxComboBox* category;
     wxComboBox* tools_categories;

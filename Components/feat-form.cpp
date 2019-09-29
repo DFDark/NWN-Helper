@@ -19,7 +19,8 @@ enum
     FT_REQ_ONEOF_3,
     FT_REQ_ONEOF_4,
     FT_REQ_SKILL_1,
-    FT_REQ_SKILL_2
+    FT_REQ_SKILL_2,
+    FT_MIN_LEVEL_CLASS
 };
 
 wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
@@ -59,6 +60,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     or_req_feat_4_id = 0;
     req_skill_1_id = 0;
     req_skill_2_id = 0;
+    min_level_class_id = 0;
 
     req_feat_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Prereq. Feats"), wxDefaultPosition, wxSize(400, -1));
     min_req_staticbox = new wxStaticBox(panel, wxID_ANY, wxString("Minimal Requirements"));
@@ -89,6 +91,11 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     master_feat_label = new wxStaticText(panel, wxID_ANY, wxString("Master feat:"));
     constant_label = new wxStaticText(panel, wxID_ANY, wxString("Constant:"));
     tools_categories_label = new wxStaticText(panel, wxID_ANY, wxString("Tools Categories:"));
+    min_level_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Level:"));
+    min_level_class_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Level Class:"));
+    max_level_label = new wxStaticText(panel, wxID_ANY, wxString("Max. Level:"));
+    min_fort_save_label = new wxStaticText(panel, wxID_ANY, wxString("Min. Fort. Save:"));
+    pre_req_epic_label = new wxStaticText(panel, wxID_ANY, wxString(""));
 
     /*
     * FORM TEXT CONTROLS
@@ -113,6 +120,10 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     req_skill_min_rank_1 = new wxTextCtrl(req_skill_staticbox, wxID_ANY, wxString(""));
     req_skill_min_rank_2 = new wxTextCtrl(req_skill_staticbox, wxID_ANY, wxString(""));
 
+    min_level = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    max_level = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    min_fort_save = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+
     pre_req_feat_1 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_1, wxString("None"));
     pre_req_feat_2 = new wxButton(req_feat_staticbox, FT_PREREQ_FEAT_2, wxString("None"));
     spell = new wxButton(panel, FT_SPELLID, wxString("None"));
@@ -125,6 +136,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     or_req_feat_4 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_4, wxString("None"));
     req_skill_1 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_1, wxString("None"));
     req_skill_2 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_2, wxString("None"));
+    min_level_class = new wxButton(panel, FT_MIN_LEVEL_CLASS, wxString("None"), wxDefaultPosition, wxSize(250, -1));
 
 
     gain_multiple = new wxCheckBox(panel, wxID_ANY, wxString("Gain Multiple"));
@@ -133,6 +145,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     target_self = new wxCheckBox(panel, wxID_ANY, wxString("Target Self"));
     hostile_feat = new wxCheckBox(panel, wxID_ANY, wxString("Hostile Feat"));
     req_action = new wxCheckBox(panel, wxID_ANY, wxString("Requires action"));
+    pre_req_epic = new wxCheckBox(panel, wxID_ANY, wxString("Requires Epic levels:"));
 
     category = new wxComboBox(panel, wxID_ANY, wxString(""));
     tools_categories = new wxComboBox(panel, wxID_ANY, wxString(""));
@@ -151,6 +164,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     wxBoxSizer* third_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* forth_row = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* fifth_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* sixth_row = new wxBoxSizer(wxHORIZONTAL);
 
     wxBoxSizer* label_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* name_sizer = new wxBoxSizer(wxVERTICAL);
@@ -299,6 +313,29 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
     fifth_row->Add(description_row);
 
+    wxBoxSizer* pre_req_epic_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* min_level_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* min_level_class_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* max_level_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* min_fort_save_sizer = new wxBoxSizer(wxVERTICAL);
+
+    pre_req_epic_sizer->Add(pre_req_epic_label);
+    pre_req_epic_sizer->Add(pre_req_epic);
+    min_level_sizer->Add(min_level_label);
+    min_level_sizer->Add(min_level, 0, wxEXPAND);
+    min_level_class_sizer->Add(min_level_class_label);
+    min_level_class_sizer->Add(min_level_class, 0, wxEXPAND);
+    max_level_sizer->Add(max_level_label);
+    max_level_sizer->Add(max_level, 0, wxEXPAND);
+    min_fort_save_sizer->Add(min_fort_save_label);
+    min_fort_save_sizer->Add(min_fort_save, 0, wxEXPAND);
+
+    sixth_row->Add(pre_req_epic_sizer);
+    sixth_row->Add(min_level_sizer);
+    sixth_row->Add(min_level_class_sizer);
+    sixth_row->Add(max_level_sizer);
+    sixth_row->Add(min_fort_save_sizer);
+
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     control_button_sizer->Add(cancel_button);
@@ -309,7 +346,8 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     main_sizer->Add(second_row, 0, wxEXPAND);
     main_sizer->Add(third_row, 0, wxEXPAND);
     main_sizer->Add(forth_row, 0, wxEXPAND);
-    main_sizer->Add(fifth_row, 1, wxEXPAND);
+    main_sizer->Add(fifth_row, 0, wxEXPAND);
+    main_sizer->Add(sixth_row, 1, wxEXPAND);
     main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
     panel->SetSizer(main_sizer);
@@ -346,6 +384,19 @@ void FeatForm::SetFeatRequirements()
     SetFeatValue(or_req_feat_2, or_req_feat_2_id, Get2DAString(feat, FEAT_2DA::OrReqFeat2));
     SetFeatValue(or_req_feat_3, or_req_feat_3_id, Get2DAString(feat, FEAT_2DA::OrReqFeat3));
     SetFeatValue(or_req_feat_4, or_req_feat_4_id, Get2DAString(feat, FEAT_2DA::OrReqFeat4));
+
+    req_skill_min_rank_1->SetValue(Get2DAString(feat, FEAT_2DA::ReqSkillMinRanks));
+    SetSkillValue(req_skill_1, req_skill_1_id, Get2DAString(feat, FEAT_2DA::ReqSkill));
+    req_skill_min_rank_2->SetValue(Get2DAString(feat, FEAT_2DA::ReqSkillMinRanks2));
+    SetSkillValue(req_skill_2, req_skill_2_id, Get2DAString(feat, FEAT_2DA::ReqSkill2));
+
+    min_level->SetValue(Get2DAString(feat, FEAT_2DA::MinLevel));
+    // TODO: minlevelclass
+    max_level->SetValue(Get2DAString(feat, FEAT_2DA::MaxLevel));
+    min_fort_save->SetValue(Get2DAString(feat, FEAT_2DA::MinFortSave));
+
+    std::uint32_t require_epic = GetUintFromString(Get2DAString(feat, FEAT_2DA::PreReqEpic));
+    pre_req_epic->SetValue(require_epic > 0);
 }
 
 void FeatForm::InitFormValues()
@@ -365,7 +416,6 @@ void FeatForm::InitFormValues()
     LoadCategoryValues();
     LoadSpellIdValue();
     LoadMiscellaneousValues();
-    LoadSkillValues();
 
     SetFeatValue(successor, successor_id, Get2DAString(feat, FEAT_2DA::Successor));
 }
@@ -469,14 +519,6 @@ void FeatForm::LoadMiscellaneousValues()
 
     aux = GetUintFromString(Get2DAString(feat, FEAT_2DA::ToolsCategories));
     tools_categories->SetSelection(aux);
-}
-
-void FeatForm::LoadSkillValues()
-{
-    req_skill_min_rank_1->SetValue(Get2DAString(feat, FEAT_2DA::ReqSkillMinRanks));
-    SetSkillValue(req_skill_1, req_skill_1_id, Get2DAString(feat, FEAT_2DA::ReqSkill));
-    req_skill_min_rank_2->SetValue(Get2DAString(feat, FEAT_2DA::ReqSkillMinRanks2));
-    SetSkillValue(req_skill_2, req_skill_2_id, Get2DAString(feat, FEAT_2DA::ReqSkill2));
 }
 
 void FeatForm::OnRequiredSkill1(wxCommandEvent& event)
