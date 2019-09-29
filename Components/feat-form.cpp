@@ -403,6 +403,8 @@ void FeatForm::OnOk(wxCommandEvent& event)
     (*feat)[GETIDX(FEAT_2DA::PreReqEpic)].m_Data = std::string(pre_req_epic->GetValue() ? "1" : "0");
     (*feat)[GETIDX(FEAT_2DA::ReqAction)].m_Data = std::string(req_action->GetValue() ? "1" : "0");
 
+    configuration->Set2daModified("feat", true);
+
     this->EndModal(wxID_OK);
 }
 

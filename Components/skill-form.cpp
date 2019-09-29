@@ -141,6 +141,8 @@ void SkillForm::OnOk(wxCommandEvent& event)
     (*skill)[GETIDX(SKILL_2DA::Constant)].m_Data = GetStringFromTextCtrl(constant);
     (*skill)[GETIDX(SKILL_2DA::HostileSkill)].m_Data = std::string(hostile_skill->GetValue() ? "1" : "0");
 
+    configuration->Set2daModified("skills", true);
+
     this->EndModal(wxID_OK);
 }
 

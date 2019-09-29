@@ -93,6 +93,8 @@ void MasterFeatForm::OnOk(wxCommandEvent& event)
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Strref)].m_Data = GetStrref(name, MASTERFEAT_2DA::Strref);
     (*master_feat)[GETIDX(MASTERFEAT_2DA::Description)].m_Data = GetStrref(description, MASTERFEAT_2DA::Description);
 
+    configuration->Set2daModified("masterfeats", true);
+
     this->EndModal(wxID_OK);
 }
 
