@@ -40,11 +40,15 @@ private:
     void OnRequiredOneOf2(wxCommandEvent& event);
     void OnRequiredOneOf3(wxCommandEvent& event);
     void OnRequiredOneOf4(wxCommandEvent& event);
+    void OnMinLevelClass(wxCommandEvent& event);
 
     void InvokeFeatSelection(wxButton* button, std::uint32_t& variable);
     void InvokeSkillSelection(wxButton* button, std::uint32_t& variable);
     void SetFeatValue(wxButton* button, std::uint32_t& variable, const std::string& value);
     void SetSkillValue(wxButton* button, std::uint32_t& variable, const std::string& value);
+
+    std::string GetStrref(wxTextCtrl* component, const auto& column);
+    std::string GetCategoryString();
 
     ConfigurationManager* configuration;
     TwoDA::Friendly::TwoDARow* feat;

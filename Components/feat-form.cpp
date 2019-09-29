@@ -5,6 +5,7 @@
 #include "SelectionForms/feat-selection-form.hpp"
 #include "SelectionForms/master-feat-selection-form.hpp"
 #include "SelectionForms/skill-selection-form.hpp"
+#include "SelectionForms/class-selection-form.hpp"
 
 enum
 {
@@ -38,6 +39,7 @@ wxBEGIN_EVENT_TABLE(FeatForm, wxDialog)
     EVT_BUTTON(FT_REQ_ONEOF_2, FeatForm::OnRequiredOneOf2)
     EVT_BUTTON(FT_REQ_ONEOF_3, FeatForm::OnRequiredOneOf3)
     EVT_BUTTON(FT_REQ_ONEOF_4, FeatForm::OnRequiredOneOf4)
+    EVT_BUTTON(FT_MIN_LEVEL_CLASS, FeatForm::OnMinLevelClass)
 wxEND_EVENT_TABLE()
 
 FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::uint32_t row_id)
@@ -136,7 +138,7 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
     or_req_feat_4 = new wxButton(req_oneof_feat_staticbox, FT_REQ_ONEOF_4, wxString("None"));
     req_skill_1 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_1, wxString("None"));
     req_skill_2 = new wxButton(req_skill_staticbox, FT_REQ_SKILL_2, wxString("None"));
-    min_level_class = new wxButton(panel, FT_MIN_LEVEL_CLASS, wxString("None"), wxDefaultPosition, wxSize(250, -1));
+    min_level_class = new wxButton(panel, FT_MIN_LEVEL_CLASS, wxString("None"), wxDefaultPosition, wxSize(200, -1));
 
 
     gain_multiple = new wxCheckBox(panel, wxID_ANY, wxString("Gain Multiple"));
@@ -357,6 +359,50 @@ FeatForm::FeatForm(wxWindow* parent, ConfigurationManager* _configuration, std::
 
 void FeatForm::OnOk(wxCommandEvent& event)
 {
+    (*feat)[GETIDX(FEAT_2DA::Label)].m_Data = GetStringFromTextCtrl(label);
+    (*feat)[GETIDX(FEAT_2DA::Feat)].m_Data = GetStrref(name, FEAT_2DA::Feat);
+    (*feat)[GETIDX(FEAT_2DA::Description)].m_Data = GetStrref(description, FEAT_2DA::Description);
+    (*feat)[GETIDX(FEAT_2DA::Icon)].m_Data = GetStringFromTextCtrl(icon);
+    (*feat)[GETIDX(FEAT_2DA::MinAttackBonus)].m_Data = GetStringFromTextCtrl(min_attack);
+    (*feat)[GETIDX(FEAT_2DA::MinStr)].m_Data = GetStringFromTextCtrl(min_str);
+    (*feat)[GETIDX(FEAT_2DA::MinDex)].m_Data = GetStringFromTextCtrl(min_dex);
+    (*feat)[GETIDX(FEAT_2DA::MinInt)].m_Data = GetStringFromTextCtrl(min_int);
+    (*feat)[GETIDX(FEAT_2DA::MinWis)].m_Data = GetStringFromTextCtrl(min_wis);
+    (*feat)[GETIDX(FEAT_2DA::MinCon)].m_Data = GetStringFromTextCtrl(min_con);
+    (*feat)[GETIDX(FEAT_2DA::MinCha)].m_Data = GetStringFromTextCtrl(min_cha);
+    (*feat)[GETIDX(FEAT_2DA::MinSpellLvl)].m_Data = GetStringFromTextCtrl(min_spell_lvl);
+    (*feat)[GETIDX(FEAT_2DA::PreReqFeat1)].m_Data = pre_req_feat_1_id > 0 ? std::to_string(pre_req_feat_1_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::PreReqFeat2)].m_Data = pre_req_feat_2_id > 0 ? std::to_string(pre_req_feat_2_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::GainMultiple)].m_Data = std::string(gain_multiple->GetValue() ? "1" : "0");
+    (*feat)[GETIDX(FEAT_2DA::EffectsStack)].m_Data = std::string(effects_stack->GetValue() ? "1" : "0");
+    (*feat)[GETIDX(FEAT_2DA::AllClassesCanUse)].m_Data = std::string(all_classes_can_use->GetValue() ? "1" : "0");
+    (*feat)[GETIDX(FEAT_2DA::Category)].m_Data = GetCategoryString();
+    (*feat)[GETIDX(FEAT_2DA::MaxCR)].m_Data = GetStringFromTextCtrl(max_cr);
+    (*feat)[GETIDX(FEAT_2DA::SpellID)].m_Data = spellid > 0 ? std::to_string(spellid - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::Successor)].m_Data = successor_id > 0 ? std::to_string(successor_id - 1) : std::string("****");;
+    (*feat)[GETIDX(FEAT_2DA::CRValue)].m_Data = GetStringFromTextCtrl(cr_value);
+    (*feat)[GETIDX(FEAT_2DA::UsesPerDay)].m_Data = GetStringFromTextCtrl(uses_per_day);
+    (*feat)[GETIDX(FEAT_2DA::MasterFeat)].m_Data = master_feat_id > 0 ? std::to_string(master_feat_id - 1) : std::string("****");;
+    (*feat)[GETIDX(FEAT_2DA::TargetSelf)].m_Data = std::string(target_self->GetValue() ? "1" : "0");
+    (*feat)[GETIDX(FEAT_2DA::OrReqFeat0)].m_Data = or_req_feat_0_id > 0 ? std::to_string(or_req_feat_0_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::OrReqFeat1)].m_Data = or_req_feat_1_id > 0 ? std::to_string(or_req_feat_1_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::OrReqFeat2)].m_Data = or_req_feat_2_id > 0 ? std::to_string(or_req_feat_2_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::OrReqFeat3)].m_Data = or_req_feat_3_id > 0 ? std::to_string(or_req_feat_3_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::OrReqFeat4)].m_Data = or_req_feat_4_id > 0 ? std::to_string(or_req_feat_4_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::ReqSkill)].m_Data = req_skill_1_id > 0 ? std::to_string(or_req_feat_0_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::ReqSkillMinRanks)].m_Data = GetStringFromTextCtrl(req_skill_min_rank_1);
+    (*feat)[GETIDX(FEAT_2DA::ReqSkill2)].m_Data = req_skill_2_id > 0 ? std::to_string(req_skill_2_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::ReqSkillMinRanks2)].m_Data = GetStringFromTextCtrl(req_skill_min_rank_2);
+    (*feat)[GETIDX(FEAT_2DA::Constant)].m_Data = GetStringFromTextCtrl(constant);
+    (*feat)[GETIDX(FEAT_2DA::ToolsCategories)].m_Data = tools_categories->GetSelection() > 0 ? std::to_string(tools_categories->GetSelection()) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::HostileFeat)].m_Data = std::string(hostile_feat->GetValue() ? "1" : "0");
+    (*feat)[GETIDX(FEAT_2DA::MinLevel)].m_Data = GetStringFromTextCtrl(min_level);
+    (*feat)[GETIDX(FEAT_2DA::MinLevelClass)].m_Data = min_level_class_id > 0 ? std::to_string(min_level_class_id - 1) : std::string("****");
+    (*feat)[GETIDX(FEAT_2DA::MaxLevel)].m_Data = GetStringFromTextCtrl(max_level);
+    (*feat)[GETIDX(FEAT_2DA::MinFortSave)].m_Data = GetStringFromTextCtrl(min_fort_save);
+    (*feat)[GETIDX(FEAT_2DA::PreReqEpic)].m_Data = std::string(pre_req_epic->GetValue() ? "1" : "0");
+    (*feat)[GETIDX(FEAT_2DA::ReqAction)].m_Data = std::string(req_action->GetValue() ? "1" : "0");
+
     this->EndModal(wxID_OK);
 }
 
@@ -391,12 +437,20 @@ void FeatForm::SetFeatRequirements()
     SetSkillValue(req_skill_2, req_skill_2_id, Get2DAString(feat, FEAT_2DA::ReqSkill2));
 
     min_level->SetValue(Get2DAString(feat, FEAT_2DA::MinLevel));
-    // TODO: minlevelclass
     max_level->SetValue(Get2DAString(feat, FEAT_2DA::MaxLevel));
     min_fort_save->SetValue(Get2DAString(feat, FEAT_2DA::MinFortSave));
 
     std::uint32_t require_epic = GetUintFromString(Get2DAString(feat, FEAT_2DA::PreReqEpic));
     pre_req_epic->SetValue(require_epic > 0);
+
+    std::string aux = Get2DAString(feat, FEAT_2DA::MinLevelClass);
+    if (aux.size() > 0)
+    {
+        min_level_class_id = GetUintFromString(aux) + 1;
+        TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("classes", min_level_class_id - 1);
+        std::uint32_t strref = GetUintFromString(Get2DAString(row, CLASS_2DA::Name));
+        min_level_class->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+    }
 }
 
 void FeatForm::InitFormValues()
@@ -436,12 +490,11 @@ void FeatForm::LoadCategoryValues()
 
     if (categories != NULL)
     {
+        category->Append(wxString("None"));
         for (auto const& row : (*categories))
             category->Append(row["Category"].m_Data);
 
-        unsigned int row_id = GetUintFromString(Get2DAString(feat, FEAT_2DA::Category));
-        if (row_id > 0)
-            category->SetSelection(row_id - 1);
+        category->SetSelection(GetUintFromString(Get2DAString(feat, FEAT_2DA::Category)));
     }
 }
 
@@ -627,4 +680,43 @@ void FeatForm::GetToolsSelection()
     tools_categories->Append(wxString("Magical Feat"));
     tools_categories->Append(wxString("Class/Racial Feat"));
     tools_categories->Append(wxString("Other Feat"));
+}
+
+void FeatForm::OnMinLevelClass(wxCommandEvent& event)
+{
+    ClassSelectionForm form(panel, configuration, min_level_class_id);
+    if (form.ShowModal() == wxID_OK)
+    {
+        min_level_class_id = form.GetClassSelection();
+        if (min_level_class_id > 0)
+        {
+            TwoDA::Friendly::TwoDARow* row = configuration->Get2daRow("classes", min_level_class_id - 1);
+            std::uint32_t strref = GetUintFromString(Get2DAString(row, CLASS_2DA::Name));
+            min_level_class->SetLabel(strref > 0 ? configuration->GetTlkString(strref) : "");
+        }
+        else
+            min_level_class->SetLabel("None");
+    }
+}
+
+std::string FeatForm::GetStrref(wxTextCtrl* component, const auto& column)
+{
+    std::uint32_t strref = GetUintFromString(Get2DAString(feat, column));
+    if (component->GetValue().IsEmpty())
+        return std::string("****");
+
+    std::string aux = component->GetValue().ToStdString();
+    std::string base_desc = configuration->GetTlkString(strref);
+    if (base_desc != aux)
+        strref = configuration->SetTlkString(aux, strref);
+
+    return std::to_string(strref);
+}
+
+std::string FeatForm::GetCategoryString()
+{
+    if (category->GetSelection() == 0)
+        return std::string("****");
+
+    return std::to_string(category->GetSelection());
 }
