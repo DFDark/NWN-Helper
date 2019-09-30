@@ -17,7 +17,9 @@ public:
 
 private:
     void OnOk(wxCommandEvent& event);
-    
+    void OnAdd2daFiles(wxCommandEvent& event);
+    void OnAddTlkFile(wxCommandEvent& event);
+
     std::uint32_t import_mode;
 
     ConfigurationManager* configuration;
