@@ -35,6 +35,7 @@ enum
     LOAD_PROJECT,
     SAVE_PROJECT,
     SAVE_PROJECT_AS,
+    IMPORT_FILES,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
@@ -59,6 +60,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(LOAD_PROJECT, NWNHelperMain::OnLoadProject)
     EVT_MENU(SAVE_PROJECT, NWNHelperMain::OnSaveProject)
     EVT_MENU(SAVE_PROJECT_AS, NWNHelperMain::OnSaveProjectAs)
+    EVT_MENU(IMPORT_FILES, NWNHelperMain::OnImportFiles)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(MASTER_FEATS, NWNHelperMain::OnMasterFeatActivated)
@@ -79,6 +81,8 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_file->Append(LOAD_PROJECT, "Load Project", "Loads NWN Helper project");
     menu_file->Append(SAVE_PROJECT, "Save Project", "Save current project");
     menu_file->Append(SAVE_PROJECT_AS, "Save Project As", "Save current project as");
+    menu_file->Append(wxID_SEPARATOR);
+    menu_file->Append(IMPORT_FILES, "Import files", "Import file(s) to the current project");
     menu_file->Append(wxID_SEPARATOR);
     menu_file->Append(wxID_EXIT);// , "Exit", "Shuts down the application");
     menu_columns = new wxMenu;
@@ -586,4 +590,9 @@ void NWNHelperMain::OnSaveProject(wxCommandEvent& event)
 void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)
 {
     configuration->SaveProject(true);
+}
+
+void NWNHelperMain::OnImportFiles(wxCommandEvent& event)
+{
+    
 }

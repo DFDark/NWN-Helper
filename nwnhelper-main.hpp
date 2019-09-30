@@ -58,6 +58,7 @@ private:
     void OnLoadProject(wxCommandEvent& event);
     void OnSaveProject(wxCommandEvent& event);
     void OnSaveProjectAs(wxCommandEvent& event);
+    void OnImportFiles(wxCommandEvent& event);
 
     void SetSpellColumns();
     void SetFeatColumns();

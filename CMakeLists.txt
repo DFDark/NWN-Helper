@@ -23,6 +23,8 @@ add_library(NWNHelper STATIC
     Components/master-feat-form.cpp
     Components/skill-form.hpp
     Components/skill-form.cpp
+    Components/import-form.hpp
+    Components/import-form.cpp
     Components/ColumnForms/spell-column-form.hpp
     Components/ColumnForms/spell-column-form.cpp
     Components/ColumnForms/feat-column-form.hpp
