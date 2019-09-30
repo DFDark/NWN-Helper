@@ -76,4 +76,4 @@ include( "${wxWidgets_USE_FILE}" )
 add_executable(main nwnhelper.cpp)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-target_link_libraries(main NWNHelper SimpleIni FileFormats Utility ${wxWidgets_LIBRARIES})
+target_link_libraries(main NWNHelper SimpleIni FileFormats Utility ${wxWidgets_LIBRARIES} stdc++fs)

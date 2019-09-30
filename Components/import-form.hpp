@@ -10,6 +10,8 @@
 #include "FileFormats/2da.hpp"
 #include "FileFormats/Tlk.hpp"
 
+using namespace FileFormats;
+
 class ImportForm : public wxDialog
 {
 public:
@@ -19,6 +21,9 @@ private:
     void OnOk(wxCommandEvent& event);
     void OnAdd2daFiles(wxCommandEvent& event);
     void OnAddTlkFile(wxCommandEvent& event);
+
+    void Merge();
+    void Overwrite();
 
     std::uint32_t import_mode;
 

@@ -1,5 +1,7 @@
 #include "import-form.hpp"
-#include <wx/richtooltip.h>
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 enum
 {
@@ -8,7 +10,8 @@ enum
     IMPORT_MODE_MANUAL,
     TWODA_FILES,
     ADD_2DA,
-    ADD_TLK
+    ADD_TLK,
+    IMPORT_MODE_MERGE_HOVER
 };
 
 wxBEGIN_EVENT_TABLE(ImportForm, wxDialog)
@@ -31,15 +34,8 @@ ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
     import_mode_manual = new wxRadioButton(import_mode_sb, IMPORT_MODE_MANUAL, wxString("Manual"));
     add_2da_button = new wxButton(this, ADD_2DA, wxString("Add 2da file(s)"));
 
-    /*wxRichToolTip import_mode_merge_tip("Import Merge",
-        "Individual 2da rows will be compared to the base file.\n"
-        "Any different rows will be added to the end of the file.");
-    import_mode_merge_tip.ShowFor(import_mode_merge);
-
-    wxRichToolTip import_mode_overwrite_tip("Import Overwrite",
-        "Individual 2da rows will be compared to the base file.\n"
-        "Any different rows will overwrite row with the same ROW ID.");
-    import_mode_overwrite_tip.ShowFor(import_mode_overwrite);*/
+    import_mode_merge->SetToolTip("Individual 2da rows will be compared to the project file. Any different rows will be added to the end of the file.");
+    import_mode_overwrite->SetToolTip("Individual 2da rows will be compared to the project file. Any different rows will overwrite row with the same ROW ID.");
 
     tlk_filename = new wxTextCtrl(import_tlk_sb, wxID_ANY, wxString(""));
 
@@ -70,7 +66,7 @@ ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
     import_mode_sizer->Add(import_mode_manual, 0, wxEXPAND);
     import_mode_manual->Enable(false);
 
-    right_column->Add(import_mode_sizer);
+    right_column->Add(import_mode_sizer, 0, wxEXPAND);
     right_column->Add(add_2da_button, 0, wxEXPAND);
     first_row_sizer->Add(right_column);
 
@@ -116,6 +112,12 @@ void ImportForm::OnOk(wxCommandEvent& event)
             return;
     }
 
+    if (import_mode_merge->GetValue())
+        Merge();
+
+    if (import_mode_overwrite->GetValue())
+        Overwrite();
+
     this->EndModal(wxID_OK);
 }
 
@@ -141,4 +143,29 @@ void ImportForm::OnAddTlkFile(wxCommandEvent& event)
         return;
 
     tlk_filename->SetValue(tlk_dialog.GetPath());
+}
+
+void ImportForm::Merge()
+{
+    Tlk::Raw::Tlk rawtlk;
+    if (!Tlk::Raw::Tlk::ReadFromFile(tlk_filename->GetValue().ToStdString().c_str(), &rawtlk))
+        return;
+
+    Tlk::Friendly::Tlk tlk(std::move(rawtlk), true);
+
+    for (const wxString& file : import_2da_list->GetStrings())
+    {
+        std::string twoda = fs::path(file.ToStdString()).stem();
+
+        TwoDA::Raw::TwoDA raw;
+        if (!TwoDA::Raw::TwoDA::ReadFromFile(file.ToStdString().c_str(), &raw))
+            continue; // TODO
+
+        TwoDA::Friendly::TwoDA aux(std::move(raw));
+    }
+}
+
+void ImportForm::Overwrite()
+{
+
 }
