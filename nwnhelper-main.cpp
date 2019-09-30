@@ -8,6 +8,7 @@
 #include "Components/ColumnForms/master-feat-column-form.hpp"
 #include "Components/ColumnForms/skill-column-form.hpp"
 #include "Components/export-form.hpp"
+#include "Components/import-form.hpp"
 
 enum
 {
@@ -594,5 +595,8 @@ void NWNHelperMain::OnSaveProjectAs(wxCommandEvent& event)
 
 void NWNHelperMain::OnImportFiles(wxCommandEvent& event)
 {
-    
+    ImportForm form(this, configuration);
+    if (form.ShowModal() == wxID_OK)
+    {
+    }
 }

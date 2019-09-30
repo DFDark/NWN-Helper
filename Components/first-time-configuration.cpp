@@ -2,9 +2,9 @@
 #include <fstream>
 
 wxBEGIN_EVENT_TABLE(FirstTimeConfiguration, wxDialog)
-    EVT_MENU(MAIN_INI_BUTTON, FirstTimeConfiguration::OnMainIniClick)
-    EVT_MENU(DATA_FOLDER_BUTTON, FirstTimeConfiguration::OnDataFolderClick)
-    EVT_MENU(wxID_OK, FirstTimeConfiguration::OnOk)
+    EVT_BUTTON(MAIN_INI_BUTTON, FirstTimeConfiguration::OnMainIniClick)
+    EVT_BUTTON(DATA_FOLDER_BUTTON, FirstTimeConfiguration::OnDataFolderClick)
+    EVT_BUTTON(wxID_OK, FirstTimeConfiguration::OnOk)
 wxEND_EVENT_TABLE()
 
 
@@ -13,25 +13,46 @@ FirstTimeConfiguration::FirstTimeConfiguration(const wxString& title, const wxSi
 {
     panel = new wxPanel(this, wxID_ANY);
 
-    data_folder_label = new wxStaticText(panel, wxID_ANY, wxString("Path to main data folder"),
-        wxPoint(11, 15), wxDefaultSize, wxALIGN_LEFT);
-    data_folder = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(10, 35), wxSize(340, 20));
-    data_folder_button = new wxButton(panel, DATA_FOLDER_BUTTON, wxString("Find"), wxPoint(350, 30), wxSize(45, 29));
-    Connect(DATA_FOLDER_BUTTON, wxEVT_COMMAND_BUTTON_CLICKED,
-        wxCommandEventHandler(FirstTimeConfiguration::OnDataFolderClick));
+    data_folder_label = new wxStaticText(panel, wxID_ANY, wxString("Path to main data folder"));
+    data_folder = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    data_folder_button = new wxButton(panel, DATA_FOLDER_BUTTON, wxString("Find"));
 
-    main_ini_label = new wxStaticText(panel, wxID_ANY, wxString("Path to nwn.ini file"),
-       wxPoint(11, 60), wxDefaultSize, wxALIGN_LEFT);
-    main_ini = new wxTextCtrl(panel, wxID_ANY, wxString(""), wxPoint(10, 80), wxSize(340, 20));
-    main_ini_button = new wxButton(panel, MAIN_INI_BUTTON, wxString("Find"), wxPoint(350, 75), wxSize(45, 29));
-    Connect(MAIN_INI_BUTTON, wxEVT_COMMAND_BUTTON_CLICKED,
-        wxCommandEventHandler(FirstTimeConfiguration::OnMainIniClick));
+    main_ini_label = new wxStaticText(panel, wxID_ANY, wxString("Path to nwn.ini file"));
+    main_ini = new wxTextCtrl(panel, wxID_ANY, wxString(""));
+    main_ini_button = new wxButton(panel, MAIN_INI_BUTTON, wxString("Find"));
 
-    ok_button = new wxButton(panel, wxID_OK, wxString("Ok"), wxPoint(295, 135), wxSize(100, 30));
-    Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED,
-        wxCommandEventHandler(FirstTimeConfiguration::OnOk));
-    cancel_button = new wxButton(panel, wxID_CANCEL, wxString("Cancel"), wxPoint(190, 135), wxSize(100, 30));
+    ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
+    cancel_button = new wxButton(panel, wxID_CANCEL, wxString("Cancel"));
     Centre();
+    
+    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
+
+    wxBoxSizer* data_folder_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* data_folder_r2_sizer = new wxBoxSizer(wxHORIZONTAL);
+    
+    data_folder_sizer->Add(data_folder_label);
+    data_folder_r2_sizer->Add(data_folder, 1);
+    data_folder_r2_sizer->Add(data_folder_button);
+    data_folder_sizer->Add(data_folder_r2_sizer, 0, wxEXPAND);
+    
+    wxBoxSizer* main_ini_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* main_ini_r2_sizer = new wxBoxSizer(wxHORIZONTAL);
+    
+    main_ini_sizer->Add(main_ini_label);
+    main_ini_r2_sizer->Add(main_ini, 1)
+    main_ini_r2_sizer->Add(main_ini_button);
+    main_ini_sizer->Add(main_ini_r2_sizer, 0, wxEXPAND);
+    
+    wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    control_button_sizer->Add(cancel_button);
+    control_button_sizer->Add(ok_button);
+
+    main_sizer->Add(data_folder_sizer, 0, wxEXPAND);
+    main_sizer->Add(main_ini_sizer, 1, wxEXPAND);
+    main_sizer->Add(control_button_sizer, 0, wxEXPAND);
+    
+    panel->SetSizer(main_sizer);
 }
 
 void FirstTimeConfiguration::OnOk(wxCommandEvent& event)
