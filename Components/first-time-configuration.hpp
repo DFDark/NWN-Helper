@@ -27,13 +27,16 @@ private:
 
     wxPanel* panel;
 
+    wxStaticBox* data_folder_sb;
+    wxStaticBox* main_ini_sb;
+
     wxTextCtrl* data_folder;
     wxButton* data_folder_button;
-    wxStaticText* data_folder_label;
+    //wxStaticText* data_folder_label;
 
     wxTextCtrl* main_ini;
     wxButton* main_ini_button;
-    wxStaticText* main_ini_label;
+    //wxStaticText* main_ini_label;
 
     wxButton* ok_button;
     wxButton* cancel_button;

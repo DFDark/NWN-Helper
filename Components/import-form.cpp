@@ -5,13 +5,13 @@ enum
     IMPORT_MODE_MERGE = wxID_HIGHEST + 1,
     IMPORT_MODE_OVERWRITE,
     IMPORT_MODE_MANUAL,
-    TWODA_FILES;
+    TWODA_FILES,
     ADD_2DA,
     ADD_TLK
 };
 
 wxBEGIN_EVENT_TABLE(ImportForm, wxDialog)
-    EVT_MENU(wxID_OK, ImportForm::OnOk)
+    EVT_BUTTON(wxID_OK, ImportForm::OnOk)
 wxEND_EVENT_TABLE()
 
 ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
@@ -36,7 +36,6 @@ ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
 
 
     ok_button = new wxButton(this, wxID_OK, wxString("Ok"));
-    Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ExportForm::OnOk));
     cancel_button = new wxButton(this, wxID_CANCEL, wxString("Cancel"));
 
     Centre();
@@ -46,7 +45,7 @@ ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
     wxBoxSizer* first_row_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* second_row_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    wxStaticBoxSizer* twoda_files = new wxStaticBoxSizer(import_2da_list, wxVERTICAL);
+    wxStaticBoxSizer* twoda_files = new wxStaticBoxSizer(import_2da_sb, wxVERTICAL);
     twoda_files->Add(import_2da_list, 1, wxEXPAND);
     twoda_files->Add(add_2da_button);
     first_row_sizer->Add(twoda_files, 1, wxEXPAND);
@@ -58,7 +57,7 @@ ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
     first_row_sizer->Add(import_mode_sizer, 1);
 
     wxStaticBoxSizer* import_tlk_sizer = new wxStaticBoxSizer(import_tlk_sb, wxHORIZONTAL);
-    
+
     import_tlk_sizer->Add(tlk_filename, 1);
     import_tlk_sizer->Add(add_tlk_button);
 

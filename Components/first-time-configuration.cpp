@@ -13,45 +13,41 @@ FirstTimeConfiguration::FirstTimeConfiguration(const wxString& title, const wxSi
 {
     panel = new wxPanel(this, wxID_ANY);
 
-    data_folder_label = new wxStaticText(panel, wxID_ANY, wxString("Path to main data folder"));
-    data_folder = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    data_folder_button = new wxButton(panel, DATA_FOLDER_BUTTON, wxString("Find"));
+    data_folder_sb = new wxStaticBox(panel, wxID_ANY, wxString("Path to main data folder"));
+    // data_folder_label = new wxStaticText(panel, wxID_ANY, wxString("Path to main data folder"));
+    data_folder = new wxTextCtrl(data_folder_sb, wxID_ANY, wxString(""));
+    data_folder_button = new wxButton(data_folder_sb, DATA_FOLDER_BUTTON, wxString("Find"));
 
-    main_ini_label = new wxStaticText(panel, wxID_ANY, wxString("Path to nwn.ini file"));
-    main_ini = new wxTextCtrl(panel, wxID_ANY, wxString(""));
-    main_ini_button = new wxButton(panel, MAIN_INI_BUTTON, wxString("Find"));
+    main_ini_sb = new wxStaticBox(panel, wxID_ANY, wxString("Path to nwn.ini file"));
+    // main_ini_label = new wxStaticText(panel, wxID_ANY, wxString("Path to nwn.ini file"));
+    main_ini = new wxTextCtrl(main_ini_sb, wxID_ANY, wxString(""));
+    main_ini_button = new wxButton(main_ini_sb, MAIN_INI_BUTTON, wxString("Find"));
 
     ok_button = new wxButton(panel, wxID_OK, wxString("Ok"));
     cancel_button = new wxButton(panel, wxID_CANCEL, wxString("Cancel"));
     Centre();
-    
+
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
-    wxBoxSizer* data_folder_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* data_folder_r2_sizer = new wxBoxSizer(wxHORIZONTAL);
-    
-    data_folder_sizer->Add(data_folder_label);
-    data_folder_r2_sizer->Add(data_folder, 1);
-    data_folder_r2_sizer->Add(data_folder_button);
-    data_folder_sizer->Add(data_folder_r2_sizer, 0, wxEXPAND);
-    
-    wxBoxSizer* main_ini_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* main_ini_r2_sizer = new wxBoxSizer(wxHORIZONTAL);
-    
-    main_ini_sizer->Add(main_ini_label);
-    main_ini_r2_sizer->Add(main_ini, 1)
-    main_ini_r2_sizer->Add(main_ini_button);
-    main_ini_sizer->Add(main_ini_r2_sizer, 0, wxEXPAND);
-    
+    wxStaticBoxSizer* data_folder_sb_sizer = new wxStaticBoxSizer(data_folder_sb, wxHORIZONTAL);
+
+    data_folder_sb_sizer->Add(data_folder, 1);
+    data_folder_sb_sizer->Add(data_folder_button);
+
+    wxStaticBoxSizer* main_ini_sb_sizer = new wxStaticBoxSizer(main_ini_sb, wxHORIZONTAL);
+
+    main_ini_sb_sizer->Add(main_ini, 1);
+    main_ini_sb_sizer->Add(main_ini_button);
+
     wxBoxSizer* control_button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     control_button_sizer->Add(cancel_button);
     control_button_sizer->Add(ok_button);
 
-    main_sizer->Add(data_folder_sizer, 0, wxEXPAND);
-    main_sizer->Add(main_ini_sizer, 1, wxEXPAND);
-    main_sizer->Add(control_button_sizer, 0, wxEXPAND);
-    
+    main_sizer->Add(data_folder_sb_sizer, 0, wxEXPAND);
+    main_sizer->Add(main_ini_sb_sizer, 1, wxEXPAND);
+    main_sizer->Add(control_button_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
+
     panel->SetSizer(main_sizer);
 }
 
