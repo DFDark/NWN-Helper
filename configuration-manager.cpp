@@ -87,9 +87,9 @@ bool ConfigurationManager::LoadProjectData(const std::string& _path)
     return project.LoadProject(_path);
 }
 
-TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name)
+TwoDA::Friendly::TwoDA* ConfigurationManager::Get2da(std::string name, const bool& base)
 {
-    return project.Get2da(name);
+    return project.Get2da(name, base);
 }
 
 wxSize ConfigurationManager::GetWindowResolution()

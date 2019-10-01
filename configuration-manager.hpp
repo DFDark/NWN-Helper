@@ -36,7 +36,7 @@ public:
     void SaveProject(const bool& force_prompt = false);
     std::uint32_t SetTlkString(const std::string& value, std::uint32_t strref = 0);
 
-    TwoDA::Friendly::TwoDA* Get2da(std::string name);
+    TwoDA::Friendly::TwoDA* Get2da(std::string name, const bool& base = false);
     wxSize GetWindowResolution();
     std::vector<std::string> GetColumns(const std::string& section);
     std::string GetTlkString(const std::uint32_t& strref);

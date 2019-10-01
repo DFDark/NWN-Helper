@@ -162,10 +162,93 @@ void ImportForm::Merge()
             continue; // TODO
 
         TwoDA::Friendly::TwoDA aux(std::move(raw));
+        try
+        {
+            TwoDA::Friendly::TwoDA* original = configuration->Get2da(twoda, true);
+            TwoDA::Friendly::TwoDA* current = configuration->Get2da(twoda);
+
+            const std::size_t base_size = original->Size();
+            std::size_t current_size = current->Size();
+
+            std::vector<std::size_t> rows_to_add;
+
+            for (std::size_t i = 0; i < aux.Size(); i++)
+            {
+                if (i < base_size && Compare2daRows((*original)[i], aux[i]))
+                    continue;
+
+                if (i < current_size && Compare2daRows((*current)[i], aux[i]))
+                    continue;
+
+                // if we got here were adding the row
+                rows_to_add.emplace_back(i);
+            }
+
+            // Now we should have list of row_ids to add to the current
+            // Also we need to make sure to transfer
+            if (rows_to_add.size() > 0)
+            {
+                const std::size_t rowsize = (*current)[0].Size();
+                for (const std::size_t& i : rows_to_add)
+                {
+                    for (std::size_t j = 0; j < rowsize; j++)
+                        (*current)[current_size][j] = aux[i][j];
+                    current_size++;
+                }
+            }
+        }
+        catch (const std::string& ex)
+        {
+            wxMessageBox(ex.c_str(), "Error", wxOK|wxICON_ERROR);
+        }
     }
 }
 
 void ImportForm::Overwrite()
 {
 
+}
+
+bool ImportForm::Compare2daRows(const TwoDA::Friendly::TwoDARow& row1, const TwoDA::Friendly::TwoDARow& row2)
+{
+    if (row1.Size() != row2.Size())
+        return false;
+
+    for (std::size_t i = 0; i < row1.Size(); i++)
+        if (row1.AsStr(i) != row2.AsStr(i))
+            return false;
+
+    return true;
+}
+
+
+bool ImportForm::IsTlkColumn(const std::size_t& column, const std::string& twoda)
+{
+    if (twoda == "spells")
+        switch (column)
+        {
+            case SPELL_2DA::Name:
+            case SPELL_2DA::Description:
+            case SPELL_2DA::AltMessage: return true;
+        }
+    else if (twoda == "skills")
+        switch (column)
+        {
+            case SKILL_2DA::Name:
+            case SKILL_2DA::Description: return true;
+        }
+    else if (twoda == "feat")
+        switch (column)
+        {
+            case FEAT_2DA::Feat:
+            case FEAT_2DA::Description: return true;
+        }
+    else if (twoda == "masterfeats")
+        switch (column)
+        {
+            case MASTERFEAT_2DA::Strref:
+            case MASTERFEAT_2DA::Description: return true;
+        }
+
+    return false;
 }

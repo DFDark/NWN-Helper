@@ -598,5 +598,9 @@ void NWNHelperMain::OnImportFiles(wxCommandEvent& event)
     ImportForm form(this, configuration);
     if (form.ShowModal() == wxID_OK)
     {
+        sp_model->SetFile(configuration->Get2da("spells"));
+        ft_model->SetFile(configuration->Get2da("feat"));
+        master_ft_model->SetFile(configuration->Get2da("masterfeats"));
+        sk_model->SetFile(configuration->Get2da("skills"));
     }
 }

@@ -157,12 +157,43 @@ void Project::Set2daModified(const std::string& twoda, const bool& modified)
     twoda_edit_list[twoda] = modified;
 }
 
-TwoDA::Friendly::TwoDA* Project::Get2da(const std::string& name)
+TwoDA::Friendly::TwoDA* Project::Get2da(const std::string& name, const bool& base)
 {
-    if (twoda_list.find(name) == twoda_list.end())
-        throw (std::string("Cannot find ") + name + std::string(".2da data!"));
+    TwoDA::Friendly::TwoDA* result;
+    if (base)
+    {
+        // TODO: Should consider optimizing this later
+        std::vector<Key::Friendly::KeyBifReferencedResource> resourcelist;
+        for (auto const& r : base_key->GetReferencedResources())
+        {
+            if (r.m_ReferencedBifIndex == 11) // base_2da.bif index
+                resourcelist.emplace_back(r);
+        }
 
-    return twoda_list[name];
+        for (auto const& kvp : base_2da->GetResources())
+        {
+            if (resourcelist.size() <= kvp.first)
+                continue;
+            std::string filename = resourcelist[kvp.first].m_ResRef;
+            if (name == filename)
+            {
+                result = Load2DAFile(filename,
+                    kvp.second.m_DataBlock->GetData(),
+                    kvp.second.m_DataBlock->GetDataLength()
+                );
+            }
+        }
+
+        if (result == NULL)
+            throw (std::string("Failed to load ") + name + std::string(".2da data!"));
+    }
+    else
+    {
+        if (twoda_list.find(name) == twoda_list.end())
+            throw (std::string("Cannot find ") + name + std::string(".2da data!"));
+        result = twoda_list[name];
+    }
+    return result;
 }
 
 TwoDA::Friendly::TwoDARow* Project::Get2daRow(const std::string& twoda, const std::uint32_t& row_id)

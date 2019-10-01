@@ -25,6 +25,9 @@ private:
     void Merge();
     void Overwrite();
 
+    bool Compare2daRows(const TwoDA::Friendly::TwoDARow& row1, const TwoDA::Friendly::TwoDARow& row2);
+    bool IsTlkColumn(const std::size_t& column, const std::string& twoda);
+
     std::uint32_t import_mode;
 
     ConfigurationManager* configuration;
