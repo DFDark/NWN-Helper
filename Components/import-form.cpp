@@ -1,5 +1,6 @@
 #include "import-form.hpp"
 #include <experimental/filesystem>
+#include "constants.hpp"
 
 namespace fs = std::experimental::filesystem;
 
@@ -224,7 +225,7 @@ bool ImportForm::Compare2daRows(const TwoDA::Friendly::TwoDARow& row1, const Two
 
 bool ImportForm::IsTlkColumn(const std::size_t& column, const std::string& twoda)
 {
-    if (twoda == "spells")
+    /*if (twoda == "spells")
         switch (column)
         {
             case SPELL_2DA::Name:
@@ -249,6 +250,6 @@ bool ImportForm::IsTlkColumn(const std::size_t& column, const std::string& twoda
             case MASTERFEAT_2DA::Strref:
             case MASTERFEAT_2DA::Description: return true;
         }
-
+*/
     return false;
 }
