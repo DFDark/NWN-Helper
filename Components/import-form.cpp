@@ -1,6 +1,7 @@
 #include "import-form.hpp"
 #include <experimental/filesystem>
 #include "constants.hpp"
+#include "functions.hpp"
 
 namespace fs = std::experimental::filesystem;
 
@@ -193,7 +194,23 @@ void ImportForm::Merge()
                 for (const std::size_t& i : rows_to_add)
                 {
                     for (std::size_t j = 0; j < rowsize; j++)
-                        (*current)[current_size][j] = aux[i][j];
+                    {
+                        // TLK column will have to have it's value copied to our tlk
+                        if (IsTlkColumn(j, twoda))
+                        {
+                            std::uint32_t strref_origin = GetUintFromString(aux[i][j].m_Data);
+                            // if strref is not customised we don't need to create new one
+                            if (strref_origin < BASE_TLK_LIMIT)
+                                (*current)[current_size][j] = aux[i][j];
+                            else
+                            {
+                                std::uint32_t strref = configuration->SetTlkString(tlk[strref_origin]);
+                                (*current)[current_size][j].m_Data = std::to_string(strref);
+                            }
+                        }
+                        else
+                            (*current)[current_size][j] = aux[i][j];
+                    }
                     current_size++;
                 }
             }
@@ -225,31 +242,31 @@ bool ImportForm::Compare2daRows(const TwoDA::Friendly::TwoDARow& row1, const Two
 
 bool ImportForm::IsTlkColumn(const std::size_t& column, const std::string& twoda)
 {
-    /*if (twoda == "spells")
+    if (twoda == "spells")
         switch (column)
         {
-            case SPELL_2DA::Name:
-            case SPELL_2DA::Description:
-            case SPELL_2DA::AltMessage: return true;
+            case GETIDX(SPELL_2DA::Name):
+            case GETIDX(SPELL_2DA::SpellDesc):
+            case GETIDX(SPELL_2DA::AltMessage): return true;
         }
     else if (twoda == "skills")
         switch (column)
         {
-            case SKILL_2DA::Name:
-            case SKILL_2DA::Description: return true;
+            case GETIDX(SKILL_2DA::Name):
+            case GETIDX(SKILL_2DA::Description): return true;
         }
     else if (twoda == "feat")
         switch (column)
         {
-            case FEAT_2DA::Feat:
-            case FEAT_2DA::Description: return true;
+            case GETIDX(FEAT_2DA::Feat):
+            case GETIDX(FEAT_2DA::Description): return true;
         }
     else if (twoda == "masterfeats")
         switch (column)
         {
-            case MASTERFEAT_2DA::Strref:
-            case MASTERFEAT_2DA::Description: return true;
+            case GETIDX(MASTERFEAT_2DA::Strref):
+            case GETIDX(MASTERFEAT_2DA::Description): return true;
         }
-*/
+
     return false;
 }
