@@ -139,4 +139,9 @@ bool Tlk::WriteToFile(const char* path) const
     return rawTlk.WriteToFile(path);
 }
 
+std::uint32_t Tlk::Size() const
+{
+    return m_TlkMap.size();
+}
+
 }

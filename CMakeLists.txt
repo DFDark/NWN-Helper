@@ -25,6 +25,8 @@ add_library(NWNHelper STATIC
     Components/skill-form.cpp
     Components/import-form.hpp
     Components/import-form.cpp
+    Components/tlk-edit-form.hpp
+    Components/tlk-edit-form.cpp
     Components/ColumnForms/spell-column-form.hpp
     Components/ColumnForms/spell-column-form.cpp
     Components/ColumnForms/feat-column-form.hpp
@@ -53,6 +55,8 @@ add_library(NWNHelper STATIC
     ListModels/skilllist-model.cpp
     ListModels/classlist-model.hpp
     ListModels/classlist-model.cpp
+    ListModels/tlklist-model.hpp
+    ListModels/tlklist-model.cpp
 )
 
 add_library(SimpleIni STATIC

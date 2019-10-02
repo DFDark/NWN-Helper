@@ -31,6 +31,7 @@ public:
 
     void Set2daModified(const std::string& twoda, const bool& modified);
 
+    Tlk::Friendly::Tlk* GetTlk(const bool& custom = false);
     TwoDA::Friendly::TwoDA* Get2da(const std::string& name, const bool& base = false);
     TwoDA::Friendly::TwoDARow* Get2daRow(const std::string& twoda, const std::uint32_t& row_id);
     std::string GetTlkString(const std::uint32_t& strref);

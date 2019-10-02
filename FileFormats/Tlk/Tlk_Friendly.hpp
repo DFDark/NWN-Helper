@@ -40,6 +40,8 @@ public:
 
     bool WriteToFile(const char* path) const;
 
+    std::uint32_t Size() const;
+
 private:
     std::uint32_t m_LanguageId;
     TlkMapType m_TlkMap;

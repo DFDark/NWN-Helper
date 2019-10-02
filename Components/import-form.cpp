@@ -12,8 +12,7 @@ enum
     IMPORT_MODE_MANUAL,
     TWODA_FILES,
     ADD_2DA,
-    ADD_TLK,
-    IMPORT_MODE_MERGE_HOVER
+    ADD_TLK
 };
 
 wxBEGIN_EVENT_TABLE(ImportForm, wxDialog)
@@ -44,7 +43,6 @@ ImportForm::ImportForm(wxWindow* parent, ConfigurationManager* _configuration):
     import_2da_list = new wxListBox(import_2da_sb, TWODA_FILES);
 
     add_tlk_button = new wxButton(import_tlk_sb, ADD_TLK, wxString("Find"));
-
 
     ok_button = new wxButton(this, wxID_OK, wxString("Ok"));
     cancel_button = new wxButton(this, wxID_CANCEL, wxString("Cancel"));

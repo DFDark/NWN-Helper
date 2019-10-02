@@ -59,6 +59,7 @@ private:
     void OnSaveProject(wxCommandEvent& event);
     void OnSaveProjectAs(wxCommandEvent& event);
     void OnImportFiles(wxCommandEvent& event);
+    void OnTlkCustomView(wxCommandEvent& event);
 
     void SetSpellColumns();
     void SetFeatColumns();
@@ -68,6 +69,7 @@ private:
     wxMenuBar* menu_bar;
     wxMenu* menu_file;
     wxMenu* menu_columns;
+    wxMenu* menu_tlk;
     wxPanel* main_panel;
 
     wxDataViewCtrl* spells;

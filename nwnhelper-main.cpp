@@ -9,6 +9,7 @@
 #include "Components/ColumnForms/skill-column-form.hpp"
 #include "Components/export-form.hpp"
 #include "Components/import-form.hpp"
+#include "Components/tlk-edit-form.hpp"
 
 enum
 {
@@ -37,6 +38,7 @@ enum
     SAVE_PROJECT,
     SAVE_PROJECT_AS,
     IMPORT_FILES,
+    TLK_CUSTOM_VIEW,
 };
 
 wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
@@ -62,6 +64,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SAVE_PROJECT, NWNHelperMain::OnSaveProject)
     EVT_MENU(SAVE_PROJECT_AS, NWNHelperMain::OnSaveProjectAs)
     EVT_MENU(IMPORT_FILES, NWNHelperMain::OnImportFiles)
+    EVT_MENU(TLK_CUSTOM_VIEW, NWNHelperMain::OnTlkCustomView)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(MASTER_FEATS, NWNHelperMain::OnMasterFeatActivated)
@@ -91,9 +94,12 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_columns->Append(FEAT_COLUMNS_MENU, "Feats", "Sets up visible columns for feats!");
     menu_columns->Append(MASTER_FEAT_COLUMNS_MENU, "Master Feats", "Sets up visible columns for master feats!");
     menu_columns->Append(SKILL_COLUMNS_MENU, "Skills", "Sets up visible columns for skills!");
+    menu_tlk = new wxMenu;
+    menu_tlk->Append(TLK_CUSTOM_VIEW, "Custom TLK", "View/Edit current custom tlk file");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
     menu_bar->Append(menu_columns, "&Columns");
+    menu_bar->Append(menu_tlk, "&Tlk");
     SetMenuBar(menu_bar);
 
     CreateStatusBar();
@@ -603,4 +609,11 @@ void NWNHelperMain::OnImportFiles(wxCommandEvent& event)
         master_ft_model->SetFile(configuration->Get2da("masterfeats"));
         sk_model->SetFile(configuration->Get2da("skills"));
     }
+}
+
+
+void NWNHelperMain::OnTlkCustomView(wxCommandEvent& event)
+{
+    TlkEditForm form(this, configuration);
+    form.ShowModal();
 }

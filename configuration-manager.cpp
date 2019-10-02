@@ -198,3 +198,8 @@ void ConfigurationManager::NewProject()
 {
     project.NewProject();
 }
+
+Tlk::Friendly::Tlk* ConfigurationManager::GetTlk(const bool& custom)
+{
+    return project.GetTlk(custom);
+}

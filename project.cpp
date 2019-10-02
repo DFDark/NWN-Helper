@@ -326,3 +326,8 @@ void Project::NewProject()
         twoda_edit_list[filename] = false;
     }
 }
+
+Tlk::Friendly::Tlk* Project::GetTlk(const bool& custom)
+{
+    return custom ? custom_tlk : base_dialog;
+}
