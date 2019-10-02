@@ -59,6 +59,7 @@ private:
     void OnSaveProject(wxCommandEvent& event);
     void OnSaveProjectAs(wxCommandEvent& event);
     void OnImportFiles(wxCommandEvent& event);
+    void OnTlkBaseView(wxCommandEvent& event);
     void OnTlkCustomView(wxCommandEvent& event);
 
     void SetSpellColumns();

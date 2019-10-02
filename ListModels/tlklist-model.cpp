@@ -31,7 +31,7 @@ void TlkListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned 
     if (file == NULL)
         return;
 
-    variant = (*file)[row];
+    variant = (*file)[row + (custom ? BASE_TLK_LIMIT : 0)];
 }
 
 bool TlkListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)

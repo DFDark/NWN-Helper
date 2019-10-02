@@ -21,6 +21,10 @@ TlkEditForm::TlkEditForm(wxWindow* parent, ConfigurationManager* _configuration,
     model = new TlkListModel(tlk, custom);
     dataview->AssociateModel(model);
 
+
+    dataview->AppendTextColumn("ID", TlkListModel::ID);
+    dataview->AppendTextColumn("Tlk entry", TlkListModel::TEXT);
+
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     main_sizer->Add(dataview, 1, wxEXPAND);

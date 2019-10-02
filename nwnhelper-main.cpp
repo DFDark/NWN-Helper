@@ -38,6 +38,7 @@ enum
     SAVE_PROJECT,
     SAVE_PROJECT_AS,
     IMPORT_FILES,
+    TLK_BASE_VIEW,
     TLK_CUSTOM_VIEW,
 };
 
@@ -64,6 +65,7 @@ wxBEGIN_EVENT_TABLE(NWNHelperMain, wxFrame)
     EVT_MENU(SAVE_PROJECT, NWNHelperMain::OnSaveProject)
     EVT_MENU(SAVE_PROJECT_AS, NWNHelperMain::OnSaveProjectAs)
     EVT_MENU(IMPORT_FILES, NWNHelperMain::OnImportFiles)
+    EVT_MENU(TLK_BASE_VIEW, NWNHelperMain::OnTlkBaseView)
     EVT_MENU(TLK_CUSTOM_VIEW, NWNHelperMain::OnTlkCustomView)
     EVT_DATAVIEW_ITEM_ACTIVATED(SPELLS, NWNHelperMain::OnSpellActivated)
     EVT_DATAVIEW_ITEM_ACTIVATED(FEATS, NWNHelperMain::OnFeatActivated)
@@ -95,6 +97,7 @@ NWNHelperMain::NWNHelperMain(const wxString& title, ConfigurationManager* _confi
     menu_columns->Append(MASTER_FEAT_COLUMNS_MENU, "Master Feats", "Sets up visible columns for master feats!");
     menu_columns->Append(SKILL_COLUMNS_MENU, "Skills", "Sets up visible columns for skills!");
     menu_tlk = new wxMenu;
+    menu_tlk->Append(TLK_BASE_VIEW, "Base TLK", "View current custom tlk file");
     menu_tlk->Append(TLK_CUSTOM_VIEW, "Custom TLK", "View/Edit current custom tlk file");
     menu_bar = new wxMenuBar;
     menu_bar->Append(menu_file, "&File");
@@ -611,8 +614,13 @@ void NWNHelperMain::OnImportFiles(wxCommandEvent& event)
     }
 }
 
-
 void NWNHelperMain::OnTlkCustomView(wxCommandEvent& event)
+{
+    TlkEditForm form(this, configuration, true);
+    form.ShowModal();
+}
+
+void NWNHelperMain::OnTlkBaseView(wxCommandEvent& event)
 {
     TlkEditForm form(this, configuration);
     form.ShowModal();
