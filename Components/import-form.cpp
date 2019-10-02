@@ -126,7 +126,7 @@ void ImportForm::OnOk(wxCommandEvent& event)
 void ImportForm::OnAdd2daFiles(wxCommandEvent& event)
 {
     wxFileDialog files_dialog(this, wxString("Locate *.2da file(s)"), "", "",
-        ""/*"*.2da"*/, wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE);
+        "*.2da", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE);
 
     if (files_dialog.ShowModal() == wxID_CANCEL)
         return;
@@ -224,7 +224,66 @@ void ImportForm::Merge()
 
 void ImportForm::Overwrite()
 {
+    Tlk::Raw::Tlk rawtlk;
+    if (!Tlk::Raw::Tlk::ReadFromFile(tlk_filename->GetValue().ToStdString().c_str(), &rawtlk))
+        return;
 
+    Tlk::Friendly::Tlk tlk(std::move(rawtlk), true);
+    for (const wxString& file : import_2da_list->GetStrings())
+    {
+        std::string twoda = fs::path(file.ToStdString()).stem();
+
+        TwoDA::Raw::TwoDA raw;
+        if (!TwoDA::Raw::TwoDA::ReadFromFile(file.ToStdString().c_str(), &raw))
+            continue; // TODO
+
+        TwoDA::Friendly::TwoDA aux(std::move(raw));
+        try
+        {
+            TwoDA::Friendly::TwoDA* original = configuration->Get2da(twoda, true);
+            TwoDA::Friendly::TwoDA* current = configuration->Get2da(twoda);
+
+            const std::size_t base_size = original->Size();
+            std::size_t current_size = current->Size();
+
+            for (std::size_t i = 0; i < aux.Size(); i++)
+            {
+                if (i < base_size && Compare2daRows((*original)[i], aux[i]))
+                    continue;
+
+                if (i < current_size && Compare2daRows((*current)[i], aux[i]))
+                    continue;
+
+                // if we got here we're overwriting the row
+                const std::size_t rowsize = (*current)[0].Size();
+                for (std::size_t j = 0; j < rowsize; j++)
+                {
+                    // TLK column will have to have it's value copied to our tlk
+                    if (IsTlkColumn(j, twoda))
+                    {
+                        std::uint32_t strref_origin = GetUintFromString(aux[i][j].m_Data);
+                        // if strref is not customised we don't need to create new one
+                        if (strref_origin < BASE_TLK_LIMIT)
+                            (*current)[i][j] = aux[i][j];
+                        else
+                        {
+                            std::uint32_t current_strref = GetUintFromString((*current)[i][j].m_Data);
+                            // if current row has custom tlk we will
+                            std::uint32_t strref = configuration->SetTlkString(tlk[strref_origin],
+                                current_strref >= BASE_TLK_LIMIT ? current_strref : 0);
+                            (*current)[i][j].m_Data = std::to_string(strref);
+                        }
+                    }
+                    else
+                        (*current)[i][j] = aux[i][j];
+                }
+            }
+        }
+        catch (const std::string& ex)
+        {
+            wxMessageBox(ex.c_str(), "Error", wxOK|wxICON_ERROR);
+        }
+    }
 }
 
 bool ImportForm::Compare2daRows(const TwoDA::Friendly::TwoDARow& row1, const TwoDA::Friendly::TwoDARow& row2)
