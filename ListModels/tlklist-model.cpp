@@ -36,6 +36,8 @@ void TlkListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned 
 
 bool TlkListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
+    
+    printf("SetValueByRow call\n");
     if (file != NULL)
     {
         /*if (col == TlkListModel::ID)

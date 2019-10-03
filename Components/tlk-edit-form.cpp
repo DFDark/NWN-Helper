@@ -6,6 +6,7 @@ enum
 };
 
 wxBEGIN_EVENT_TABLE(TlkEditForm, wxDialog)
+    EVT_DATAVIEW_ITEM_EDITING_DONE(TLK, TlkEditForm::OnItemEditingDone):
 wxEND_EVENT_TABLE()
 
 TlkEditForm::TlkEditForm(wxWindow* parent, ConfigurationManager* _configuration, const bool& _custom) :
@@ -21,13 +22,21 @@ TlkEditForm::TlkEditForm(wxWindow* parent, ConfigurationManager* _configuration,
     model = new TlkListModel(tlk, custom);
     dataview->AssociateModel(model);
 
-
     dataview->AppendTextColumn("ID", TlkListModel::ID);
-    dataview->AppendTextColumn("Tlk entry", TlkListModel::TEXT);
+    dataview->AppendTextColumn("Tlk entry", TlkListModel::TEXT, (custom ? wxDATAVIEW_CELL_EDITABLE : wxDATAVIEW_CELL_INERT));
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
     main_sizer->Add(dataview, 1, wxEXPAND);
 
     this->SetSizer(main_sizer);
+}
+
+void TlkEditForm::OnItemEditingDone(wxDataViewEvent& event)
+{
+    if (!custom || event.IsEditCancelled())
+        return;
+    
+    printf("OnEditingDone call\n");
+    // (*tlk)[
 }
