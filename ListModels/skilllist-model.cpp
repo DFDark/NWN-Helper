@@ -120,6 +120,14 @@ std::size_t SkillListModel::GetColumnID(unsigned int col) const
         case SkillListModel::ID: return static_cast<std::size_t>(col);
         case SkillListModel::LABEL: return GETIDX(SKILL_2DA::Label);
         case SkillListModel::SKILL: return GETIDX(SKILL_2DA::Name);
+        case SkillListModel::UNTRAINED: return GETIDX(SKILL_2DA::Untrained);
+        case SkillListModel::KEY_ABILITY: return GETIDX(SKILL_2DA::KeyAbility);
+        case SkillListModel::ARMOR_CHECK_PENALTY: return GETIDX(SKILL_2DA::ArmorCheckPenalty);
+        case SkillListModel::ALL_CLASSES_CAN_USE: return GETIDX(SKILL_2DA::AllClassesCanUse);
+        case SkillListModel::CATEGORY: return GETIDX(SKILL_2DA::Category);
+        case SkillListModel::MAX_CR: return GETIDX(SKILL_2DA::MaxCR);
+        case SkillListModel::CONSTANT: return GETIDX(SKILL_2DA::Constant);
+        case SkillListModel::HOSTILE_SKILL: return GETIDX(SKILL_2DA::HostileSkill);
     }
 
     //TODO: Some sort of error management

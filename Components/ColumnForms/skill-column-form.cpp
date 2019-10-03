@@ -76,8 +76,17 @@ void SkillColumnForm::OnCancel(wxCommandEvent& event)
 void SkillColumnForm::SetInitialColumns()
 {
     std::map<std::string, bool> columns;
+
     columns["label"] = false;
     columns["skill"] = false;
+    columns["untrained"] = false;
+    columns["key_ability"] = false;
+    columns["armor_check_penalty"] = false;
+    columns["all_classes_can_use"] = false;
+    columns["category"] = false;
+    columns["max_cr"] = false;
+    columns["constant"] = false;
+    columns["hostile_skill"] = false;
 
     for (auto const& column : configuration->GetColumns(SKILL_COLUMNS))
     {

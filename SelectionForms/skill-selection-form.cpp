@@ -75,6 +75,22 @@ void SkillSelectionForm::SetSkillColumns()
             skills->AppendTextColumn("Label", SkillListModel::LABEL);
         else if (col == "skill")
             skills->AppendTextColumn("Skill", SkillListModel::SKILL);
+        else if (col == "untrained")
+            skills->AppendTextColumn("Untrained", SkillListModel::UNTRAINED);
+        else if (col == "key_ability")
+            skills->AppendTextColumn("Key ability", SkillListModel::KEY_ABILITY);
+        else if (col == "armor_check_penalty")
+            skills->AppendTextColumn("Armor check penalty", SkillListModel::ARMOR_CHECK_PENALTY);
+        else if (col == "all_classes_can_use")
+            skills->AppendTextColumn("All classes can use", SkillListModel::ALL_CLASSES_CAN_USE);
+        else if (col == "category")
+            skills->AppendTextColumn("Category", SkillListModel::CATEGORY);
+        else if (col == "max_cr")
+            skills->AppendTextColumn("Max CR", SkillListModel::MAX_CR);
+        else if (col == "constant")
+            skills->AppendTextColumn("Constant", SkillListModel::CONSTANT);
+        else if (col == "hostile_skill")
+            skills->AppendTextColumn("Hostile", SkillListModel::HOSTILE_SKILL);
     }
 }
 
