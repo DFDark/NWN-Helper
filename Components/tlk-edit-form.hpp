@@ -27,8 +27,6 @@ private:
 
     TlkListModel* model;
 
-    void OnItemEditingDone(wxDataViewEvent& event);
-
     wxDECLARE_EVENT_TABLE();
 };
 

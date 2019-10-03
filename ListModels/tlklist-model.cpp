@@ -36,18 +36,15 @@ void TlkListModel::GetValueByRow(wxVariant &variant, unsigned int row, unsigned 
 
 bool TlkListModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int col)
 {
-    
-    printf("SetValueByRow call\n");
-    if (file != NULL)
+    if (file != NULL && custom)
     {
-        /*if (col == TlkListModel::ID)
-            (*file)[row][col].m_Data = std::to_string(row);
-        else
-            (*file)[row][col].m_Data = variant.GetString();
-            */
+        Tlk::Friendly::TlkEntry entry;
+        entry.m_String = static_cast<std::string>(variant);
+        file->Set(static_cast<std::uint32_t>(row + BASE_TLK_LIMIT), entry);
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 bool TlkListModel::GetAttrByRow(unsigned int row, unsigned int col, wxDataViewItemAttr& attr) const
