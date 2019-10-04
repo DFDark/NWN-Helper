@@ -133,8 +133,8 @@ void Project::SaveProject(const bool& force_prompt)
         if (!entry.second)
             continue;
 
-        std::string path = twoda_dir + entry.first;
-        project.SetValue("2da", (std::string("_") + std::to_string(file_count++)).c_str(), entry.first.c_str());
+        std::string path = twoda_dir + entry.first + ".2da";
+        project.SetValue("2da", (std::string("_") + std::to_string(file_count++)).c_str(), (entry.first + ".2da").c_str());
         if (!twoda_list[entry.first]->WriteToFile(path.c_str()))
             throw std::string("Unable save " + path + " file!");
     }
