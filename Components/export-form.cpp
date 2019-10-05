@@ -12,13 +12,13 @@ wxEND_EVENT_TABLE()
 
 ExportForm::ExportForm(const std::string& _project_name, const std::string& _base_path,
     const std::string& _tlk_filename) :
-    wxDialog(NULL, wxID_ANY, wxString("Export Form"), wxDefaultPosition, wxSize(480, 320))
+    wxDialog(NULL, wxID_ANY, wxString("Export Form"), wxDefaultPosition, wxSize(480, 200))
 {
     destination_label = new wxStaticText(this, wxID_ANY, wxString("Project directory"));
     destination = new wxTextCtrl(this, wxID_ANY, wxString(_base_path));
 
     tlk_filename_label = new wxStaticText(this, wxID_ANY, wxString("TLK filename"));
-    tlk_filename = new wxTextCtrl(this, wxID_ANY, wxString(_tlk_filename));
+    tlk_filename = new wxTextCtrl(this, wxID_ANY, wxString(_tlk_filename), wxDefaultPosition, wxSize(160, -1));
 
     project_name_label = new wxStaticText(this, wxID_ANY, wxString("Project name"));
     project_name = new wxTextCtrl(this, wxID_ANY, wxString(_project_name));
@@ -43,18 +43,18 @@ ExportForm::ExportForm(const std::string& _project_name, const std::string& _bas
     destination_sizer_r2->Add(destination, 1);
     destination_sizer_r2->Add(destination_button);
 
-    destination_sizer->Add(destination_sizer_r2, 1, wxEXPAND);
+    destination_sizer->Add(destination_sizer_r2, 0, wxEXPAND);
 
     wxBoxSizer* project_name_sizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* tlk_filename_sizer = new wxBoxSizer(wxVERTICAL);
 
     project_name_sizer->Add(project_name_label);
-    project_name_sizer->Add(project_name);
+    project_name_sizer->Add(project_name, 0, wxEXPAND);
 
     tlk_filename_sizer->Add(tlk_filename_label);
     tlk_filename_sizer->Add(tlk_filename);
 
-    first_row_sizer->Add(project_name_sizer);
+    first_row_sizer->Add(project_name_sizer, 1);
     first_row_sizer->Add(tlk_filename_sizer);
 
     wxBoxSizer* buttons_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -63,8 +63,8 @@ ExportForm::ExportForm(const std::string& _project_name, const std::string& _bas
     buttons_sizer->Add(ok_button);
 
     main_sizer->Add(first_row_sizer, 0, wxEXPAND);
-    main_sizer->Add(destination_sizer, 0, wxEXPAND);
-    main_sizer->Add(buttons_sizer, 1, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
+    main_sizer->Add(destination_sizer, 1, wxEXPAND);
+    main_sizer->Add(buttons_sizer, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM, 2);
 
     this->SetSizer(main_sizer);
 }
